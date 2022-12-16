@@ -17,6 +17,7 @@ out_folder = sys.argv[1] + "/jumps/"
 
 os.makedirs(out_folder,exist_ok=True)
 
+<<<<<<< HEAD
 #ky = 55.555
 #kx = 104.719 # duas ondas
 #kx = 86.4225 # experimental
@@ -25,13 +26,22 @@ os.makedirs(out_folder,exist_ok=True)
 ky = 6
 kx = 12
 a = 1
+=======
+ky = 55.555
+#kx = 104.719 # duas ondas
+kx = 86.4225 # experimental
+a = 0.18
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
 
 cellx = 3.14159265359/(kx*a)
 
 print("cellx:",cellx)
 
+<<<<<<< HEAD
 jumps_x = np.array([])
 jumps_y = np.array([])
+=======
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
 
 jumps_all = np.array([])
 c = 0
@@ -55,11 +65,16 @@ for filename in sorted(os.listdir(data_folder)):
 
         for i in range(0,len(extrema)-1):
             d = abs(x[extrema[i]] - x[extrema[i+1]])
+<<<<<<< HEAD
             if d >= cellx*2.5:
+=======
+            if d >= cellx*1.5:
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
                 index = extrema[i]
                 jumps = np.append(jumps,d)
                 jumps_index = np.append(jumps_index,index)
 
+<<<<<<< HEAD
                 jumps_x = np.append(jumps_x,x[i])
                 jumps_y = np.append(jumps_y,y[i])
 
@@ -71,6 +86,11 @@ for filename in sorted(os.listdir(data_folder)):
 
 
         # Plotting some trajectories to see if the detection works
+=======
+        jumps_index = jumps_index.astype(int)
+        jumps_all = np.append(jumps_all,jumps)
+
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
         if c < 30:
             fig, ax = plt.subplots()
             plt.tight_layout()
@@ -100,6 +120,7 @@ for filename in sorted(os.listdir(data_folder)):
 
 
 
+<<<<<<< HEAD
 print("escrevendo arquivo")
 f = open(sys.argv[1] + "/jumps_data.dat","w")
 for i in range(0,len(jumps_all)):
@@ -111,6 +132,18 @@ f.close()
 
 data = np.loadtxt(sys.argv[1] + "/jumps_data.dat")
 hist_data = data[:,2]
+=======
+
+
+print("escrevendo arquivo")
+f = open(sys.argv[1] + "/jumps_data.dat","w")
+for i in range(0,len(jumps_all)):
+    f.write(str(jumps_all[i]) + "\n")
+f.close()
+
+
+hist_data = np.loadtxt(sys.argv[1] + "/jumps_data.dat")
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
 
 fig, ax = plt.subplots()
 plt.tight_layout()
@@ -123,7 +156,11 @@ for i in range(0,16):
 
 ax.set_xticks(np.arange(cellx,cellx*16,cellx*2))
 ax.set_xticklabels(np.arange(1,16,2))
+<<<<<<< HEAD
 ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
+=======
+ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x4}}$")
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
 
 
 ax.set_ylabel("\# Pulos")
@@ -131,6 +168,7 @@ ax.hist(hist_data,bins = 200, color = "royalblue",zorder = 1)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.savefig(sys.argv[1] + "/jump_hist.pdf",bbox_inches='tight')
 
+<<<<<<< HEAD
 plt.close()
 
 # Plotting the places where the jumps happen
@@ -144,6 +182,11 @@ ax.axhline(1, linewidth = 0.35, linestyle = "--", color = "#cccccc",zorder = 0)
 
 ax.scatter(data[:,1],data[:,0],data[:,2],alpha=0.5)
 plt.savefig(sys.argv[1] + "/jump_pos.pdf",bbox_inches='tight')
+=======
+
+
+
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
 
 
 

@@ -10,6 +10,7 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilacao
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
+<<<<<<< HEAD
 iterations = 10000 # Número de pontos no arquivo final
 vars = [0.3] # array do parametro a ser variavel
 startfiles = ["sep500_nonnorm.dat"] # arquivo de cond. iniciais
@@ -20,6 +21,16 @@ batch_bool = 0  # Basicamente separar os resultados
 # this flag indicates if we are doing a large batch of simulations and the results should be
 # transfered to another folder. 1 = True, 0 = False
 if batch_bool == 1: 
+=======
+iterations = 200 # Número de pontos no arquivo final
+vars = np.linspace(1,5,100) # array do parametro a ser variavel
+startfiles = ["rng1k.dat"]
+rootname = "A2_Ufreq"
+batch_bool = 1
+############################
+
+if batch_bool == 1:
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
     os.makedirs(rootname,exist_ok=True)
 ############################
 
@@ -29,7 +40,11 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     startfile = startfiles[0] # arquivo com as cond. inicias
     start = np.loadtxt(startfile)
 
+<<<<<<< HEAD
     Nrun = 4 # numero máximo de programas simultanios
+=======
+    Nrun = 16 # numero máximo de programas simultanios
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
     Nsim = len(start[:,0])  # numero de simulaçoes
     Nfull = int(Nsim/Nrun) # Numero de rodadas cheias
     Nfinal = Nsim-Nfull*Nrun # Quantidade de programas paralelos caso Nsim n seja multiplo de Nrun
@@ -85,15 +100,26 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     #print("fazendo trajetórias individuais")
     #os.system("python3 plot_each.py " + out_folder)
+<<<<<<< HEAD
     #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + out_folder + "/" + varstring)
 
     #print("cp " + out_folder + "/" + varstring + ".png " + "mapas")
     #os.system("cp " + out_folder + "/" + varstring + ".png " + "mapas")
+=======
+    os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + out_folder + "/" + varstring)
+
+    print("cp " + out_folder + "/" + varstring + ".png " + "mapas")
+    os.system("cp " + out_folder + "/" + varstring + ".png " + "mapas")
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
     #os.system("rm -r " + out_folder)
     #print("Analise...")
     os.system("python3 difus.py " + out_folder)
     os.system("python3 plot_dif.py " + out_folder)
+<<<<<<< HEAD
     os.system("python3 jumps.py " + out_folder)
+=======
+    #os.system("python3 jumps.py " + out_folder)
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
     time.sleep(1)
     print("Copiando os role")
     if batch_bool == 1:
@@ -102,6 +128,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("cp " + out_folder + "/" + out_folder + "_t_sigma.pdf" + " " + rootname)
         os.system("cp " + out_folder + "/" + varstring + ".png" + " " + rootname)
         #os.system("mv " + out_folder + " " + rootname)
+<<<<<<< HEAD
         os.system("rm -r " + out_folder)
 
 #os.system("rm -r " + out_folder + "/traj")
@@ -112,3 +139,14 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
 #os.system("shutdown")
+=======
+        #os.system("rm -r " + out_folder)
+        os.system("rm -r " + out_folder + "/traj")
+
+
+#print("DONE WITH EVERTHING rn=" + str(rn))
+os.system("python3 plot_var.py " + rootname)
+os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
+#playsound('final.mp3')
+os.system("shutdown")
+>>>>>>> 487db1232bb1707ac96b6638ac9b2e91496824d0
