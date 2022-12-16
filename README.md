@@ -13,7 +13,11 @@ python3, matplotlib, random, os, numpy, sys
 
 ## Dif
 
-Pasta que contem o integrador numérico, assim como arquivos de plotagens e condições iniciais para o estudo do transporte, particularmente em relação ao coeficiente de difusão, e o algoritmo identificador de saltos.
+Pasta que contem o integrador numérico, assim como arquivos de plotagens e condições iniciais para o estudo do transporte, particularmente em relação ao coeficiente de difusão, e o algoritmo identificador de saltos e arquivos de plotagens referentes.
+
+## Tempo de escape
+
+Pasta que contem scripts e dados referentes as simulações de tempo de escape, os arquivos de condições iniciais foram excluidos para que o projeto pudesse ser inclusido no github
 
 # Ronald Golias
 
