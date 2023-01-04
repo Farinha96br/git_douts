@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]) {
   double y = atof(argv[3]); // y' inicial (já normalizado)
   double iterations = atof(argv[4]);  // numero de interaçõe
   string out_folder = string(argv[5]); // saida do arquivo
-  double var = atof(argv[6]);
+  double var = atoi(argv[6]);
 
 
 
@@ -63,7 +63,7 @@ int main(int argc, char const *argv[]) {
 
 
   // coisas do espectro
-  int nw = 2;   // numero de ondas
+  int nw = var;   // numero de ondas
   int c_w = 0;  // índice da onda central da transformada
   double An[nw], kx[nw], ky[nw], w[nw]; // frequencais das demais ondas
 
@@ -82,20 +82,19 @@ int main(int argc, char const *argv[]) {
   }
 
   An[0] = 1;
-  w[0] = 6;
+   w[0] = 6;
   ky[0] = 6;
   kx[0] = 12;
 
-  An[1] = var;
-  w[1] = 6;
-  ky[1] = 6*sqrt(3);
-  kx[1] = 6*sqrt(3);
-
-//  An[2] = var;
-//  w[2] = 6;
-//  ky[2] = 6*sqrt(2);
-//  kx[2] = 6*sqrt(2);
-
+  
+  for (int i = 1; i < nw; i++)
+  {
+    An[i] = 0.2/(nw-1);
+     w[i] = 6;
+    ky[i] = 6*2*i;
+    kx[i] = 12*2*i*sqrt(2);
+  }
+  
   ofstream myfile;
   char ns[100];
   sprintf(ns,"%06d",n1); // ajeita o nome
@@ -104,8 +103,8 @@ int main(int argc, char const *argv[]) {
   double k1,k2,k3,k4;
   double l1,l2,l3,l4;
   //int c_s = 8;
-  //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 0.01; // estrobo normalizado
+  double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
+  //double strobe = 0.01; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;

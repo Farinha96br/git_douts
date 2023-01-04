@@ -20,7 +20,7 @@ pi = 3.14159265359
 # number of random points for the cases wich the condition apply
 rng_N = 1000
 # relevant normalizing parameters
-a = 0.18
+a = 1
 # wavenumbers
 kx =    12
 ky =    6
@@ -30,7 +30,7 @@ bool_normalized = 0
 #   0:  Random points over the space  0 < x < 1, and  -pi < y < pi
 #   1:  Grid very useful to visualize stroboscopi maps
 #   2:  Random poins spread over te separatix
-gen_case = 0
+gen_case = 1
 
 ### ACTUAL SCRIPT
 
@@ -41,24 +41,24 @@ if bool_normalized == 1:
 #   0:  Random points over the space  0 < x < 1, and  -pi < y < pi
 if gen_case == 0:
     for i in range(0,rng_N):
-    x = rng.random()
-    y = rng.random()*2*pi-pi
-    print(x,y)
+        x = rng.random()
+        y = rng.random()*2*pi-pi
+        print(x,y)
 
 
-#   1:  Grid very useful to visualize stroboscopi maps
+#   1:  Grid very useful to visualize stroboscopic maps
 if  gen_case == 1:
     for x in np.arange(0,1,pi/(kx)):
-    for y in np.arange(-pi,pi,pi/(ky)):
-        if x+0.025 < 1:
-            print(x+0.025,y)
-            print(x+0.003,y)
+        for y in np.arange(-pi,pi,pi/(ky)):
+            if x+0.025 < 1:
+                print(x+0.025,y)
+                print(x+0.003,y)
 
 #   2:  Random poins spread over te separatix
 if gen_case == 2:
     for i in range(0,rng_N):
-    n = rng.randint(0,6)
-    m = rng.randint(-10,10)
+        n = rng.randint(0,6)
+        m = rng.randint(-10,10)
 
     coin = rng.randint(0,1)
     if coin == 0:
