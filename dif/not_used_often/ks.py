@@ -4,12 +4,9 @@ import sys
 
 pi = 3.141592653589793
 
-a = 0.18
+a = 1
 Ly = 2*3.141592653589793*a
 
-print("kx","ky")
+print("kx","ky","|","kx norm","ky norm")
 for i in range(1,30):
-    print(i,pi*i/a,2*pi*i/Ly)
-print("normalizado")
-for i in range(1,30):
-    print(i,a*pi*i/a,a*2*pi*i/Ly)
+    print(i,pi*i/a,2*pi*i/Ly,'|',a*pi*i/a,a*2*pi*i/Ly)
