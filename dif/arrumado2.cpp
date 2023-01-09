@@ -54,24 +54,19 @@ int main(int argc, char const *argv[]) {
   double y = atof(argv[3]); // y' inicial (já normalizado)
   double iterations = atof(argv[4]);  // numero de interaçõe
   string out_folder = string(argv[5]); // saida do arquivo
-  double var = atoi(argv[6]);
-
-
+  double var = atof(argv[6]);
 
   //  //  //   parametros originais
   // double U = 0;  // Campo elétrico radial em V/m
 
-
   // coisas do espectro
-  int nw = var;   // numero de ondas
+  int nw = 2;   // numero de ondas
   int c_w = 0;  // índice da onda central da transformada
   double An[nw], kx[nw], ky[nw], w[nw]; // frequencais das demais ondas
 
   // organiza as fases de cada onda
   double phases[nw];
-
   int p_c = 0;
-
   for (int i = 0; i < nw; i++) {
     if (p_c == 0) {
       phases[i] = 0;
@@ -83,17 +78,14 @@ int main(int argc, char const *argv[]) {
 
   An[0] = 1;
    w[0] = 6;
-  ky[0] = 6;
+  ky[0] = 12;
   kx[0] = 12;
-
   
-  for (int i = 1; i < nw; i++)
-  {
-    An[i] = 0.2/(nw-1);
-     w[i] = 6;
-    ky[i] = 6*2*i;
-    kx[i] = 12*2*i*sqrt(2);
-  }
+  An[1] = 0.1;
+   w[1] = 6;
+  ky[1] = 12*sqrt(2);
+  kx[1] = 12*sqrt(2);
+  
   
   ofstream myfile;
   char ns[100];
@@ -103,14 +95,15 @@ int main(int argc, char const *argv[]) {
   double k1,k2,k3,k4;
   double l1,l2,l3,l4;
   //int c_s = 8;
-  double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  //double strobe = 0.01; // estrobo normalizado
+  //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
+  double strobe = 1; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;
   double t = 0;
   double step = 0.0001;      // passo temporal já normalizado
 
+  // FAZ LA O ARQUIVO COM OS DADOS NORMALIZADOS
   if (n1 == 0) {
     ofstream logfile;
     logfile.open((out_folder +  "/log_norm.dat").c_str());
@@ -125,8 +118,7 @@ int main(int argc, char const *argv[]) {
     logfile.close();
   }
 
-
-
+//  Loop de integracao
   while (t <= 1.0*strobe*iterations) {
     if ( (t > strobe_c*strobe - step/2) && (t < strobe_c*strobe + step/2)) {
       myfile << t << "\t" << x << "\t" << remainder(y,2*M_PI) <<"\n";

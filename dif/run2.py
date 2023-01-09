@@ -2,6 +2,7 @@ import numpy as np
 import os
 import time
  
+
 # compilação
 t_all = time.time()
 program =  "program.out" # nome do programa
@@ -10,10 +11,10 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilacao
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-iterations = 300 # Número de pontos no arquivo final
-vars = [2,3,4,5,6,7] # array do parametro a ser variavel
-startfiles = ["grid-12-6.dat"] # arquivo de cond. iniciais
-rootname = "modes_waves" # Nome principal da rodada de experimentos
+iterations =  10000# Número de pontos no arquivo final
+vars = np.linspace(0,0.5,20) # array do parametro a ser variavel
+startfiles = ["rng1k.dat"] # arquivo de cond. iniciais
+rootname = "data_convergence_A2_0.1-" # Nome principal da rodada de experimentos
 batch_bool = 1  # Basicamente separar os resultados
 ############################
 
@@ -29,7 +30,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     startfile = startfiles[0] # arquivo com as cond. inicias
     start = np.loadtxt(startfile)
 
-    Nrun = 4 # numero máximo de programas simultanios
+    Nrun = 7 # numero máximo de programas simultanios
     Nsim = len(start[:,0])  # numero de simulaçoes
     Nfull = int(Nsim/Nrun) # Numero de rodadas cheias
     Nfinal = Nsim-Nfull*Nrun # Quantidade de programas paralelos caso Nsim n seja multiplo de Nrun
@@ -82,41 +83,41 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     print("copiando arquivo inicial p pasta de dados")
     os.system("cp " + startfile + " " + out_folder)
-    print("Fazendo um arquivo unico p plotar o mapa")
-    os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
+    
+    #print("Fazendo um arquivo unico p plotar o mapa")
+    #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
 
     #print("fazendo trajetórias individuais")
     #os.system("python3 plot_each.py " + out_folder)
-    print("plotando o mapa")
-    os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + out_folder + "/" + varstring)
 
-    #print("cp " + out_folder + "/" + varstring + ".png " + "mapas")
-    #
-    #os.system("rm -r " + out_folder)
-    #print("Analise...")
+    #print("plotando o mapa")
+    #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + out_folder + "/" + varstring)
+
     print("Calculo da difusao")
     os.system("python3 difus.py " + out_folder)
+
     print("plotagem da difusao")
     os.system("python3 plot_dif.py " + out_folder)
+
+    #print("Fazendo anlálise dos saltos")
     #os.system("python3 jumps.py " + out_folder)
+    
     time.sleep(1)
 
 
     print("Copiando os role pra uma pasta unificada")
     if batch_bool == 1:
-        os.system("cp " + out_folder + "/" + varstring + ".png " + "mapas")
         os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
         os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
         os.system("cp " + out_folder + "/" + out_folder + "_t_sigma.pdf" + " " + rootname)
-        os.system("cp " + out_folder + "/" + varstring + ".png" + " " + rootname)
-        #os.system("mv " + out_folder + " " + rootname)
-        #os.system("rm -r " + out_folder)
-
-#os.system("rm -r " + out_folder + "/traj")
+        os.system("cp " + out_folder + "/" + "map_" +varstring + ".png" + " " + rootname)
+        os.system("mv " + out_folder + " " + rootname)
+        os.system("rm -r " + out_folder)
 
 
-#print("DONE WITH EVERTHING rn=" + str(rn))
-#os.system("python3 plot_var.py " + rootname)
+
+print("DONE WITH EVERTHING rn=" + str(rn))
+os.system("python3 plot_var.py " + rootname)
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
 #os.system("shutdown")

@@ -23,7 +23,7 @@ rng_N = 1000
 a = 1
 # wavenumbers
 kx =    12
-ky =    6
+ky =    12
 # if the wavenumbers should be normalized, 1 = True, 0 = False
 bool_normalized = 0
 # Case for staring conditions generation
