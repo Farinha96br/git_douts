@@ -11,10 +11,10 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilacao
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-iterations =  10000# Número de pontos no arquivo final
-vars = np.linspace(0,0.5,20) # array do parametro a ser variavel
-startfiles = ["rng1k.dat"] # arquivo de cond. iniciais
-rootname = "data_convergence_A2_0.1-" # Nome principal da rodada de experimentos
+iterations =  100000# Número de pontos no arquivo final
+vars = [0.1,0.25,0.5,0.75,1] # array do parametro a ser variavel
+startfiles = ["sep_1k_12pi_6.dat"] # arquivo de cond. iniciais
+rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
 batch_bool = 1  # Basicamente separar os resultados
 ############################
 
@@ -26,11 +26,11 @@ if batch_bool == 1:
 
 for rn in range(0,len(vars)): # loop pelos parametros var
     var = vars[rn]
-    varstring = "{:04.4f}".format(var)
+    varstring = "{:04.3f}".format(var)
     startfile = startfiles[0] # arquivo com as cond. inicias
     start = np.loadtxt(startfile)
 
-    Nrun = 7 # numero máximo de programas simultanios
+    Nrun = 8 # numero máximo de programas simultanios
     Nsim = len(start[:,0])  # numero de simulaçoes
     Nfull = int(Nsim/Nrun) # Numero de rodadas cheias
     Nfinal = Nsim-Nfull*Nrun # Quantidade de programas paralelos caso Nsim n seja multiplo de Nrun
@@ -99,13 +99,13 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     print("plotagem da difusao")
     os.system("python3 plot_dif.py " + out_folder)
 
-    #print("Fazendo anlálise dos saltos")
-    #os.system("python3 jumps.py " + out_folder)
+    print("Fazendo anlálise dos saltos")
+    os.system("python3 jumps.py " + out_folder)
     
     time.sleep(1)
 
-
     print("Copiando os role pra uma pasta unificada")
+    os.system("rm -r " + out_folder + "/traj")
     if batch_bool == 1:
         os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
         os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
@@ -116,8 +116,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
 
 
-print("DONE WITH EVERTHING rn=" + str(rn))
-os.system("python3 plot_var.py " + rootname)
+#os.system("python3 plot_var.py " + rootname)
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
-#os.system("shutdown")
+os.system("shutdown")

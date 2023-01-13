@@ -13,6 +13,7 @@
 double U(double t,double *w,double *ky, int c_w, double fac){
   //return 0.5*cos(fac*(w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1]);
   return 0;
+  //return fac;
 }
 
 
@@ -35,10 +36,6 @@ double dydt2(double t,double x,double y,double *w, double *An, double *kx, doubl
   return R;
 
 }
-
-
-
-
 
 
 using namespace std;
@@ -78,13 +75,15 @@ int main(int argc, char const *argv[]) {
 
   An[0] = 1;
    w[0] = 6;
-  ky[0] = 12;
-  kx[0] = 12;
+  kx[0] = 12*3.1415;
+  ky[0] = 6;
   
-  An[1] = 0.1;
-   w[1] = 6;
-  ky[1] = 12*sqrt(2);
+  
+  An[1] = var;
+  w[1] = 6;
   kx[1] = 12*sqrt(2);
+  ky[1] = 10;
+  
   
   
   ofstream myfile;
@@ -96,7 +95,7 @@ int main(int argc, char const *argv[]) {
   double l1,l2,l3,l4;
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 1; // estrobo normalizado
+  double strobe = 0.01; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;
@@ -129,16 +128,16 @@ int main(int argc, char const *argv[]) {
     /// Depois da quali, arrumar a normalização pelo fator B
 
     double k1 = dxdt2(t,x,y,w,An,kx,ky,c_w,nw,phases);
-    double l1 = dydt2(t,x,y,w,An,kx,ky,c_w,nw,phases,var);
+    double l1 = dydt2(t,x,y,w,An,kx,ky,c_w,nw,phases,0);
 
     double k2 = dxdt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases,var);
+    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases,0);
 
     double k3 = dxdt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases,var);
+    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases,0);
 
     double k4 = dxdt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases);
-    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases,var);
+    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases,0);
 
     x +=  (k1 +  2*k2 + 2*k3 + k4)*step/6;
     y +=  (l1 +  2*l2 + 2*l3 + l4)*step/6;
