@@ -9,7 +9,7 @@ def xhip(kx,n):
     return n*pi/kx
 
 def yhip(ky,n):
-    return (2*n+1)*pi/ky
+    return (2*n+1)*pi/(2*ky)
 
 sx = []
 sy = []
@@ -20,7 +20,7 @@ pi = 3.14159265359
 
 ### SETUP OF THE SCRIPT
 # number of random points for the cases wich the condition apply
-rng_N = 1000
+rng_N = 5000
 # relevant normalizing parameters
 a = 1
 # wavenumbers
@@ -69,18 +69,19 @@ if  gen_case == 1:
                 sy.append(y)
                 print(x+0.025,y)
                 print(x+0.003,y)
+
 #   2:  Random poins spread over te separatix
 if gen_case == 2:
     for i in range(0,rng_N):
         n = rng.randint(0,12) # numeros p x
-        m = rng.randint(-3,2) # numeros p y
+        m = rng.randint(-6,5) # numeros p y
         coin = rng.randint(0,1) # decide se vai ser distribuido em x ou y
 
         if coin == 0: # ao longo de x
             x = xhip(kx,n)
             y = (rng.random()*2*pi)-pi
             if n == 0:
-                x+=0.01
+                x+=0.001
         if coin == 1: # ao longo de y
             y = yhip(ky,m)
             x = rng.random()*1

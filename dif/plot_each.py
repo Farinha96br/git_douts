@@ -12,7 +12,7 @@ os.makedirs(sys.argv[1] + "/graphs_traj",exist_ok=True)
 counter = 0
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
-        if counter < 50:
+        if counter < 15:
             data = np.loadtxt(data_folder + filename)
             print(filename)
             sx = data[0,1]

@@ -13,7 +13,6 @@ print(data[:,0])
 x = data[:,1]
 y = data[:,2]
 #colors = data[:,3]
-#plt.rcParams['agg.path.chunksize'] = 6760000
 
 
 
@@ -35,4 +34,4 @@ ax.set_ylabel("$x$")
 ax.set_xlabel("$y$")
 ax.scatter(y,x, s=0.2,marker='.', c = "black", alpha = 1,linewidths=0)
 ax.scatter(sy,sx,s = 0.25,marker='o', c = "firebrick")
-plt.savefig("map_" + sys.argv[3] + ".png", bbox_inches='tight', dpi = 300)
+plt.savefig(folder + "/map_" + sys.argv[3] + ".png", bbox_inches='tight', dpi = 300)

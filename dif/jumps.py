@@ -22,23 +22,29 @@ os.makedirs(out_folder,exist_ok=True)
 # Parametros dos ks
 kx =    12*3.1415
 ky =    6
+kx2 = 12*np.sqrt(7)
+ky2 = 10
+
 a = 1
 
 # define e printa o tamanho da céula
 cellx = 3.14159265359/(kx*a)
+cellx2 = 3.14159265359/(kx2*a)
 print("cellx:",cellx)
 
 # Quantas vezes maior que uma celula o salto tem que ser
-fac = 1.5
+fac = 0.5
 
 # arrays vazios onde os saltos entram
 jumps_x = np.array([]) # todos saltos todos em x
+
+f = open(sys.argv[1] + "/jumps_data.dat","w")
 
 
 c = 0
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
-        print(filename)
+        print("jumps",filename)
         # inicializa arrays pra cada particula
         jumps_temp = np.array([])
         jumps_index = np.array([])
@@ -60,21 +66,21 @@ for filename in sorted(os.listdir(data_folder)):
         # Procura os saltos
         for i in range(0,len(extrema)-1):
             d = abs(x[extrema[i]] - x[extrema[i+1]])
-            if d >= cellx*fac: # checa se teve salto
-                jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
-                jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
-                jumps_x = np.append(jumps_x,x[i]) # anexa o pulo no role dos pulos totais
+            #if d >= cellx*fac: # checa se teve salto
+            #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
+            jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
+            #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
+            f.write(str(d) + "\n")
 
             
         jumps_index = jumps_index.astype(int)
-
-        # Plota as trajetorias com identificaçao dos saltos p conferências
+            #   Plota as trajetorias com identificaçao dos saltos p conferências
         if c < 15:
             fig, ax = plt.subplots()
             plt.tight_layout()
             fig.set_size_inches(10*0.393, 5*0.393)
             #ax.set_title(filename)
-            ax.set_xlim(0,20)
+            ax.set_xlim(0,25)
             ax.set_xlabel(r"$t$")
 
             NCELL = 10
@@ -90,53 +96,14 @@ for filename in sorted(os.listdir(data_folder)):
             ax.set_ylabel(r"$\frac{N\pi}{k_{x0}}$")
             ax.plot(t,x,linewidth = 0.5, color = "royalblue",zorder = 1)
             ax.plot(t[extrema],x[extrema],ls = " ", marker = ",",markersize = 0.5, color = "firebrick",zorder = 2)
-            ax.plot(t[jumps_index],x[jumps_index],ls = " ",markersize = 1, marker = "s", color = "forestgreen",zorder = 3)
+            #ax.plot(t[jumps_index],x[jumps_index],ls = " ",markersize = 1, marker = "s", color = "forestgreen",zorder = 3)
             plt.savefig(out_folder + filename[:-4] + ".pdf",bbox_inches='tight')
             plt.close()
             c+=1
-
-
-
-
-print("escrevendo arquivo")
-f = open(sys.argv[1] + "/jumps_data.dat","w")
-for i in range(0,len(jumps_x)):
-    f.write(str(jumps_x[i]) + "\n")
 f.close()
 
 
 # Plotagem do histograma de saltos
 
-data = np.loadtxt(sys.argv[1] + "/jumps_data.dat")
-print(data.shape)
-hist_data = data[:]
-fig, ax = plt.subplots()
-
-plt.tight_layout()
-fig.set_size_inches(10*0.393, 5*0.393)
-
-ax.set_xlim(cellx,cellx*9)
-
-for i in range(0,9):
-    ax.axvline(cellx*i, linewidth = 0.25, linestyle = "--", color = "#cccccc",zorder = 0)
-ax.set_xticks(np.arange(cellx,cellx*9,cellx*2))
-ax.set_xticklabels(np.arange(1,9,2))
-
-ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
 
-ax.set_ylabel("\# Pulos")
-ax.hist(hist_data,bins = 200, color = "royalblue",zorder = 1)
-ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-plt.savefig(sys.argv[1] + "/jump_hist.pdf",bbox_inches='tight')
-
-plt.close()
-
-
-
-
-
-
-
-
-#

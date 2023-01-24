@@ -80,9 +80,9 @@ int main(int argc, char const *argv[]) {
   
   
   An[1] = var;
-  w[1] = 6;
-  kx[1] = 12*sqrt(2);
-  ky[1] = 10;
+  w[1] = 10;
+  kx[1] = 12*sqrt(7);
+  ky[1] = 6;
   
   
   
@@ -95,7 +95,7 @@ int main(int argc, char const *argv[]) {
   double l1,l2,l3,l4;
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 0.01; // estrobo normalizado
+  double strobe = 1; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;
@@ -144,7 +144,7 @@ int main(int argc, char const *argv[]) {
     t += step;
   }
   myfile.close();
-  cout << "DONE" << n1 << "\n";
+  cout << "DONE: " << n1 << " ";
 
 
   return 0;
