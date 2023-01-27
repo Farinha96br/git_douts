@@ -12,8 +12,8 @@
 
 double U(double t,double *w,double *ky, int c_w, double fac){
   //return 0.5*cos(fac*(w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1]);
-  return 0;
-  //return fac;
+  //return 0;
+  return fac;
 }
 
 
@@ -32,8 +32,8 @@ double dydt2(double t,double x,double y,double *w, double *An, double *kx, doubl
   for (int i = 0; i < nw; i++) {
     R += An[i]*kx[i]*cos(kx[i]*x)*cos(ky[i]*(y-(w[i]/ky[i] - w[c_w]/ky[c_w])*t) + phases[i]);
   }
-  //return R+U(t,w,ky,c_w,fac)*An[c_w]*kx[c_w];
-  return R;
+  return R+fac*An[c_w]*kx[c_w];
+  //return R;
 
 }
 
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]) {
   ky[0] = 6;
   
   
-  An[1] = var;
+  An[1] = 0.2;
   w[1] = 10;
   kx[1] = 12*sqrt(7);
   ky[1] = 6;
@@ -128,16 +128,16 @@ int main(int argc, char const *argv[]) {
     /// Depois da quali, arrumar a normalização pelo fator B
 
     double k1 = dxdt2(t,x,y,w,An,kx,ky,c_w,nw,phases);
-    double l1 = dydt2(t,x,y,w,An,kx,ky,c_w,nw,phases,0);
+    double l1 = dydt2(t,x,y,w,An,kx,ky,c_w,nw,phases,var);
 
     double k2 = dxdt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases,0);
+    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases,var);
 
     double k3 = dxdt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases,0);
+    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases,var);
 
     double k4 = dxdt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases);
-    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases,0);
+    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases,var);
 
     x +=  (k1 +  2*k2 + 2*k3 + k4)*step/6;
     y +=  (l1 +  2*l2 + 2*l3 + l4)*step/6;

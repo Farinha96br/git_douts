@@ -13,9 +13,10 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilaca
  # carrega as cond. inicias num array
 batch_bool = 0  # Basicamente separar os resultados
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 5000# Número de pontos no arquivo final
+iterations = 1000# Número de pontos no arquivo final
 np.linspace(-1,5,100)
-vars = np.hstack((np.linspace(-1,-0.5,100),np.linspace(-0.5,0.5,501),np.linspace(0.5,1,100))) # array do parametro a ser variavel
+vars = np.hstack((np.linspace(-1,-0.5,50),np.linspace(-0.5,0.5,251),np.linspace(0.5,1,50))) # array do parametro a ser variavel
+lenvar = len(vars)
 startfiles = ["sep_1k_12pi_6.dat"] # arquivo de cond. iniciais
 rootname = "data-dif_A2" # Nome principal da rodada de experimentos
 ############################
@@ -79,7 +80,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         t.append(trun)
         avgt = np.sum(t)/len(t)
         exct = avgt*(Nfull+n_f)
-        print("\n",i,"/",Nfull+n_f,round(trun,3),"runtime ",round(avgt/60,2),"min expected_time:",round(exct/60,2),"min")
+        print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"min T_batch: ",round(exct/60,2),"min T_all: ",exct*len(vars)/(60*60),"h")
     timefile.close()
 
     print("copiando arquivo inicial p pasta de dados")
@@ -122,4 +123,4 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
-#os.system("shutdown")
+os.system("shutdown")

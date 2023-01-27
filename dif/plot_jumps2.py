@@ -65,7 +65,7 @@ for i in range(0,Ncell):
 
 ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
-w = 0.01
+w = 0.02
 b= np.arange(0, Ncell*cellx + w, w)
 
 ax.set_ylabel("\# Pulos")
