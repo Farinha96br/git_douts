@@ -13,9 +13,8 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilaca
  # carrega as cond. inicias num array
 batch_bool = 0  # Basicamente separar os resultados
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 1000# Número de pontos no arquivo final
-np.linspace(-1,5,100)
-vars = np.hstack((np.linspace(-1,-0.5,50),np.linspace(-0.5,0.5,251),np.linspace(0.5,1,50))) # array do parametro a ser variavel
+iterations = 1# Número de pontos no arquivo final
+vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
 lenvar = len(vars)
 startfiles = ["sep_1k_12pi_6.dat"] # arquivo de cond. iniciais
 rootname = "data-dif_A2" # Nome principal da rodada de experimentos
@@ -26,11 +25,18 @@ rootname = "data-dif_A2" # Nome principal da rodada de experimentos
 if batch_bool == 1: 
     os.makedirs(rootname,exist_ok=True)
 ############################
-
+vars = [0,1]
 for rn in range(0,len(vars)): # loop pelos parametros var
     var = vars[rn]
     varstring = "{:04.3f}".format(var)
+    bashrun = open("bashrun_" + varstring +'.sh','w')
+    bashrun.write("g++ arrumado2.cpp -lm -lgsl -o " + program)
+
+    bashrun.write("# rootname = " + rootname + '\n')
+    bashrun.write("# var = " + varstring + '\n')
+    bashrun.write("# iterations = " + str(iterations) + '\n')
     startfile = startfiles[0] # arquivo com as cond. inicias
+    bashrun.write("# startfile = " + startfile + '\n')
     start = np.loadtxt(startfile)
 
     Nsim = len(start[:,0])  # numero de simulaçoes
@@ -42,11 +48,17 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     print(Nrun,Nsim,Nfull,Nfinal)
 
     # organiza umas coias de pastas
-    #out_folder = "exp_phase_r_" + str(round(var,3)).replace("-","neg") # pasta onde vai sair os roles
-    out_folder = rootname + "_" + varstring.replace("-","neg") # pasta onde vai sair os roles
+    if var >= 0:
+        out_folder = rootname + "_" + "p" + varstring
+    if var < 0:
+        out_folder = rootname + "_" + "n" + varstring
 
+    
     os.makedirs(out_folder,exist_ok=True)
+    bashrun.write("mkdir " + str(out_folder) + "\n")
     os.makedirs(out_folder + "/traj",exist_ok=True)
+    bashrun.write("mkdir " + str(out_folder) + "/traj \n")
+
     timefile = open(out_folder + "/timelog.dat","w")
     timefile.write("# #sim_paralela \t parametro \t tempo(s) \n")
 
@@ -74,13 +86,14 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             + " " + str(var) \
             + " & "
         run_string += "wait "
+        bashrun.write(run_string + "\n")
         os.system(run_string)
         trun = time.time()-t0
         timefile.write(str(Npar) + "\t" + str(vars[rn]) + "\t" + str(trun) + "\n")
         t.append(trun)
         avgt = np.sum(t)/len(t)
         exct = avgt*(Nfull+n_f)
-        print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"min T_batch: ",round(exct/60,2),"min T_all: ",exct*len(vars)/(60*60),"h")
+        print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"m T_batch: ",round(exct/60,2),"m T_all: ",round(exct*len(vars)/(60*60),3),"h")
     timefile.close()
 
     print("copiando arquivo inicial p pasta de dados")
@@ -107,9 +120,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     
     time.sleep(1)
 
+    os.system("rm -r " + out_folder + "/traj")
     print("Copiando os role pra uma pasta unificada")
-    os.system("python3 plot_var.py " + rootname)
-    #os.system("rm -r " + out_folder + "/traj")
+
     if batch_bool == 1:
         os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
         os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
@@ -118,7 +131,8 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("mv " + out_folder + " " + rootname)
         os.system("rm -r " + out_folder)
 
-
+    bashrun.close()
+os.system("python3 plot_var.py " + rootname)
 
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
