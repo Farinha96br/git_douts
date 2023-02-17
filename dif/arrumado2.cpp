@@ -78,9 +78,9 @@ int main(int argc, char const *argv[]) {
   kx[0] = 12*3.1415;
   ky[0] = 6;
   
-    An[1] = var;
-  w[1] = 8;
-  kx[1] = 12*sqrt(7);
+  An[1] = 0.3;
+  w[1] = var;
+  kx[1] = 12*sqrt(2);
   ky[1] = 6;
   
   ofstream myfile;
@@ -92,7 +92,7 @@ int main(int argc, char const *argv[]) {
   double l1,l2,l3,l4;
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 0.01; // estrobo normalizado
+  double strobe = 1; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;

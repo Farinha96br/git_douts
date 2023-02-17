@@ -16,11 +16,12 @@ vars = np.array([])
 folders = sorted(os.listdir(sys.argv[1]))
 
 for f in folders:
-    if f.startswith("data-dif_A2_"):
+    if f.startswith("data-dif_w2_"):
         for file in sorted(os.listdir(f)):
             if file.startswith("D_"):
                 var = file
-                var = var.replace("D_data-dif_A2_","").replace("neg","-").replace(".dat","")
+                var = var.replace("D_data-dif_A2_","").replace("p","+").replace(".dat","")
+                var = var.replace("D_data-dif_A2_","").replace("n","-").replace(".dat","")
                 var = float(var)
                 vars = np.append(vars,var)
                 print(file,var)
@@ -45,7 +46,7 @@ fig, ax = plt.subplots()
 plt.tight_layout() # isso aq nsei bem qq faz mas ajuda a deixar menos espaço em branco
 fig.set_size_inches(6*0.393, 4*0.393) # esse fatir 0.393 é p converter polegadas p cm
 ax.set_ylabel(r"$\langle D_x(t_f) \rangle$") # Legenda, p renderizar direito precisa do r"$blablabla$"
-ax.set_xlabel(r"U")
+ax.set_xlabel(r"\omega_2")
 ax.set_xlim(-1.2,1.2)
 ax.set_yscale("log")
 
@@ -55,4 +56,4 @@ ax.plot(vars,D,linewidth = 0.0,marker = ",",markersize = 0.5, c = rgb_pallet[2])
 #ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0)) # coloca em notação científica
 ax.legend(frameon=False)
 
-plt.savefig("U_D.pdf",bbox_inches='tight') ## salva como pdf
+plt.savefig("w_D.pdf",bbox_inches='tight') ## salva como pdf

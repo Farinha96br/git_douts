@@ -13,12 +13,12 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilaca
  # carrega as cond. inicias num array
 batch_bool = 0  # Basicamente separar os resultados
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000# Número de pontos no arquivo final
+iterations = 1000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.5]
+vars = np.linspace(6,32,120)
 lenvar = len(vars)
 startfiles = ["sep_1k_12pi_6.dat"] # arquivo de cond. iniciais
-rootname = "data-dif_A2" # Nome principal da rodada de experimentos
+rootname = "data-dif_w2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -121,17 +121,15 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     print("Calculo da difusao")
     os.system("python3 difus.py " + out_folder)
+    os.system("python3 plot_dif.py " + out_folder)
 
-    #print("plotagem da difusao")
-    #os.system("python3 plot_dif.py " + out_folder)
-
-    print("Fazendo anlálise dos saltos")
-    os.system("python3 jumps.py " + out_folder)
-    os.system("python3 plot_jumps.py " + out_folder)
+    #print("Fazendo anlálise dos saltos")
+    #os.system("python3 jumps.py " + out_folder)
+    #os.system("python3 plot_jumps.py " + out_folder)
     
     time.sleep(1)
 
-    #os.system("rm -r " + out_folder + "/traj")
+    os.system("rm -r " + out_folder + "/traj")
     print("Copiando os role pra uma pasta unificada")
     if batch_bool == 1:
         os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
@@ -147,4 +145,4 @@ os.system("python3 plot_var.py " + rootname)
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
-#os.system("shutdown")
+os.system("shutdown")
