@@ -19,11 +19,12 @@ def linfit(X,Y):
 
 data = []
 data_folder = sys.argv[1] + "/traj/"
-for filename in os.listdir(data_folder):
+for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
+        print(filename)
         data.append(np.loadtxt(data_folder + filename))
 data = np.array(data)
-#print(data.shape)   #data[partícula,linha,coluna de dados]
+print(data.shape)   #data[partícula,linha,coluna de dados]
                     # coluna de dados
                     # data[1,:,0] pega todos
 #print(data[0,:,1])
@@ -53,7 +54,7 @@ for t in range(1,data.shape[1]):
     f.write(str(data[0,t,0]) + "\t" + str(D) + "\t" + str(C) + "\t" + str(Cov) + "\n")
 
 f.close()
-print(sys.argv[1].replace("-","neg"),D)
+print(sys.argv[1].replace("-","n"),D)
 data = None
 # Regressão e plotagens:
 

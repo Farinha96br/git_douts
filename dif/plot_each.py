@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-plt.rc('text', usetex=True)
+plt.rc('text', usetex=False)
 plt.rc('font', family='serif')
 
 folder = sys.argv[1] # pasta com os dados
@@ -39,6 +39,6 @@ for filename in sorted(os.listdir(data_folder)):
             ax.plot(sy,sx, c = "black", marker = "s",markersize=3,lw = 1,zorder = 1)
             ax.plot(sy,sx, c = "white", marker = "s",markersize=1,lw = 1,zorder = 2)
 
-            plt.savefig(sys.argv[1] + "/graphs_traj/" + filename[0:-4] + ".pdf", bbox_inches='tight')
+            plt.savefig(sys.argv[1] + "/graphs_traj/" + filename[0:-4] + ".png", bbox_inches='tight',dpi =300)
             plt.close()
             counter += 1
