@@ -42,8 +42,8 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   // setup das do gerador aleatorio
-  int gsl_rng_default_seed = 1996; // semente é o primeiro argumento
-	gsl_rng *rng= gsl_rng_alloc(gsl_rng_taus);
+  //int gsl_rng_default_seed = 1996; // semente é o primeiro argumento
+	//gsl_rng *rng= gsl_rng_alloc(gsl_rng_taus);
   // nome indice da particula
   int n1 = atoi(argv[1]);
   // parametros pra cada particula
@@ -68,9 +68,9 @@ int main(int argc, char const *argv[]) {
     if (p_c == 0) {
       phases[i] = 0;
     }
-    if (p_c == 1) {
-      phases[i] = 2*M_PI*gsl_rng_uniform(rng); // fases aleatorias
-    }
+    //if (p_c == 1) {
+    //  phases[i] = 2*M_PI*gsl_rng_uniform(rng); // fases aleatorias
+    //}
   }
 
   An[0] = 1;
