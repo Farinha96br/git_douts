@@ -13,12 +13,12 @@ time.sleep(3) # tempo p cancelar caso de probelma na compilaca
  # carrega as cond. inicias num array
 batch_bool = 0  # Basicamente separar os resultados
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 1000# Número de pontos no arquivo final
+iterations = 10000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = np.linspace(6,32,120)
+vars = np.linspace(6,32,7)
 lenvar = len(vars)
 startfiles = ["sep_1k_12pi_6.dat"] # arquivo de cond. iniciais
-rootname = "data-dif_w2" # Nome principal da rodada de experimentos
+rootname = "data-diflong_w2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -29,7 +29,7 @@ if batch_bool == 1:
 
 for rn in range(0,len(vars)): # loop pelos parametros var
     var = vars[rn]
-    varstring = "{:04.3f}".format(var)
+    varstring = "{:06.3f}".format(var)
     startfile = startfiles[0] # arquivo com as cond. inicias
 
     ##  Coisas pra gerar o script pro mesocentre
