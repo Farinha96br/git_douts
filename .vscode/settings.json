@@ -10,6 +10,7 @@
     "python.testing.unittestEnabled": true,
     "files.associations": {
         "fstream": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iosfwd": "cpp"
     }
 }

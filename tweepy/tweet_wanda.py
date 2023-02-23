@@ -22,9 +22,8 @@ client = tweepy.Client(
 
 # Make sure to reauthorize your app / regenerate your access token and secret
 # after setting the Write permission
-t = sys.argv[1]
 response = client.create_tweet(
- text="Texto do tuite"
+ text="Tb perdi a senha e o email k"
 )
 print(f"https://twitter.com/user/status/{response.data['id']}")
 

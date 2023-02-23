@@ -17,7 +17,7 @@ double U(double t,double *w,double *ky, int c_w, double fac){
 }
 
 
-double dxdt2(double t,double x,double y,double *w, double *An, double *kx, double *ky,int c_w, int nw, double *phases){
+double dxdtn(double t,double x,double y,double *w, double *An, double *kx, double *ky,int c_w, int nw, double *phases){
   // derivada em x em relaçao ao tempo
   double R = 0;
   for (int i = 0; i < nw; i++) {
@@ -26,7 +26,7 @@ double dxdt2(double t,double x,double y,double *w, double *An, double *kx, doubl
   return R;
 }
 
-double dydt2(double t,double x,double y,double *w, double *An, double *kx, double *ky, int c_w, int nw, double *phases, double fac){
+double dydtn(double t,double x,double y,double *w, double *An, double *kx, double *ky, int c_w, int nw, double *phases, double fac){
   // derivada em y em relação ao tempo
   double R = 0;
   for (int i = 0; i < nw; i++) {
@@ -34,7 +34,16 @@ double dydt2(double t,double x,double y,double *w, double *An, double *kx, doubl
   }
   //return R+fac*An[c_w]*kx[c_w];
   return R;
+}
 
+double dydt2(double t,double x,double y,double *w, double *An, double *kx, double *ky){
+
+  return An[0]*kx[0]*cos(kx[0]*x)*cos(ky[0]*y) + An[1]*kx[1]*cos(kx[1]*x)*cos(ky[1]*(y-(w[1]/ky[1] - w[0]/ky[0])*t));
+}
+
+double dxdt2(double t,double x,double y,double *w, double *An, double *kx, double *ky){
+
+  return An[0]*ky[0]*sin(kx[0]*x)*sin(ky[0]*y) + An[1]*ky[1]*sin(kx[1]*x)*sin(ky[1]*(y-(w[1]/ky[1] - w[0]/ky[0])*t));
 }
 
 
@@ -79,7 +88,7 @@ int main(int argc, char const *argv[]) {
   ky[0] = 6;
   
   An[1] = 0.3;
-  w[1] = var;
+  w[1] = 8;
   kx[1] = 12*sqrt(2);
   ky[1] = 6;
   
@@ -88,8 +97,7 @@ int main(int argc, char const *argv[]) {
   sprintf(ns,"%06d",n1); // ajeita o nome
   myfile.open((out_folder + "/traj/" + ns + ".dat").c_str()); // salva cada ponto individualmente
 
-  double k1,k2,k3,k4;
-  double l1,l2,l3,l4;
+
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
   double strobe = 1; // estrobo normalizado
@@ -114,7 +122,9 @@ int main(int argc, char const *argv[]) {
     logfile.close();
   }
 
-//  Loop de integracao
+  double k1,k2,k3,k4;
+  double l1,l2,l3,l4;
+  //  Loop de integracao
   while (t <= 1.0*strobe*iterations) {
     if ( (t > strobe_c*strobe - step/2) && (t < strobe_c*strobe + step/2)) {
       myfile << t << "\t" << x << "\t" << remainder(y,2*M_PI) <<"\n";
@@ -124,17 +134,17 @@ int main(int argc, char const *argv[]) {
 
     /// Depois da quali, arrumar a normalização pelo fator B
 
-    double k1 = dxdt2(t,x,y,w,An,kx,ky,c_w,nw,phases);
-    double l1 = dydt2(t,x,y,w,An,kx,ky,c_w,nw,phases,var);
+    double k1 = dxdt2(t,x,y,w,An,kx,ky);
+    double l1 = dydt2(t,x,y,w,An,kx,ky);
 
-    double k2 = dxdt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,c_w,nw,phases,var);
+    double k2 = dxdt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky);
+    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky);
 
-    double k3 = dxdt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases);
-    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,c_w,nw,phases,var);
+    double k3 = dxdt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky);
+    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky);
 
-    double k4 = dxdt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases);
-    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,c_w,nw,phases,var);
+    double k4 = dxdt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky);
+    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky);
 
     x +=  (k1 +  2*k2 + 2*k3 + k4)*step/6;
     y +=  (l1 +  2*l2 + 2*l3 + l4)*step/6;

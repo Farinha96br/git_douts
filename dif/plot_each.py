@@ -28,7 +28,11 @@ for filename in sorted(os.listdir(data_folder)):
             plt.tight_layout()
             fig.set_size_inches(9*0.393, 7*0.393)
             ax.set_xlim([-3.1415,3.1415])
-            ax.set_xticks([-3.14,0,3.14],["$-\pi$","0",r"$+\pi$"])
+            if np.max(x) <= 1:
+                ax.set_ylim(0,1.05)
+            else:
+                ax.set_ylim(0,np.max(x)*1.05)
+            ax.set_xticks([-3.14,0,3.14],[r"$-\pi$","0",r"$+\pi$"])
             #ax.axhline(1,color = "#333333", linestyle = "--", a)
             ax.set_ylabel("$x$")
             ax.set_xlabel("$y$")

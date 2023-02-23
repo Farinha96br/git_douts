@@ -20,7 +20,7 @@ Cov = data[:,3]
 fig, ax = plt.subplots()
 fig.set_size_inches(10*0.393, 5*0.393)
 #ax.set_yscale("log")
-#ax.set_ylim(0,0.2)
+#ax.set_ylim(0,D[-1]*10)
 ax.set_ylabel(r"$\langle D_x(t) \rangle$")
 ax.set_xlabel("$t$")
 #ax.set_xlim(0,1000)

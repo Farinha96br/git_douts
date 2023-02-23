@@ -20,7 +20,7 @@ pi = 3.14159265359
 
 ### SETUP OF THE SCRIPT
 # number of random points for the cases wich the condition apply
-rng_N = 100
+rng_N = 1000
 # relevant normalizing parameters
 a = 1
 # wavenumbers
