@@ -87,8 +87,8 @@ int main(int argc, char const *argv[]) {
   kx[0] = 12*3.1415;
   ky[0] = 6;
   
-  An[1] = 0.3;
-  w[1] = 8;
+  An[1] = 0.2;
+  w[1] = var;
   kx[1] = 12*sqrt(2);
   ky[1] = 6;
   

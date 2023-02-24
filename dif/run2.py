@@ -2,22 +2,21 @@ import numpy as np
 import os
 import time
  
-
 # compilação
 t_all = time.time()
-program =  "program.out" # nome do programa
+program =  "program2.out" # nome do programa
 os.system("g++ arrumado2.cpp -lm -lgsl -o " + program)
-time.sleep(3) # tempo p cancelar caso de probelma na compilaca
+time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 1000# Número de pontos no arquivo final
+iterations = 30000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [1,2,3,4,5]
+vars = [8,16,32,64]
 lenvar = len(vars)
-startfiles = ["sep_1k_12pi_6_1.dat","sep_1k_12pi_6_2.dat","sep_1k_12pi_6_3.dat","sep_1k_12pi_6_4.dat","sep_1k_12pi_6_5.dat"] # arquivo de cond. iniciais
-rootname = "data-nconvergence_w2" # Nome principal da rodada de experimentos
+startfiles = ["sep_1k_12pi_6_1.dat"] # arquivo de cond. iniciais
+rootname = "data-t50k_w2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -28,7 +27,7 @@ batch_bool = 0  # Basicamente separar os resultados
 for rn in range(0,len(vars)): # loop pelos parametros var
     var = vars[rn]
     varstring = "{:05.3f}".format(var)
-    startfile = startfiles[rn] # arquivo com as cond. inicias
+    startfile = startfiles[0] # arquivo com as cond. inicias
 
     ##  Coisas pra gerar o script pro mesocentre
     bashrun = open("bashrun_" + varstring +'.sh','w')
@@ -128,8 +127,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     time.sleep(1)
 
     #os.system("rm -r " + out_folder + "/traj")
-    print("Copiando os role pra uma pasta unificada")
+    
     if batch_bool == 1:
+        print("Copiando os role pra uma pasta unificada")
         os.makedirs(rootname,exist_ok=True)
         os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
         os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
@@ -137,11 +137,11 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("cp " + out_folder + "/" + "map_" +varstring + ".png" + " " + rootname)
         os.system("mv " + out_folder + " " + rootname)
         os.system("rm -r " + out_folder)
+    
     bashrun.close()
-
-os.system("python3 plot_var.py ./")
+#os.system("python3 plot_var.py ./")
 
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
 #playsound('final.mp3')
-#os.system("shutdown")
+os.system("shutdown")

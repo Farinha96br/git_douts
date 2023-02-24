@@ -29,9 +29,9 @@ figdif, axdif = plt.subplots()
 figdif.set_size_inches(7*0.393, 5*0.393) # esse fatir 0.393 é p converter polegadas p cm
 axdif.set_ylabel(r"$\langle D_x(t_f) \rangle$") # Legenda, p renderizar direito precisa do r"$blablabla$"
 axdif.set_xlabel(r"$t$")
-axdif.set_title(r"All $D_x(t)$")
-axdif.set_ylim(0,0.01)
-axdif.set_xlim(0,10000)
+axdif.set_title(r"$\omega2=32$")
+axdif.set_ylim(0,0.006)
+axdif.set_xlim(0,1000)
 
 
 folder = sys.argv[1] # pasta com os dados
@@ -42,8 +42,9 @@ folders = sorted(os.listdir(sys.argv[1]))
 
 colors = cmap3(np.linspace(0,1,7))
 i = 0
+labels = ["1k","2k","3k","4k","5k"]
 for f in folders:
-    if f.startswith("data-diflong_w2_"):
+    if f.startswith("data-nconvergence_w2"):
         for file in sorted(os.listdir(f)):
             if file.startswith("D_"):
                 var = file
@@ -55,7 +56,7 @@ for f in folders:
                 var = var[-10:].replace("n","-").replace(".dat","")
                 var = float(var)
                 vars = np.append(vars,var)
-                p = axdif.plot(temp_data[:,0],temp_data[:,1],linewidth = 0.2, color = colors[i], label = str(var))
+                p = axdif.plot(temp_data[:,0],temp_data[:,1],linewidth = 0.2, label = labels[i])
                 
 
                 print(i,file,var)
@@ -67,8 +68,9 @@ x = [6,32]
 xx,yy = np.meshgrid(x,x)
 
 a = axdif.pcolormesh(xx,yy,xx, cmap=cmap3, vmin = 6, vmax=32)
-plt.colorbar(a)
+#plt.colorbar(a)
 
+axdif.legend(loc='center left', bbox_to_anchor=(1, 0.5), frameon = False)
 plt.savefig("t_Ds.pdf",bbox_inches='tight') ## salva como pdf
 plt.close()
 
