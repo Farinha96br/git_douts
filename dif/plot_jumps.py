@@ -26,7 +26,7 @@ kx2 = 12*np.sqrt(7)
 ky2 = 6
 
 a = 1
-
+ 
 # define e printa o tamanho da céula
 cellx = 3.14159265359/(kx*a)
 cellx2 = 3.14159265359/(kx2*a)
@@ -57,7 +57,7 @@ ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
 ax.set_ylabel("\# Pulos")
 
-w = 0.02
+w = 0.01
 b= np.arange(0, Ncell*cellx + w, w)
 ax.hist(hist_data,bins = b, color = "royalblue",zorder = 1)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))

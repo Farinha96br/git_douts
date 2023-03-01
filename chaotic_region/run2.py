@@ -11,12 +11,12 @@ time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000# Número de pontos no arquivo final
+tmax = 50# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.5]
+vars = [0.1,0.2,0.3,0.5]
 lenvar = len(vars)
-startfiles = ["sep_1k_12pi_6_1.dat"] # arquivo de cond. iniciais
-rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
+startfiles = ["start2k.dat"] # arquivo de cond. iniciais
+rootname = "data-region_A2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -30,12 +30,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     startfile = startfiles[0] # arquivo com as cond. inicias
 
     ##  Coisas pra gerar o script pro mesocentre
-    bashrun = open("bashrun_" + varstring +'.sh','w')
-    bashrun.write("g++ arrumado2.cpp -lm -lgsl -o " + program)
-    bashrun.write("# rootname = " + rootname + '\n')
-    bashrun.write("# var = " + varstring + '\n')
-    bashrun.write("# iterations = " + str(iterations) + '\n')
-    bashrun.write("# startfile = " + startfile + '\n')
     start = np.loadtxt(startfile) # carrega oarquivo
 
     ## Algumas maracutais pro processamento paralelo funcionar direito
@@ -57,9 +51,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     os.makedirs(out_folder,exist_ok=True)
     os.makedirs(out_folder + "/traj",exist_ok=True)
 
-    # Organiza as pasas pro bash do mesocentre
-    bashrun.write("mkdir " + str(out_folder) + "\n")
-    bashrun.write("mkdir " + str(out_folder) + "/traj \n")
 
     # Arquivo com os registros do tempo de simulação (Talvez tirar isso aq)
     timefile = open(out_folder + "/timelog.dat","w")
@@ -86,13 +77,11 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             + " " + str(index) \
             + " " + str(start[index,0]) \
             + " " + str(start[index,1]) \
-            + " " + str(iterations) \
+            + " " + str(tmax) \
             + " " + str(out_folder) \
             + " " + str(var) \
             + " & "
         run_string += "wait "
-        # Pro script de lote do mesocentre
-        bashrun.write("srun" + run_string + "\n")
         # de fato roda o os prgramas
         os.system(run_string)
         # Informações a respeito do tempo de computação
@@ -104,42 +93,11 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"m T_batch: ",round(exct/60,2),"m T_all: ",round(exct*len(vars)/(60*60),3),"h")
     timefile.close()
 
-    print("copiando arquivo inicial p pasta de dados")
-    os.system("cp " + startfile + " " + out_folder)
-    
-
-    print("fazendo trajetórias individuais")
-    os.system("python3 plot_each.py " + out_folder)
-
-    #print("Fazendo um arquivo unico p plotar o mapa")
-    #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
-    #print("plotando o mapa")
-    #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " "  + varstring)
-
-    #print("Calculo da difusao")
-    #os.system("python3 difus.py " + out_folder)
-    #os.system("python3 plot_dif.py " + out_folder)
-
-    print("Fazendo anlálise dos saltos")
-    os.system("python3 jumps.py " + out_folder)
-    os.system("python3 plot_jumps.py " + out_folder)
-    
+   
     time.sleep(1)
 
-    #os.system("rm -r " + out_folder + "/traj")
-    
-    if batch_bool == 1:
-        print("Copiando os role pra uma pasta unificada")
-        os.makedirs(rootname,exist_ok=True)
-        os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
-        os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
-        os.system("cp " + out_folder + "/" + out_folder + "_t_sigma.pdf" + " " + rootname)
-        os.system("cp " + out_folder + "/" + "map_" +varstring + ".png" + " " + rootname)
-        os.system("mv " + out_folder + " " + rootname)
-        os.system("rm -r " + out_folder)
-    
-    bashrun.close()
-#os.system("python3 plot_var.py ./")
+    #os.system("rm -r " + out_folder + "/traj")   
+#os.system("python3 cat.py " + out_folder )
 
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")

@@ -29,9 +29,9 @@ figdif, axdif = plt.subplots()
 figdif.set_size_inches(7*0.393, 5*0.393) # esse fatir 0.393 é p converter polegadas p cm
 axdif.set_ylabel(r"$\langle D_x(t_f) \rangle$") # Legenda, p renderizar direito precisa do r"$blablabla$"
 axdif.set_xlabel(r"$t$")
-axdif.set_title(r"$\omega2=32$")
+#axdif.set_title(r"$\omega2=32$")
 axdif.set_ylim(0,0.006)
-axdif.set_xlim(0,1000)
+#axdif.set_xlim(0,1000)
 
 
 folder = sys.argv[1] # pasta com os dados
@@ -40,11 +40,12 @@ vars = np.array([])
 
 folders = sorted(os.listdir(sys.argv[1]))
 
-colors = cmap3(np.linspace(0,1,7))
+
 i = 0
-labels = ["1k","2k","3k","4k","5k"]
+labels = ["8","16","32","64"]
+colors = cmap3(np.linspace(0,1,len(labels)))
 for f in folders:
-    if f.startswith("data-nconvergence_w2"):
+    if f.startswith("data-t30k_w2"):
         for file in sorted(os.listdir(f)):
             if file.startswith("D_"):
                 var = file

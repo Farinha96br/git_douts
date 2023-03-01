@@ -57,8 +57,8 @@ int main(int argc, char const *argv[]) {
   int n1 = atoi(argv[1]);
   // parametros pra cada particula
   double x = atof(argv[2]); // x' inicial (já normalizado)
-  double y = atof(argv[3]); // y' inicial (já normalizado)
-  double iterations = atof(argv[4]);  // numero de interaçõe
+  double y = atof(argv[3]); // y' inicial (já normalizadtmax = atof(argv[4]);  // numero de interaçõe
+  double tmax = atof(argv[4]);
   string out_folder = string(argv[5]); // saida do arquivo
   double var = atof(argv[6]);
 
@@ -99,20 +99,17 @@ int main(int argc, char const *argv[]) {
 
 
   //int c_s = 8;
-  //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 0.01; // estrobo normalizado
-  //std::cout << strobe << '\n';
 
   int strobe_c = 0;
   double t = 0;
-  double step = 0.0001;      // passo temporal já normalizado
+  double step = 0.001;      // passo temporal já normalizado
 
   // FAZ LA O ARQUIVO COM OS DADOS NORMALIZADOS
   if (n1 == 0) {
     ofstream logfile;
     logfile.open((out_folder +  "/log_norm.dat").c_str());
     logfile << "# dados normalizados utilizados na simulação usando " << nw << "ondas \n";
-    logfile << "# dt = " << step << "\t strobe = " << strobe << "\t tfinal = " << strobe*iterations << " \n";
+    logfile << "# dt = " << step << "\t tfinal = " << tmax << " \n";
     logfile <<
      "#i" << "\t"  << "A" << "\t" << "w" << "\t" << "Kx" << "\t" << "Ky" << "\t" << "kycent" << "\t" <<  "v" << "\t" <<" v_rel" << "\t" << "phase" <<"\n";
     for (int i = 0; i < nw; i++) {
@@ -124,14 +121,21 @@ int main(int argc, char const *argv[]) {
 
   double k1,k2,k3,k4;
   double l1,l2,l3,l4;
-  //  Loop de integracao
-  while (t <= 1.0*strobe*iterations) {
-    if ( (t > strobe_c*strobe - step/2) && (t < strobe_c*strobe + step/2)) {
-      myfile << t << "\t" << x << "\t" << remainder(y,2*M_PI) <<"\n";
-      //cout << strobe_c << "\n";
-      strobe_c++;
-    }
 
+  double cellx = 3.1415/kx[0];
+  double celly = 3.1415/ky[0];
+  double dmax = sqrt(cellx*cellx + celly*celly);
+  double x0 = x;
+  double y0 = y;
+
+
+  //  Loop de integracao
+  while (t <= tmax) {
+    if ( sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0)) > 3*dmax ) {
+      myfile << x << "\t" << remainder(y,2*M_PI) << 1 << "\n";
+      myfile.close();
+      return 0;
+    }
     /// Depois da quali, arrumar a normalização pelo fator B
 
     double k1 = dxdt2(t,x,y,w,An,kx,ky);
@@ -150,9 +154,10 @@ int main(int argc, char const *argv[]) {
     y +=  (l1 +  2*l2 + 2*l3 + l4)*step/6;
     t += step;
   }
+  
+  myfile << x << "\t" << remainder(y,2*M_PI) << 0 << "\n";
   myfile.close();
   cout << "DONE: " << n1 << " ";
-
 
   return 0;
 }

@@ -22,7 +22,7 @@ os.makedirs(out_folder,exist_ok=True)
 # Parametros dos ks
 kx =    12*3.1415
 ky =    6
-kx2 = 12*np.sqrt(7)
+kx2 = 12
 ky2 = 10
 
 a = 1
