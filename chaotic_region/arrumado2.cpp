@@ -92,11 +92,6 @@ int main(int argc, char const *argv[]) {
   kx[1] = 12;
   ky[1] = 6;
   
-  ofstream myfile;
-  char ns[100];
-  sprintf(ns,"%06d",n1); // ajeita o nome
-  myfile.open((out_folder + "/traj/" + ns + ".dat").c_str()); // salva cada ponto individualmente
-
 
   //int c_s = 8;
 
@@ -131,9 +126,8 @@ int main(int argc, char const *argv[]) {
 
   //  Loop de integracao
   while (t <= tmax) {
-    if ( sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0)) > 3*dmax ) {
-      myfile << x << "\t" << remainder(y,2*M_PI) << 1 << "\n";
-      myfile.close();
+    if ( sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0)) > 2*dmax ) {
+      cout << x0 << "\t" << y0 << "\t" << 1 << "\n";
       return 0;
     }
     /// Depois da quali, arrumar a normalização pelo fator B
@@ -155,9 +149,7 @@ int main(int argc, char const *argv[]) {
     t += step;
   }
   
-  myfile << x << "\t" << remainder(y,2*M_PI) << 0 << "\n";
-  myfile.close();
-  cout << "DONE: " << n1 << " ";
+  cout << x0 << "\t" << y0 << "\t" << 0 << "\n";
 
   return 0;
 }

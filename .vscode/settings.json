@@ -11,6 +11,7 @@
     "files.associations": {
         "fstream": "cpp",
         "cmath": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "ostream": "cpp"
     }
 }

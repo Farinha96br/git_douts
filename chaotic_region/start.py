@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 import sys
 
 
-
-X = np.linspace(0.001,1,2000)
-Y = np.linspace(-3.1415,3.1415,2000)
-
-
-for x in X:
-    for y in Y:
-        print(x,y)
+def gridstart(N):
+    X = np.linspace(0,1,N)
+    Y = np.linspace(-3.1415,3.1415,N)
+    A = []
+    for x in X:
+        for y in Y:
+            A.append([x,y])
+    A = np.array(A)
+    return A

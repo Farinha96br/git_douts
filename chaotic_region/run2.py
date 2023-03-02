@@ -1,7 +1,21 @@
 import numpy as np
 import os
 import time
- 
+
+# Grade de pontos iniciais
+def gridstart(N):
+    X = np.linspace(0,1,N)
+    Y = np.linspace(-3.1415,3.1415,N)
+    A = []
+    for x in X:
+        for y in Y:
+            A.append([x,y])
+    A = np.array(A)
+    return A 
+
+A = gridstart(2000)
+
+
 # compilação
 t_all = time.time()
 program =  "program2.out" # nome do programa
@@ -11,11 +25,10 @@ time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-tmax = 50# Número de pontos no arquivo final
+tmax = 100# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.2,0.3,0.5]
+vars = [0.1,0.3,0.5]
 lenvar = len(vars)
-startfiles = ["start2k.dat"] # arquivo de cond. iniciais
 rootname = "data-region_A2" # Nome principal da rodada de experimentos
 ############################
 
@@ -27,13 +40,11 @@ batch_bool = 0  # Basicamente separar os resultados
 for rn in range(0,len(vars)): # loop pelos parametros var
     var = vars[rn]
     varstring = "{:05.3f}".format(var)
-    startfile = startfiles[0] # arquivo com as cond. inicias
 
     ##  Coisas pra gerar o script pro mesocentre
-    start = np.loadtxt(startfile) # carrega oarquivo
 
     ## Algumas maracutais pro processamento paralelo funcionar direito
-    Nsim = len(start[:,0])  # numero de simulaçoes
+    Nsim = len(A[:,0])  # numero de simulaçoes
     Nfull = int(Nsim/Nrun) # Numero de rodadas cheias
     Nfinal = Nsim-Nfull*Nrun # Quantidade de programas paralelos caso Nsim n seja multiplo de Nrun
 
@@ -51,11 +62,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     os.makedirs(out_folder,exist_ok=True)
     os.makedirs(out_folder + "/traj",exist_ok=True)
 
-
     # Arquivo com os registros do tempo de simulação (Talvez tirar isso aq)
     timefile = open(out_folder + "/timelog.dat","w")
     timefile.write("# #sim_paralela \t parametro \t tempo(s) \n")
-
     # Coisas pra dar certo o paralelismp
     # n_f é p garantir que caso seja um inteiro, o loop n rode a parte final 2x
     n_f = 1
@@ -75,11 +84,12 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             #print(index,start[index,0],start[index,1],rn)
             run_string += "./"+ program \
             + " " + str(index) \
-            + " " + str(start[index,0]) \
-            + " " + str(start[index,1]) \
+            + " " + str(A[index,0]) \
+            + " " + str(A[index,1]) \
             + " " + str(tmax) \
             + " " + str(out_folder) \
             + " " + str(var) \
+            + " >>" + out_folder + "/" + out_folder + ".dat" \
             + " & "
         run_string += "wait "
         # de fato roda o os prgramas
@@ -90,16 +100,11 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         t.append(trun)
         avgt = np.sum(t)/len(t)
         exct = avgt*(Nfull+n_f)
-        print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"m T_batch: ",round(exct/60,2),"m T_all: ",round(exct*len(vars)/(60*60),3),"h")
+        print(i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"m T_batch: ",round(exct/60,2),"m T_all: ",round(exct*len(vars)/(60*60),3),"h")
     timefile.close()
 
-   
     time.sleep(1)
-
-    #os.system("rm -r " + out_folder + "/traj")   
-#os.system("python3 cat.py " + out_folder )
+    os.system("python3 cat.py " + out_folder)
 
 
-#os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
-#playsound('final.mp3')
 #os.system("shutdown")
