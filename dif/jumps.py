@@ -20,10 +20,10 @@ os.makedirs(out_folder,exist_ok=True)
 
 
 # Parametros dos ks
-kx =    12*3.1415
-ky =    6
-kx2 = 12
-ky2 = 10
+kx =    6*3.1415
+ky =    3
+kx2 = 6
+ky2 = 3
 
 a = 1
 

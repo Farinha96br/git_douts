@@ -20,10 +20,10 @@ plt.rc('text', usetex=True) # esse vc deixa True e for salvar em pdf e False se 
 ######
 
 # Parametros dos ks
-kx =    12*3.1415
-ky =    6
-kx2 = 12*np.sqrt(7)
-ky2 = 6
+kx =  6*3.1415
+ky =  3
+kx2 = 6
+ky2 = 3
 
 a = 1
  
@@ -40,12 +40,11 @@ fig, ax = plt.subplots()
 plt.tight_layout()
 fig.set_size_inches(10*0.393, 5*0.393)
 
-Celllim = 8
 
-#ax.set_xlim(0,Celllim*cellx)
-#ax.set_ylim(0,600000)
+Ncell = 5
 
-for i in range(0,Celllim):
+
+for i in range(0,Ncell):
     ax.axvline(cellx*i, linewidth = 0.25, linestyle = "--", color = "#cccccc",zorder = 0)
     ax.axvline(cellx2*i, linewidth = 0.25, linestyle = "--", color = "#ff98ff",zorder = 0)
 
@@ -57,7 +56,9 @@ ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
 ax.set_ylabel("\# Pulos")
 
-w = 0.01
+w = 0.001
+ax.set_xlim(0,Ncell*cellx)
+#ax.set_ylim(0,600000)
 b= np.arange(0, Ncell*cellx + w, w)
 ax.hist(hist_data,bins = b, color = "royalblue",zorder = 1)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))

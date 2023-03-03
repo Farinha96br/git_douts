@@ -82,15 +82,19 @@ int main(int argc, char const *argv[]) {
     //}
   }
 
+
+  double M = 6;
+  double N = 3;
+
   An[0] = 1;
-   w[0] = 6;
-  kx[0] = 12*3.1415;
-  ky[0] = 6;
+   w[0] = N;
+  kx[0] = M*3.1415;
+  ky[0] = N;
   
   An[1] = var;
-  w[1] = 10;
-  kx[1] = 12;
-  ky[1] = 6;
+  w[1] = 4;
+  kx[1] = M;
+  ky[1] = N;
   
   ofstream myfile;
   char ns[100];

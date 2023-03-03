@@ -11,11 +11,11 @@ time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000# Número de pontos no arquivo final
+iterations = 50000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
 vars = [0.1,0.3,0.5]
 lenvar = len(vars)
-startfiles = ["sep_1k_12pi_6_1.dat"] # arquivo de cond. iniciais
+startfiles = ["sep_5k_6pi_3.dat"] # arquivo de cond. iniciais
 rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
 ############################
 

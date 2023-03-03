@@ -24,8 +24,8 @@ rng_N = 1000
 # relevant normalizing parameters
 a = 1
 # wavenumbers
-kx =    12*3.1415
-ky =    6
+kx =    6*3.1415
+ky =    3
 # if the wavenumbers should be normalized, 1 = True, 0 = False
 
 
@@ -73,8 +73,8 @@ if  gen_case == 1:
 #   2:  Random poins spread over te separatix
 if gen_case == 2:
     for i in range(0,rng_N):
-        n = rng.randint(0,12) # numeros p x
-        m = rng.randint(-6,5) # numeros p y
+        n = rng.randint(0,6) # numeros p x
+        m = rng.randint(-3,2) # numeros p y
         coin = rng.randint(0,1) # decide se vai ser distribuido em x ou y
 
         if coin == 0: # ao longo de x

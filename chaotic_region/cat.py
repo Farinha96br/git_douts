@@ -16,7 +16,7 @@ cym_light =  ['#82e7ff','#fde974','#ff98ff']
 cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_pallet = ['#007a96','#b39700','#b04bb0']
 
-cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"white",rgb_pallet[0]])
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white",rgb_pallet[2]])
 cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"black",rgb_pallet[0]])
 
  
@@ -39,7 +39,7 @@ for i in range(0,len(data[:,0])):
         break
 
 for i in range(0,L):
-    #print(i)
+    print(i)
     s = i*L
     temp = data[s:s+L,:]
     #print(temp)
@@ -51,17 +51,19 @@ for i in range(0,L):
 
 
 
-#fig, ax = plt.subplots()
-#fig.set_size_inches(18*0.393, 14*0.393) # diminuir na metade p 
-#ax.set_ylabel("$x$")
-#ax.set_xlabel("$y$")
-#print("fasfsaf")
-#print(data[:,0:2])
-#xy = np.reshape(data[:,0:2],(250,250))
-#print(xy)
+fig, ax = plt.subplots()
+fig.set_size_inches(18*0.393, 14*0.393) # diminuir na metade p 
+ax.set_ylabel("$x$")
+ax.set_xlabel("$y$")
+print(data.shape)
+x = np.reshape(data[:,0],(L,L))
+y = np.reshape(data[:,1],(L,L))
+z = np.reshape(data[:,2],(L,L))
 
-#ax.pcolormesh(grid_y, grid_x,H1(grid_x,grid_y,0,1,w,ky,kx),cmap=cmap)
 
+
+ax.pcolormesh(y, x,z,cmap=cmap)
+plt.savefig(folder + "/region.png", bbox_inches='tight', dpi = 300)
 
 
 
