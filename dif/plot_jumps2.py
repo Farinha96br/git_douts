@@ -19,10 +19,10 @@ plt.rc('font', family='serif') # fonte tipo serif, p fica paredico com latex msm
 plt.rc('text', usetex=True) # esse vc deixa True e for salvar em pdf e False se for p salvar png
 ######
 # Parametros dos ks
-kx =    12*3.1415
-ky =    6
-kx2 = 12*np.sqrt(7)
-ky2 = 6
+kx =    6*3.1415
+ky =    3
+kx2 = 6
+ky2 = 3
 
 a = 1
 
@@ -47,14 +47,14 @@ fig, ax = plt.subplots()
 plt.tight_layout()
 fig.set_size_inches(10*0.393, 5*0.393)
 
-Ncell = 8
+Ncell = 6
 ax.set_xlim(0,Ncell*cellx)
 ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
 ax.set_xticklabels(np.arange(0,Ncell,1))
 #ax.set_yscale('log')
 
 
-ax.set_ylim(0.1,5.6*100000)
+#ax.set_ylim(0,10000)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
 for i in range(0,Ncell):
@@ -65,13 +65,13 @@ for i in range(0,Ncell):
 
 ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
-w = 0.02
+w = 0.001
 b= np.arange(0, Ncell*cellx + w, w)
 
-ax.set_ylabel("\# Pulos")
-ax.hist(hist_data,bins = b, color = rgb_pallet[0] ,alpha = 0.6, label = r"$A_2 = 0.2$")
-ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.6, label = r"$A_2 = 0.4$")
-ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.6, label = r"$A_2 = 0.8$")
+ax.set_ylabel("\# Saltos")
+ax.hist(hist_data,bins = b, color = rgb_pallet[0] ,alpha = 0.9, label = r"$A_2 = 0.1$")
+ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.9, label = r"$A_2 = 0.3$")
+ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.9, label = r"$A_2 = 0.5$")
 
 
 ax.legend(frameon = False)

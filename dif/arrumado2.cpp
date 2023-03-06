@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]) {
     //}
   }
 
-
+ 
   double M = 6;
   double N = 3;
 
@@ -91,8 +91,8 @@ int main(int argc, char const *argv[]) {
   kx[0] = M*3.1415;
   ky[0] = N;
   
-  An[1] = var;
-  w[1] = 4;
+  An[1] = 0.3;
+  w[1] = var;
   kx[1] = M;
   ky[1] = N;
   

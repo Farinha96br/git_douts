@@ -11,12 +11,12 @@ time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 50000# Número de pontos no arquivo final
+iterations = 1000000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.5]
+vars = np.linspace(3,16,10)
 lenvar = len(vars)
-startfiles = ["sep_5k_6pi_3.dat"] # arquivo de cond. iniciais
-rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
+startfiles = ["sep_1k_6pi_3.dat"] # arquivo de cond. iniciais
+rootname = "data-w2_Dx" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -29,13 +29,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     varstring = "{:05.3f}".format(var)
     startfile = startfiles[0] # arquivo com as cond. inicias
 
-    ##  Coisas pra gerar o script pro mesocentre
-    bashrun = open("bashrun_" + varstring +'.sh','w')
-    bashrun.write("g++ arrumado2.cpp -lm -lgsl -o " + program)
-    bashrun.write("# rootname = " + rootname + '\n')
-    bashrun.write("# var = " + varstring + '\n')
-    bashrun.write("# iterations = " + str(iterations) + '\n')
-    bashrun.write("# startfile = " + startfile + '\n')
     start = np.loadtxt(startfile) # carrega oarquivo
 
     ## Algumas maracutais pro processamento paralelo funcionar direito
@@ -57,9 +50,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     os.makedirs(out_folder,exist_ok=True)
     os.makedirs(out_folder + "/traj",exist_ok=True)
 
-    # Organiza as pasas pro bash do mesocentre
-    bashrun.write("mkdir " + str(out_folder) + "\n")
-    bashrun.write("mkdir " + str(out_folder) + "/traj \n")
+
 
     # Arquivo com os registros do tempo de simulação (Talvez tirar isso aq)
     timefile = open(out_folder + "/timelog.dat","w")
@@ -91,8 +82,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             + " " + str(var) \
             + " & "
         run_string += "wait "
-        # Pro script de lote do mesocentre
-        bashrun.write("srun" + run_string + "\n")
         # de fato roda o os prgramas
         os.system(run_string)
         # Informações a respeito do tempo de computação
@@ -116,9 +105,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     #print("plotando o mapa")
     #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " "  + varstring)
 
-    #print("Calculo da difusao")
-    #os.system("python3 difus.py " + out_folder)
-    #os.system("python3 plot_dif.py " + out_folder)
+    print("Calculo da difusao")
+    os.system("python3 difus.py " + out_folder)
+    os.system("python3 plot_dif.py " + out_folder)
 
     print("Fazendo anlálise dos saltos")
     os.system("python3 jumps.py " + out_folder)
@@ -138,8 +127,8 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("mv " + out_folder + " " + rootname)
         os.system("rm -r " + out_folder)
     
-    bashrun.close()
-#os.system("python3 plot_var.py ./")
+
+os.system("python3 plot_var.py ./")
 
 
 #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")

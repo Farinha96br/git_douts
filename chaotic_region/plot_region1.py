@@ -19,37 +19,19 @@ cym_pallet = ['#007a96','#b39700','#b04bb0']
 cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white",rgb_pallet[2]])
 cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"black",rgb_pallet[0]])
 
- 
-folder = sys.argv[1] # pasta com os dados
-data = np.loadtxt(folder + "/" + folder + ".dat")
 
-#print(data)
-index1 = np.argsort(data[:,0]) #indice da primiera coluna
-data = data[index1,:]
-#print("------")
-#print("sorted first column")
-#print(data)
-
-L = 0
-val0 = data[0,0]
-for i in range(0,len(data[:,0])):
-    if data[i,0] == val0:
-        L +=1
-    else:
-        break
-
-for i in range(0,L):
-    print(i)
-    s = i*L
-    temp = data[s:s+L,:]
-    #print(temp)
-    index2 = np.argsort(temp[:,1])
-    data[s:s+L,:] = temp[index2,:]
-#print("------")
-#print(data)
-
-os.system("rm " + folder + "/" + folder + ".dat")
-np.savetxt(folder + "/" + folder + "xyz.dat",data)
+######## De fato a plotagem
+data = np.loadtxt(folder + "/" + folder + "xyz.dat")
+fig, ax = plt.subplots()
+fig.set_size_inches(18*0.393, 14*0.393) # diminuir na metade p 
+ax.set_ylabel("$x$")
+ax.set_xlabel("$y$")
+print(data.shape)
+x = np.reshape(data[:,0],(L,L))
+y = np.reshape(data[:,1],(L,L))
+z = np.reshape(data[:,2],(L,L))
 
 
 
+ax.pcolormesh(y, x,z,cmap=cmap)
+plt.savefig(folder + "/region.png", bbox_inches='tight', dpi = 300)
