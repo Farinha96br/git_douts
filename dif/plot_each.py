@@ -9,10 +9,11 @@ plt.rc('font', family='serif')
 folder = sys.argv[1] # pasta com os dados
 data_folder = sys.argv[1] + "/traj/"
 os.makedirs(sys.argv[1] + "/graphs_traj",exist_ok=True)
+Nplots = int(sys.argv[2])
 counter = 0
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
-        if counter < 15:
+        if counter < Nplots:
             data = np.loadtxt(data_folder + filename)
             print(filename)
             sx = data[0,1]

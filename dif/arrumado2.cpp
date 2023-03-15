@@ -4,7 +4,6 @@
 #include <math.h>
 #include <cstdlib>
 #include <ctime>
-#include <gsl/gsl_rng.h> // biblioteca p numeros aleatorios
 #include <iomanip>
 
 // recebe uma posição xn e retorna a posição após um tempo dt
@@ -50,6 +49,7 @@ double dxdt2(double t,double x,double y,double *w, double *An, double *kx, doubl
 using namespace std;
 
 int main(int argc, char const *argv[]) {
+  
   // setup das do gerador aleatorio
   //int gsl_rng_default_seed = 1996; // semente é o primeiro argumento
 	//gsl_rng *rng= gsl_rng_alloc(gsl_rng_taus);
@@ -104,7 +104,7 @@ int main(int argc, char const *argv[]) {
 
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 0.01; // estrobo normalizado
+  double strobe = 10; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;

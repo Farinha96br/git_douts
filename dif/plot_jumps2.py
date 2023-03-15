@@ -47,7 +47,7 @@ fig, ax = plt.subplots()
 plt.tight_layout()
 fig.set_size_inches(10*0.393, 5*0.393)
 
-Ncell = 6
+Ncell = 7
 ax.set_xlim(0,Ncell*cellx)
 ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
 ax.set_xticklabels(np.arange(0,Ncell,1))
@@ -69,9 +69,11 @@ w = 0.001
 b= np.arange(0, Ncell*cellx + w, w)
 
 ax.set_ylabel("\# Saltos")
-ax.hist(hist_data,bins = b, color = rgb_pallet[0] ,alpha = 0.9, label = r"$A_2 = 0.1$")
-ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.9, label = r"$A_2 = 0.3$")
-ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.9, label = r"$A_2 = 0.5$")
+ax.hist(hist_data,bins = b, color = rgb_pallet[0] , alpha = 0.5, label = r"$w_2 = 4.44$")
+ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.5, label = r"$w_2 = 7.33$")
+ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.5, label = r"$w_2 = 8.77$")
+
+
 
 
 ax.legend(frameon = False)

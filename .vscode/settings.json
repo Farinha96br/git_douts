@@ -12,6 +12,9 @@
         "fstream": "cpp",
         "cmath": "cpp",
         "iosfwd": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "iomanip": "cpp",
+        "iostream": "cpp",
+        "string": "cpp"
     }
 }
