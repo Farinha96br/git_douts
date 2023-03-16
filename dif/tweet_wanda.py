@@ -28,7 +28,8 @@ frases = ["Simulação finalizada","VRAU!","FINALMENTE ACABOU","Hora do descanso
 
 t = sys.argv[1]
 response = client.create_tweet(
- text = frases[rng.randint(0,len(frases))] + "\n @ Wanda @farinha96br \n --runtime:" + t
+ #text = frases[rng.randint(0,len(frases))] + "\n @ Wanda @farinha96br \n --runtime:" + t
+ text = "Hello Julian"
 
 )
 print(f"https://twitter.com/user/status/{response.data['id']}")

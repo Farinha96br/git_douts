@@ -101,7 +101,7 @@ int main(int argc, char const *argv[]) {
 
   int strobe_c = 0;
   double t = 0;
-  double step = 0.001;      // passo temporal já normalizado
+  double step = 0.01;      // passo temporal já normalizado
 
   // FAZ LA O ARQUIVO COM OS DADOS NORMALIZADOS
   if (n1 == 0) {
@@ -130,7 +130,7 @@ int main(int argc, char const *argv[]) {
 
   //  Loop de integracao
   while (t <= tmax) {
-    if ( sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0)) > 2*dmax ) {
+    if ( sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0)) > 2.5*dmax ) {
       cout << x0 << "\t" << y0 << "\t" << 1 << "\n";
       return 0;
     }

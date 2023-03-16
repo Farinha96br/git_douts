@@ -27,6 +27,7 @@ fig.set_size_inches(18*0.393, 14*0.393) # diminuir na metade p
 ax.set_ylabel("$x$")
 ax.set_xlabel("$y$")
 print(data.shape)
+L = 500
 x = np.reshape(data[:,0],(L,L))
 y = np.reshape(data[:,1],(L,L))
 z = np.reshape(data[:,2],(L,L))
