@@ -91,8 +91,8 @@ int main(int argc, char const *argv[]) {
   kx[0] = M*3.1415;
   ky[0] = N;
   
-  An[1] = 0.3;
-  w[1] = var;
+  An[1] = var;
+  w[1] = 6;
   kx[1] = M;
   ky[1] = N;
   
@@ -104,7 +104,7 @@ int main(int argc, char const *argv[]) {
 
   //int c_s = 8;
   //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  double strobe = 10; // estrobo normalizado
+  double strobe = 0.01; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;

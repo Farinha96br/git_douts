@@ -11,19 +11,19 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000# Número de pontos no arquivo final
+Nrun = 30 # numero máximo de programas simultanios
+iterations = 1000# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.6]
+vars = np.linspace(3,16,50)
 lenvar = len(vars)
 startfiles = ["sep_1k_6pi_3.dat"] # arquivo de cond. iniciais
-rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
+rootname = "data-Dx_w2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
 # transfered to another folder. 1 = True, 0 = False
 batch_bool = 0  # Basicamente separar os resultados
-mesoBool = False
+mesoBool = True
 mesoH = 5 # quantidade de horas esperadas para rodar no mesocentre
 mesomin = 0 # quantidade de horas esperadas para rodar no mesocentre
 
@@ -40,10 +40,12 @@ else:
     time.sleep(5)
 
 
+
+
 for rn in range(0,len(vars)): # loop pelos parametros var
     
     var = vars[rn]
-    varstring = "{:06.4f}".format(var)
+    varstring = "{:05.4f}".format(var)
     startfile = startfiles[0] # arquivo com as cond. inicias
 
     start = np.loadtxt(startfile) # carrega oarquivo
@@ -164,9 +166,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("python3 difus.py " + out_folder)
         os.system("python3 plot_dif.py " + out_folder)
 
-        print("Fazendo anlálise dos saltos")
-        os.system("python3 jumps.py " + out_folder)
-        os.system("python3 plot_jumps.py " + out_folder)
+        #print("Fazendo anlálise dos saltos")
+        #os.system("python3 jumps.py " + out_folder)
+        #os.system("python3 plot_jumps.py " + out_folder)
         
         time.sleep(1)
 

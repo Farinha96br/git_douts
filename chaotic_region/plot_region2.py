@@ -45,5 +45,5 @@ for folder in sorted(os.listdir("./")):
 z = z/c
 axis = ax.pcolormesh(y, x,z,cmap=cmapblues)
 plt.colorbar(axis, label = r"$A_2$")
-ax.set_title(r"$\w_1 = 3$ $\w_2 = 4$ $k_{y1} = k_{y2} = 3$  k_{x1} = 3 \pi k_{x1} = 3 \pi A_1 = 1")
+ax.set_title(r"$w_1 = 3$ $w_2 = 4$ $k_{y1} = k_{y2} = 3$  $k_{x1} = 3 \pi$  $k_{x2} = 3$  $A_1 = 1$")
 plt.savefig("all_region2.png", bbox_inches='tight', dpi = 300)
