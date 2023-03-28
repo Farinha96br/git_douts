@@ -35,9 +35,9 @@ double dydtn(double t,double x,double y,double *w, double *An, double *kx, doubl
   return R;
 }
 
-double dydt2(double t,double x,double y,double *w, double *An, double *kx, double *ky){
+double dydt2(double t,double x,double y,double *w, double *An, double *kx, double *ky,double U){
 
-  return An[0]*kx[0]*cos(kx[0]*x)*cos(ky[0]*y) + An[1]*kx[1]*cos(kx[1]*x)*cos(ky[1]*(y-(w[1]/ky[1] - w[0]/ky[0])*t));
+  return An[0]*kx[0]*U + An[0]*kx[0]*cos(kx[0]*x)*cos(ky[0]*y) + An[1]*kx[1]*cos(kx[1]*x)*cos(ky[1]*(y-(w[1]/ky[1] - w[0]/ky[0])*t));
 }
 
 double dxdt2(double t,double x,double y,double *w, double *An, double *kx, double *ky){
@@ -92,9 +92,10 @@ int main(int argc, char const *argv[]) {
   ky[0] = N;
   
   An[1] = var;
-  w[1] = 6;
+  w[1] = 2*N;
   kx[1] = M;
   ky[1] = N;
+  double U = 0;
   
   ofstream myfile;
   char ns[100];
@@ -139,16 +140,16 @@ int main(int argc, char const *argv[]) {
     /// Depois da quali, arrumar a normalização pelo fator B
 
     double k1 = dxdt2(t,x,y,w,An,kx,ky);
-    double l1 = dydt2(t,x,y,w,An,kx,ky);
+    double l1 = dydt2(t,x,y,w,An,kx,ky,U);
 
     double k2 = dxdt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky);
-    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky);
+    double l2 = dydt2(t+step/2,x + k1*step/2, y + l1*step/2,w,An,kx,ky,U);
 
     double k3 = dxdt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky);
-    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky);
+    double l3 = dydt2(t+step/2,x + k2*step/2, y + l2*step/2,w,An,kx,ky,U);
 
     double k4 = dxdt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky);
-    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky);
+    double l4 = dydt2(t+step,x + k3*step, y + l3*step,w,An,kx,ky,U);
 
     x +=  (k1 +  2*k2 + 2*k3 + k4)*step/6;
     y +=  (l1 +  2*l2 + 2*l3 + l4)*step/6;

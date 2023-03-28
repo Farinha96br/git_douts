@@ -56,7 +56,7 @@ ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
 ax.set_ylabel("\# Pulos")
 
-w = 0.001
+w = cellx*0.05
 ax.set_xlim(0,Ncell*cellx)
 #ax.set_ylim(0,600000)
 b= np.arange(0, Ncell*cellx + w, w)

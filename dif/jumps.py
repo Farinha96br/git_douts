@@ -33,7 +33,7 @@ cellx2 = 3.14159265359/(kx2*a)
 print("cellx:",cellx)
 
 # Quantas vezes maior que uma celula o salto tem que ser
-fac = 0.5
+fac = 2.5
 
 # arrays vazios onde os saltos entram
 jumps_x = np.array([]) # todos saltos todos em x
@@ -66,11 +66,11 @@ for filename in sorted(os.listdir(data_folder)):
         # Procura os saltos
         for i in range(0,len(extrema)-1):
             d = abs(x[extrema[i]] - x[extrema[i+1]])
-            #if d >= cellx*fac: # checa se teve salto
-            #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
-            jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
-            #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
-            f.write(str(d) + "\n")
+            if d >= cellx*fac: # checa se teve salto
+                #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
+                jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
+                #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
+                f.write(str(d) + "\n")
 
             
         jumps_index = jumps_index.astype(int)
@@ -80,7 +80,7 @@ for filename in sorted(os.listdir(data_folder)):
             plt.tight_layout()
             fig.set_size_inches(10*0.393, 5*0.393)
             #ax.set_title(filename)
-            ax.set_xlim(0,25)
+            ax.set_xlim(0,50)
             ax.set_xlabel(r"$t$")
 
             NCELL = 10
@@ -96,7 +96,7 @@ for filename in sorted(os.listdir(data_folder)):
             ax.set_ylabel(r"$\frac{N\pi}{k_{x0}}$")
             ax.plot(t,x,linewidth = 0.5, color = "royalblue",zorder = 1)
             ax.plot(t[extrema],x[extrema],ls = " ", marker = ",",markersize = 0.5, color = "firebrick",zorder = 2)
-            #ax.plot(t[jumps_index],x[jumps_index],ls = " ",markersize = 1, marker = "s", color = "forestgreen",zorder = 3)
+            ax.plot(t[jumps_index],x[jumps_index],ls = " ",markersize = 1, marker = "s", color = "forestgreen",zorder = 3)
             plt.savefig(out_folder + filename[:-4] + ".pdf",bbox_inches='tight')
             plt.close()
             c+=1

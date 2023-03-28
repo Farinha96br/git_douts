@@ -12,9 +12,9 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000# Número de pontos no arquivo final
+iterations = 100000 # Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.6]
+vars = [0.1,0.3,0.5,1]
 lenvar = len(vars)
 startfiles = ["sep_1k_6pi_3.dat"] # arquivo de cond. iniciais
 rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
@@ -151,18 +151,18 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         os.system("cp " + startfile + " " + out_folder)
         
 
-        print("fazendo trajetórias individuais")
-        Nplots = 20
+        #print("fazendo trajetórias individuais")
+        Nplots = 50
         os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
 
         #print("Fazendo um arquivo unico p plotar o mapa")
-        #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
         #print("plotando o mapa")
-        #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " "  + varstring)
+        #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
+        #os.system("python3 plot_mapa.py " + out_folder + " " + startfile)
 
-        print("Calculo da difusao")
-        os.system("python3 difus.py " + out_folder)
-        os.system("python3 plot_dif.py " + out_folder)
+        #print("Calculo da difusao")
+        #os.system("python3 difus.py " + out_folder)
+        #os.system("python3 plot_dif.py " + out_folder)
 
         print("Fazendo anlálise dos saltos")
         os.system("python3 jumps.py " + out_folder)
@@ -181,7 +181,9 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             os.system("cp " + out_folder + "/" + "map_" +varstring + ".png" + " " + rootname)
             os.system("mv " + out_folder + " " + rootname)
             os.system("rm -r " + out_folder)
-    mesorun.close()
+    
+    if mesoBool:
+        mesorun.close()
     
 
 if mesoBool == False:
@@ -190,7 +192,7 @@ if mesoBool == False:
 
     #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
     #playsound('final.mp3')
-    #os.system("shutdown")
+    os.system("shutdown")
 
 if mesoBool: ## Caso para script do mesocentre
     mesoall.close()

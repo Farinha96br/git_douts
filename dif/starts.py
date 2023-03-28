@@ -26,6 +26,9 @@ a = 1
 # wavenumbers
 kx =    6*3.1415
 ky =    3
+cellx = 3.14159265359/(kx)
+celly = 3.14159265359/(kx)
+
 # if the wavenumbers should be normalized, 1 = True, 0 = False
 
 
@@ -33,7 +36,7 @@ ky =    3
 #   0:  Random points over the space  0 < x < 1, and  -pi < y < pi
 #   1:  Grid very useful to visualize stroboscopi maps
 #   2:  Random poins spread over te separatix
-gen_case = 2
+gen_case = 1
 
 
 # isso aq é p dar uma olhada nos pontos p ver se ta tudo certo
@@ -65,10 +68,22 @@ if  gen_case == 1:
     for x in np.arange(0,1,pi/(kx)):
         for y in np.arange(-pi,pi,pi/(ky)):
             if x+0.025 < 1:
-                sx.append(x)
+                print(x+cellx*0.001,y)
+                sx.append(x+cellx*0.01)
                 sy.append(y)
-                print(x+0.025,y)
-                print(x+0.003,y)
+                print(x+cellx*0.1,y)
+                sx.append(x+cellx*0.1)
+                sy.append(y)
+                print(x+cellx*0.2,y)
+                sx.append(x+cellx*0.2)
+                sy.append(y)
+                print(x+cellx*0.4,y)
+                sx.append(x+cellx*0.3)
+                sy.append(y)
+                print(x+cellx*0.7,y)
+                sx.append(x+cellx*0.7)
+                sy.append(y)
+                
 
 #   2:  Random poins spread over te separatix
 if gen_case == 2:
