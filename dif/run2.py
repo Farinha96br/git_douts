@@ -11,20 +11,19 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-Nrun = 8 # numero máximo de programas simultanios
-iterations = 100000 # Número de pontos no arquivo final
-#vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = [0.1,0.3,0.5,1]
+Nrun = 32 # numero máximo de programas simultanios
+iterations = 5000 # Número de pontos no arquivo final
+vars = np.hstack((np.linspace(-1.5,-0.5,15),np.linspace(-0.5,0.5,51)[1:],np.linspace(0.5,1.5,15)[1:]))
 lenvar = len(vars)
 startfiles = ["sep_1k_6pi_3.dat"] # arquivo de cond. iniciais
-rootname = "data-jumps_A2" # Nome principal da rodada de experimentos
+rootname = "data-dif_A2_0.5_U" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
 # transfered to another folder. 1 = True, 0 = False
 batch_bool = 0  # Basicamente separar os resultados
-mesoBool = False
-mesoH = 5 # quantidade de horas esperadas para rodar no mesocentre
+mesoBool = True
+mesoH = 3 # quantidade de horas esperadas para rodar no mesocentre
 mesomin = 0 # quantidade de horas esperadas para rodar no mesocentre
 
 ############################
@@ -62,7 +61,8 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         out_folder = rootname + "_" + "p" + varstring
     if var < 0:
         out_folder = rootname + "_" + "n" + varstring
-
+        out_folder = out_folder.replace("n-","n")
+    print(out_folder)
     # Oraganiza as pastas do experimento, e cria a pasta com as trajetorias
 
     
@@ -142,7 +142,8 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             avgt = np.sum(t)/len(t)
             exct = avgt*(Nfull+n_f)
             print("\n",i,"/",Nfull+n_f,round(trun,3),"T_sim: ",round(avgt/60,2),"m T_batch: ",round(exct/60,2),"m T_all: ",round(exct*len(vars)/(60*60),3),"h")
-    
+                #ax.axhline(1,color = "#333333", linestyle = "--", a)
+
     if mesoBool == False:
         timefile.close()
 
@@ -153,20 +154,23 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
         #print("fazendo trajetórias individuais")
         Nplots = 50
-        os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
+        #os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
+
+        os.system("python3 plot_rec.py " + out_folder + " 0.001 " + str(Nplots))
+
 
         #print("Fazendo um arquivo unico p plotar o mapa")
         #print("plotando o mapa")
         #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
         #os.system("python3 plot_mapa.py " + out_folder + " " + startfile)
 
-        #print("Calculo da difusao")
-        #os.system("python3 difus.py " + out_folder)
-        #os.system("python3 plot_dif.py " + out_folder)
+        #print("Fazendo anlálise dos saltos")
+        #os.system("python3 jumps.py " + out_folder)
+        #os.system("python3 plot_jumps.py " + out_folder)
 
-        print("Fazendo anlálise dos saltos")
-        os.system("python3 jumps.py " + out_folder)
-        os.system("python3 plot_jumps.py " + out_folder)
+        print("Calculo da difusao")
+        os.system("python3 difus.py " + out_folder)
+        os.system("python3 plot_dif.py " + out_folder)
         
         time.sleep(1)
 
@@ -192,7 +196,7 @@ if mesoBool == False:
 
     #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
     #playsound('final.mp3')
-    os.system("shutdown")
+    #os.system("shutdown")
 
 if mesoBool: ## Caso para script do mesocentre
     mesoall.close()

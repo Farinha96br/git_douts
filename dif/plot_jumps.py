@@ -41,26 +41,30 @@ plt.tight_layout()
 fig.set_size_inches(10*0.393, 5*0.393)
 
 
-Ncell = 5
+Ncell = 10
 
 
 for i in range(0,Ncell):
     ax.axvline(cellx*i, linewidth = 0.25, linestyle = "--", color = "#cccccc",zorder = 0)
     ax.axvline(cellx2*i, linewidth = 0.25, linestyle = "--", color = "#ff98ff",zorder = 0)
 
-#ax.set_xticks(np.arange(cellx,cellx*Celllim,cellx))
-#ax.set_xticklabels(np.arange(1,Celllim,1))
-
-ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
 
 
-ax.set_ylabel("\# Pulos")
+ax.set_xlabel(r"$\frac{\pi}{k_{x0}}$")
 
-w = cellx*0.05
+
+ax.set_ylabel("\# Saltos")
+
+w = cellx*0.02
 ax.set_xlim(0,Ncell*cellx)
+ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
+ax.set_xticklabels(np.arange(0,Ncell,1))
+#ax.set_ylim(0,100000)
+
 #ax.set_ylim(0,600000)
-b= np.arange(0, Ncell*cellx + w, w)
-ax.hist(hist_data,bins = b, color = "royalblue",zorder = 1)
+
+b= np.arange(0, Ncell*cellx + w, w) + w/2
+ax.hist(hist_data,bins = b, color = rgb_pallet[2],zorder = 1,histtype='stepfilled')
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.savefig(sys.argv[1] + "/jump_hist.pdf",bbox_inches='tight')
 

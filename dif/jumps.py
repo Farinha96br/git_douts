@@ -66,11 +66,11 @@ for filename in sorted(os.listdir(data_folder)):
         # Procura os saltos
         for i in range(0,len(extrema)-1):
             d = abs(x[extrema[i]] - x[extrema[i+1]])
-            if d >= cellx*fac: # checa se teve salto
-                #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
-                jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
-                #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
-                f.write(str(d) + "\n")
+            #if d >= cellx*fac: # checa se teve salto
+            #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
+            jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
+            #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
+            f.write(str(d) + "\n")
 
             
         jumps_index = jumps_index.astype(int)

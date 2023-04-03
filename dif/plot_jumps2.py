@@ -47,36 +47,37 @@ fig, ax = plt.subplots()
 plt.tight_layout()
 fig.set_size_inches(10*0.393, 5*0.393)
 
-Ncell = 7
-ax.set_xlim(0,Ncell*cellx)
-ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
-ax.set_xticklabels(np.arange(0,Ncell,1))
-#ax.set_yscale('log')
+
 
 
 #ax.set_ylim(0,10000)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
+Ncell = 5
 for i in range(0,Ncell):
     ax.axvline(cellx*i, linewidth = 0.25, linestyle = "--", color = "#cccccc",zorder = 0)
-    ax.axvline(cellx2*i, linewidth = 0.25, linestyle = "--", color = "#ff98ff",zorder = 0)
+    #ax.axvline(cellx2*i, linewidth = 0.25, linestyle = "--", color = "#ff98ff",zorder = 0)
 
 
 
-ax.set_xlabel(r"$\Delta \frac{N\pi}{k_{x0}}$")
+ax.set_xlabel(r"$ \frac{\pi}{k_{x0}}$")
 
-w = 0.001
-b= np.arange(0, Ncell*cellx + w, w)
 
+w = cellx*0.02
+ax.set_xlim(0,Ncell*cellx)
+ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
+ax.set_xticklabels(np.arange(0,Ncell,1))
+b= np.arange(0, Ncell*cellx + w, w) + w/2
+#ax.set_ylim(0,100000)
 ax.set_ylabel("\# Saltos")
-ax.hist(hist_data,bins = b, color = rgb_pallet[0] , alpha = 0.5, label = r"$w_2 = 4.44$")
-ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.5, label = r"$w_2 = 7.33$")
-ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.5, label = r"$w_2 = 8.77$")
+ax.hist(hist_data,bins = b, color = rgb_pallet[0] , alpha = 0.5, label = r"$A_2 = 0.1A_1$",histtype='stepfilled',edgecolor=rgb_darker[0], linewidth=0.25)
+ax.hist(hist_data2,bins = b, color = rgb_pallet[1] ,alpha = 0.5, label = r"$A_2 = 0.3A_1$",histtype='stepfilled',edgecolor=rgb_darker[1], linewidth=0.25)
+ax.hist(hist_data3,bins = b, color = rgb_pallet[2] ,alpha = 0.5, label = r"$A_2 = 0.5A_1$",histtype='stepfilled',edgecolor=rgb_darker[2], linewidth=0.25)
 
 
 
 
-ax.legend(frameon = False)
+ax.legend(frameon = False, loc ="upper right")
 plt.savefig("jumps_varios.pdf",bbox_inches='tight')
 
 plt.close()
