@@ -16,13 +16,14 @@ data = []
 # Faz o arquiv com as coisas dos pulos
 data_folder = sys.argv[1] + "/traj/"
 out_folder = sys.argv[1] + "/jumps/"
+Nplots = sys.argv[2]
 os.makedirs(out_folder,exist_ok=True)
 
 
 # Parametros dos ks
-kx =    6*3.1415
+kx =    3
 ky =    3
-kx2 = 6
+kx2 = 3
 ky2 = 3
 
 a = 1
@@ -33,7 +34,7 @@ cellx2 = 3.14159265359/(kx2*a)
 print("cellx:",cellx)
 
 # Quantas vezes maior que uma celula o salto tem que ser
-fac = 2.5
+fac = 3
 
 # arrays vazios onde os saltos entram
 jumps_x = np.array([]) # todos saltos todos em x
@@ -66,33 +67,33 @@ for filename in sorted(os.listdir(data_folder)):
         # Procura os saltos
         for i in range(0,len(extrema)-1):
             d = abs(x[extrema[i]] - x[extrema[i+1]])
-            #if d >= cellx*fac: # checa se teve salto
+            if d >= cellx*fac: # checa se teve salto
             #jumps_temp = np.append(jumps_temp,d) # anexa tamanho do pulo da particula
-            jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
+                jumps_index = np.append(jumps_index,extrema[i]) # anexa indice dos pulos da particula
             #jumps_x = np.append(jumps_x,d) # anexa o pulo no role dos pulos totais
             f.write(str(d) + "\n")
 
             
         jumps_index = jumps_index.astype(int)
             #   Plota as trajetorias com identificaçao dos saltos p conferências
-        if c < 15:
+        if c < int(Nplots):
             fig, ax = plt.subplots()
             plt.tight_layout()
             fig.set_size_inches(10*0.393, 5*0.393)
             #ax.set_title(filename)
-            ax.set_xlim(0,50)
+            ax.set_xlim(0,150)
             ax.set_xlabel(r"$t$")
 
             NCELL = 10
-            for j in range(0,NCELL):
+            for j in range(-NCELL,NCELL):
                 ax.axhline(cellx*j, linewidth = 0.25, linestyle = "--", color = "#cccccc",zorder = 0)
             #ax.axhline(1, linewidth = 0.5, linestyle = "--", color = "#555555",zorder = 0)
 
-            ax.set_ylim(-0.05,cellx*NCELL)
+            ax.set_ylim(-cellx*NCELL,cellx*NCELL)
             ax.set_ylabel(r"$x$")
-            ticksy = np.arange(0,cellx*NCELL,2*cellx)
+            ticksy = np.arange(-cellx*NCELL,cellx*NCELL,2*cellx)
             ax.set_yticks(ticksy)
-            ax.set_yticklabels(np.arange(0,NCELL,2))
+            ax.set_yticklabels(np.arange(-NCELL,NCELL,2))
             ax.set_ylabel(r"$\frac{N\pi}{k_{x0}}$")
             ax.plot(t,x,linewidth = 0.5, color = "royalblue",zorder = 1)
             ax.plot(t[extrema],x[extrema],ls = " ", marker = ",",markersize = 0.5, color = "firebrick",zorder = 2)

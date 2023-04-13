@@ -24,8 +24,8 @@ time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-Nrun = 16 # numero máximo de programas simultanios
-tmax = 200# Número de pontos no arquivo final
+Nrun = 8 # numero máximo de programas simultanios
+tmax = 500# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
 vars = [0.1,0.5,0.8]
 lenvar = len(vars)

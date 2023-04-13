@@ -5,11 +5,15 @@ import os
 
 plt.rc('text', usetex=False)
 plt.rc('font', family='serif')
+plt.rcParams["mathtext.fontset"] = "cm" # isso é pra salvar as coisa em png com a fonte do latex
+
 
 folder = sys.argv[1] # pasta com os dados
 data_folder = sys.argv[1] + "/traj/"
 os.makedirs(sys.argv[1] + "/graphs_traj",exist_ok=True)
 Nplots = int(sys.argv[2])
+k = 3
+cell = np.pi/k
 counter = 0
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
@@ -19,7 +23,9 @@ for filename in sorted(os.listdir(data_folder)):
             sx = data[0,1]
             sy = data[0,2]
             x = data[:,1]
+            x = x%(2*np.pi/k)
             y = data[:,2]
+            y = y%(2*np.pi/k)
             colors = data[:,0]
 
             fig, ax = plt.subplots()
@@ -27,13 +33,22 @@ for filename in sorted(os.listdir(data_folder)):
             #plt.title(filename)
             plt.set_cmap("jet")
             plt.tight_layout()
-            fig.set_size_inches(9*0.393, 7*0.393)
-            ax.set_xlim([-3.1415,3.1415])
-            if np.max(x) <= 1:
-                ax.set_ylim(0,1.05)
-            else:
-                ax.set_ylim(0,np.max(x)*1.05)
-            ax.set_xticks([-3.14,0,3.14],[r"$-\pi$","0",r"$+\pi$"])
+            fig.set_size_inches(7*0.393, 7*0.393)
+            #ax.set_ylim([0,2*3.1415])
+            #ax.set_xlim([0,2*3.1415])
+            #ax.set_xticks([0,3.1415,2*3.1415])
+            #ax.set_xticklabels([r"0",r"$\pi$",r"$2\pi$"])
+            #ax.set_yticks([0,3.1415,2*3.1415])
+            #ax.set_yticklabels([r"0",r"$\pi$",r"$2\pi$"])
+
+            ax.set_ylim([0,2*cell])
+            ax.set_xlim([0,2*cell])
+            ax.set_xticks([0,cell,2*cell])
+            ax.set_xticklabels([r"0",r"$\frac{\pi}{k}$",r"$2\frac{\pi}{k}$"])
+            ax.set_yticks([0,cell,2*cell])
+            ax.set_yticklabels([r"0",r"$\frac{\pi}{k}$",r"$2\frac{\pi}{k}$"])
+
+
             #ax.axhline(1,color = "#333333", linestyle = "--", a)
             ax.set_ylabel("$x$")
             ax.set_xlabel("$y$")

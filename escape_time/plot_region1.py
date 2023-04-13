@@ -16,10 +16,10 @@ cym_light =  ['#82e7ff','#fde974','#ff98ff']
 cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_pallet = ['#007a96','#b39700','#b04bb0']
 
-cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white",rgb_pallet[2]])
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"white"])
 cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"black",rgb_pallet[0]])
 
-
+folder = sys.argv[1]
 ######## De fato a plotagem
 data = np.loadtxt(folder + "/" + folder + "xyz.dat")
 fig, ax = plt.subplots()
@@ -33,6 +33,6 @@ y = np.reshape(data[:,1],(L,L))
 z = np.reshape(data[:,2],(L,L))
 
 
-
+z = np.log(z)
 ax.pcolormesh(y, x,z,cmap=cmap)
 plt.savefig(folder + "/escape.png", bbox_inches='tight', dpi = 300)

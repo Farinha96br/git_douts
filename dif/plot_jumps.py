@@ -20,9 +20,9 @@ plt.rc('text', usetex=True) # esse vc deixa True e for salvar em pdf e False se 
 ######
 
 # Parametros dos ks
-kx =  6*3.1415
+kx =  3
 ky =  3
-kx2 = 6
+kx2 = 3
 ky2 = 3
 
 a = 1
@@ -55,7 +55,7 @@ ax.set_xlabel(r"$\frac{\pi}{k_{x0}}$")
 
 ax.set_ylabel("\# Saltos")
 
-w = cellx*0.02
+w = cellx*0.05
 ax.set_xlim(0,Ncell*cellx)
 ax.set_xticks(np.arange(0,cellx*Ncell,cellx))
 ax.set_xticklabels(np.arange(0,Ncell,1))
@@ -63,8 +63,9 @@ ax.set_xticklabels(np.arange(0,Ncell,1))
 
 #ax.set_ylim(0,600000)
 
-b= np.arange(0, Ncell*cellx + w, w) + w/2
-ax.hist(hist_data,bins = b, color = rgb_pallet[2],zorder = 1,histtype='stepfilled')
+b= np.arange(0, Ncell*cellx + w, w)
+
+ax.hist(hist_data,bins = b, color = rgb_pallet[2],zorder = 1,histtype='stepfilled',edgecolor=rgb_darker[2], linewidth=0.25)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.savefig(sys.argv[1] + "/jump_hist.pdf",bbox_inches='tight')
 

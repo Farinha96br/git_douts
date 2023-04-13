@@ -11,18 +11,15 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-Nrun = 32 # numero máximo de programas simultanios
-iterations = 5000 # Número de pontos no arquivo final
-vars = np.hstack((np.linspace(-1.5,-0.5,15),np.linspace(-0.5,0.5,51)[1:],np.linspace(0.5,1.5,15)[1:]))
+Nrun = 8 # numero máximo de programas simultanios
+iterations = 2000 # Número de pontos no arquivo final
+vars = [0.01,0.02,0.03,0.04,0.05,0.1,0.2]
 lenvar = len(vars)
-startfiles = ["sep_1k_6pi_3.dat"] # arquivo de cond. iniciais
-rootname = "data-dif_A2_0.5_U" # Nome principal da rodada de experimentos
+startfiles = ["line500.dat"] # arquivo de cond. iniciais
+rootname = "data-rec_A2" # Nome principal da rodada de experimentos, sem hifen no final
 ############################
-
-# this flag indicates if we are doing a large batch of simulations and the results should be
-# transfered to another folder. 1 = True, 0 = False
 batch_bool = 0  # Basicamente separar os resultados
-mesoBool = True
+mesoBool = False
 mesoH = 3 # quantidade de horas esperadas para rodar no mesocentre
 mesomin = 0 # quantidade de horas esperadas para rodar no mesocentre
 
@@ -154,23 +151,23 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
         #print("fazendo trajetórias individuais")
         Nplots = 50
-        #os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
+        os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
+        # fazendo plot de recorrencia
+        os.system("python3 plot_rec.py " + out_folder + " 0.0 " + str(Nplots))
 
-        os.system("python3 plot_rec.py " + out_folder + " 0.001 " + str(Nplots))
 
-
-        #print("Fazendo um arquivo unico p plotar o mapa")
-        #print("plotando o mapa")
-        #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
-        #os.system("python3 plot_mapa.py " + out_folder + " " + startfile)
+        print("Fazendo um arquivo unico p plotar o mapa")
+        print("plotando o mapa")
+        os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
+        os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + varstring)
 
         #print("Fazendo anlálise dos saltos")
-        #os.system("python3 jumps.py " + out_folder)
+        #os.system("python3 jumps.py " + out_folder + " " + str(Nplots))
         #os.system("python3 plot_jumps.py " + out_folder)
 
-        print("Calculo da difusao")
-        os.system("python3 difus.py " + out_folder)
-        os.system("python3 plot_dif.py " + out_folder)
+        #print("Calculo da difusao")
+        #os.system("python3 difus.py " + out_folder)
+        #os.system("python3 plot_dif.py " + out_folder)
         
         time.sleep(1)
 

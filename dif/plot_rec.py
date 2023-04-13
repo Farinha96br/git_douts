@@ -16,6 +16,7 @@ cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"
 cmap3 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["#ffffff",rgb_darker[2]])
 
 ######
+k = 3
 
 plt.rcParams["mathtext.fontset"] = "cm" # Fonte matemática pro latex
 plt.rc('font', family='serif') # fonte tipo serif, p fica paredico com latex msm
@@ -27,30 +28,36 @@ os.makedirs(sys.argv[1] + "/rec",exist_ok=True)
 eps = float(sys.argv[2])
 Nplots = int(sys.argv[3])
 counter = 0
-
+fig, ax = plt.subplots()
+fig.set_size_inches(7*0.393, 7*0.393)
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
         if counter < Nplots:
-            fig, ax = plt.subplots()
-            fig.set_size_inches(7*0.393, 7*0.393)
             ax.cla()
             data = np.loadtxt(data_folder + filename)
             print(filename)
             t = data[:,0]
             x = data[:,1]
+            x = x%(2*np.pi/k)
             y = data[:,2]
+            y = y%(2*np.pi/k)
             colors = data[:,0]
 
             xx1,xx2 = np.meshgrid(x,x)
-            xx = (xx1 -xx2)**2
+            xx = (xx1 -xx2)%(2*np.pi/k)
+            xx = xx**2
 
             yy1,yy2 = np.meshgrid(y,y)
-            yy = yy1 -yy2
-            yy = np.fmod(yy,3.1415)
+            yy = (yy1 -yy2)%(2*np.pi/k)
             yy = yy**2
 
 
             M = np.sqrt(xx + yy)
+
+            M = M <= eps
+            #Mplus =  M > eps
+            #M = Mminus + Mplus
+            
 
 
             ts = np.arange(0,len(t),1)
@@ -61,11 +68,11 @@ for filename in sorted(os.listdir(data_folder)):
             
 
             ax1 = ax.pcolormesh(tt1,tt2,M,cmap=cmap3)
-            plt.colorbar(ax1,label = r"$d$")
-            ax.set_xlabel(r"$\tau$")
-            ax.set_ylabel(r"$\tau'$")
+            #plt.colorbar(ax1,label = r"$d$")
+            ax.set_xlabel(r"$t$")
+            ax.set_ylabel(r"$t'$")
 
 
             plt.savefig(sys.argv[1] + "/rec/rec_" + filename[0:-4] + ".png", bbox_inches='tight',dpi =300)
             counter += 1
-            plt.close()
+            
