@@ -93,7 +93,6 @@ int main(int argc, char const *argv[]) {
   ky[1] = N;
   phasesx[1] = M_PI/2;
   phasesy[1] = 0;
-  
   double U = 0;
 
   
