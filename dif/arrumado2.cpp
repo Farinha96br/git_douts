@@ -103,8 +103,8 @@ int main(int argc, char const *argv[]) {
 
 
   //int c_s = 8;
-  double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
-  //double strobe = 0.001; // estrobo normalizado
+  //double strobe = abs(2.0*M_PI/((w[1]/ky[1] - w[c_w]/ky[c_w])*ky[1])); // estrobo pra quanto tem só duas ondas
+  double strobe = 0.01; // estrobo normalizado
   //std::cout << strobe << '\n';
 
   int strobe_c = 0;

@@ -28,11 +28,12 @@ os.makedirs(sys.argv[1] + "/rec",exist_ok=True)
 eps = float(sys.argv[2])
 Nplots = int(sys.argv[3])
 counter = 0
-fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393)
+
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
         if counter < Nplots:
+            fig, ax = plt.subplots()
+            fig.set_size_inches(7*0.393, 7*0.393)
             ax.cla()
             data = np.loadtxt(data_folder + filename)
             print(filename)
@@ -74,5 +75,6 @@ for filename in sorted(os.listdir(data_folder)):
 
 
             plt.savefig(sys.argv[1] + "/rec/rec_" + filename[0:-4] + ".png", bbox_inches='tight',dpi =300)
+            plt.close()
             counter += 1
             

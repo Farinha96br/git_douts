@@ -13,7 +13,7 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
 iterations = 2000 # Número de pontos no arquivo final
-vars = [0.01,0.02,0.03,0.04,0.05,0.1,0.2]
+vars = [0.1,0.2,0.3,0.4]
 lenvar = len(vars)
 startfiles = ["line500.dat"] # arquivo de cond. iniciais
 rootname = "data-rec_A2" # Nome principal da rodada de experimentos, sem hifen no final
@@ -150,10 +150,10 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         
 
         #print("fazendo trajetórias individuais")
-        Nplots = 50
+        Nplots = 500
         os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
         # fazendo plot de recorrencia
-        os.system("python3 plot_rec.py " + out_folder + " 0.0 " + str(Nplots))
+        os.system("python3 plot_rec.py " + out_folder + " 0.02 " + str(Nplots))
 
 
         print("Fazendo um arquivo unico p plotar o mapa")
