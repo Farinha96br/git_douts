@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import time
- 
+  
 # compilação
 t_all = time.time()
 programscript = "arrumado2.cpp"
@@ -12,11 +12,11 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 2000 # Número de pontos no arquivo final
-vars = [0.1,0.2,0.3,0.4]
+iterations = 10000 # Número de pontos no arquivo final
+vars = [0.2]
 lenvar = len(vars)
-startfiles = ["line500.dat"] # arquivo de cond. iniciais
-rootname = "data-rec_A2" # Nome principal da rodada de experimentos, sem hifen no final
+startfiles = ["rng200.dat"] # arquivo de cond. iniciais
+rootname = "data-test_cell" # Nome principal da rodada de experimentos, sem hifen no final
 ############################
 batch_bool = 0  # Basicamente separar os resultados
 mesoBool = False
@@ -78,7 +78,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 #SBATCH --mem-per-cpu=100M   # memory per CPU core\n\
 #SBATCH -A b336 \n\
 #SBATCH -t " + str(mesoH).zfill(2) + ":" + str(mesomin).zfill(2) + ":00 \n\
-#SBATCH --mail-type=BEGIN,END \n\
+#SBATCH --mail-type=END \n\
 #SBATCH --mail-user=farinha96br@gmail.com \n \n")
         mesorun.write("\n")
         mesorun.write("mkdir -p " + out_folder + "\n")
@@ -150,16 +150,17 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         
 
         #print("fazendo trajetórias individuais")
-        Nplots = 500
+        Nplots = 100
         os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
         # fazendo plot de recorrencia
-        os.system("python3 plot_rec.py " + out_folder + " 0.02 " + str(Nplots))
+        #os.system("python3 plot_rec.py " + out_folder + " 0.02 " + str(Nplots))
+        # plot das celulas
+        os.system("python3 cell_index.py " + out_folder + " " + str(Nplots))
 
-
-        print("Fazendo um arquivo unico p plotar o mapa")
-        print("plotando o mapa")
-        os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
-        os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + varstring)
+        #print("Fazendo um arquivo unico p plotar o mapa")
+        #print("plotando o mapa")
+        #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
+        #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + varstring)
 
         #print("Fazendo anlálise dos saltos")
         #os.system("python3 jumps.py " + out_folder + " " + str(Nplots))

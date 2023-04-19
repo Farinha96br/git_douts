@@ -91,7 +91,7 @@ int main(int argc, char const *argv[]) {
   w[1] = 2*N;
   kx[1] = N;
   ky[1] = N;
-  phasesx[1] = M_PI/2;
+  phasesx[1] = M_PI/4;
   phasesy[1] = 0;
   double U = 0;
 

@@ -92,7 +92,7 @@ int main(int argc, char const *argv[]) {
   ky[0] = N;
   
   An[1] = var;
-  w[1] = 4;
+  w[1] = 6;
   kx[1] = M;
   ky[1] = N;
   

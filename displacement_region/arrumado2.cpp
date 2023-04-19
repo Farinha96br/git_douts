@@ -127,6 +127,7 @@ int main(int argc, char const *argv[]) {
   double y0 = y;
 
   //  Loop de integracao
+  tmax = strobe*1;
   while (t <= tmax) {
     /// Depois da quali, arrumar a normalização pelo fator B
 
