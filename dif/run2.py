@@ -4,16 +4,16 @@ import time
   
 # compilação
 t_all = time.time()
-programscript = "arrumado2.cpp"
-program =  "program2.out" # nome do programa
+programscript = "arrumado3.cpp"
+program =  "program3.out" # nome do programa
 os.system("g++ " + programscript + " -lm -lgsl -o " + program)
  # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 10000 # Número de pontos no arquivo final
-vars = [0.2]
+iterations = 5 # Número de pontos no arquivo final
+vars = [0.1]
 lenvar = len(vars)
 startfiles = ["rng200.dat"] # arquivo de cond. iniciais
 rootname = "data-test_cell" # Nome principal da rodada de experimentos, sem hifen no final
@@ -174,16 +174,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
         #os.system("rm -r " + out_folder + "/traj")
         
-        if batch_bool == 1:
-            print("Copiando os role pra uma pasta unificada")
-            os.makedirs(rootname,exist_ok=True)
-            os.system("cp " + out_folder + "/" + "D_" + out_folder + ".dat" + " " + rootname) # copia o arquivo de difusão
-            os.system("cp " + out_folder + "/" + out_folder + "_t_D.pdf" + " " + rootname)
-            os.system("cp " + out_folder + "/" + out_folder + "_t_sigma.pdf" + " " + rootname)
-            os.system("cp " + out_folder + "/" + "map_" +varstring + ".png" + " " + rootname)
-            os.system("mv " + out_folder + " " + rootname)
-            os.system("rm -r " + out_folder)
-    
     if mesoBool:
         mesorun.close()
     
