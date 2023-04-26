@@ -12,11 +12,11 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-iterations = 5 # Número de pontos no arquivo final
-vars = [0.1]
+iterations = 10000 # Número de pontos no arquivo final
+vars = [0.0]
 lenvar = len(vars)
-startfiles = ["rng200.dat"] # arquivo de cond. iniciais
-rootname = "data-test_cell" # Nome principal da rodada de experimentos, sem hifen no final
+startfiles = ["map_3_3.dat"] # arquivo de cond. iniciais
+rootname = "data-map_U" # Nome principal da rodada de experimentos, sem hifen no final
 ############################
 batch_bool = 0  # Basicamente separar os resultados
 mesoBool = False
@@ -150,12 +150,12 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         
 
         #print("fazendo trajetórias individuais")
-        Nplots = 100
+        Nplots = 50
         os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
         # fazendo plot de recorrencia
         #os.system("python3 plot_rec.py " + out_folder + " 0.02 " + str(Nplots))
         # plot das celulas
-        os.system("python3 cell_index.py " + out_folder + " " + str(Nplots))
+        #os.system("python3 cell_index.py " + out_folder + " " + str(Nplots))
 
         #print("Fazendo um arquivo unico p plotar o mapa")
         #print("plotando o mapa")

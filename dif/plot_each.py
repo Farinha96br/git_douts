@@ -53,7 +53,7 @@ for filename in sorted(os.listdir(data_folder)):
             ax.set_ylabel("$x$")
             ax.set_xlabel("$y$")
             #p = ax_plot = ax.scatter(y,x, s=0.1, c = colors,edgecolors=None,alpha = 1,zorder = 0)
-            p = ax_plot = ax.scatter(y,x,s=0.15,marker = "o", c = colors,lw = 0,zorder = 0)
+            p = ax.scatter(y,x,s=0.15,marker = "o", c = colors,lw = 0,zorder = 0)
             fig.colorbar(p,label="$t$", orientation="vertical")
 
             ax.plot(sy,sx, c = "black", marker = "s",markersize=3,lw = 1,zorder = 1)

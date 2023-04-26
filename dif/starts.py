@@ -5,20 +5,27 @@ import random as rng
 import matplotlib.pyplot as plt
 
 # Sla pra q é isso p falar a vdd
-def xhip(kx,n):
-    return n*pi/kx
 
-def yhip(ky,n):
-    return (2*n+1)*pi/(2*ky)
+def hip(k,n):
+    # retorna a linha eliptica de indice n, para um numero de onda k no sistema
+    return n*pi/k
+
+def elip(k,n):
+    # retorna a linha eliptica de indice n, para um numero de onda k no sistema
+    return (2*n+1)*pi/(2*k)
+
+
 
 def drawgrid(ax,M,N):
-    for m in range(0,2*M+1):
-        ax.axhline(np.pi*m/M, color = '#888888', linestyle = "--", linewidth = 0.7, zorder = 9)
-    for n in range(0,2*N):
-        ax.axvline((2*n+1)*pi/(2*N), color = '#888888', linestyle = "--", linewidth = 0.7, zorder = 9)
+    # M é o modo em x
+    # N é o modo em y
+    for m in range(0,2*M):
+        ax.axhline(m*pi/N, color = '#888888', linestyle = "--", linewidth = 0.7, zorder = 0)
+    for n in range(0,2*N+1):
+        ax.axvline(n*pi/N, color = '#888888', linestyle = "--", linewidth = 0.7, zorder = 0)
 
-sx = []
 sy = []
+sx = []
 
 
 pi = 3.14159265359
@@ -30,10 +37,14 @@ rng_N = 200
 # relevant normalizing parameters
 a = 2
 # wavenumbers
-kx =    3
-ky =    3
+
+M = 3
+N = 3
+kx =   M
+ky =   N
 cellx = 3.14159265359/(kx)
 celly = 3.14159265359/(kx)
+
 
 # if the wavenumbers should be normalized, 1 = True, 0 = False
 
@@ -43,7 +54,7 @@ celly = 3.14159265359/(kx)
 #   1:  Grid very useful to visualize stroboscopi maps
 #   2:  Random poins spread over te separatix
 #   3:  Line of equaly spaced points between (x0,y0) to (xf,yf)
-gen_case = 3
+gen_case = 1
 
 
 # isso aq é p dar uma olhada nos pontos p ver se ta tudo certo
@@ -64,31 +75,22 @@ if gen_case == 0:
     for i in range(0,rng_N):
         x = rng.random()*2*pi
         y = rng.random()*2*pi
-        sx.append(x)
-        sy.append(y)
+        sy.append(x)
+        sx.append(y)
         print(x,y)
 
 
 #   1:  Grid very useful to visualize stroboscopic maps
 if  gen_case == 1:
-    for x in np.arange(0,2*pi,pi/(kx)):
-        for y in np.arange(0,2*pi,pi/(ky)):
-            if x+0.025 < 2*np.pi:
-                print(x+cellx*0.001,y)
-                sx.append(x+cellx*0.01)
+    for m in range(0,2*M):
+        for n in range(0,2*N):
+            for f in np.linspace(0.001,0.4,5):
+                x = elip(kx,m)
+                y = hip(ky,n)+celly*f
+                print(x,y)
+                sx.append(x)
                 sy.append(y)
-                print(x+cellx*0.1,y)
-                sx.append(x+cellx*0.1)
-                sy.append(y)
-                print(x+cellx*0.2,y)
-                sx.append(x+cellx*0.2)
-                sy.append(y)
-                print(x+cellx*0.4,y)
-                sx.append(x+cellx*0.3)
-                sy.append(y)
-                print(x+cellx*0.7,y)
-                sx.append(x+cellx*0.7)
-                sy.append(y)
+                
                 
 
 #   2:  Random poins spread over te separatix
@@ -99,15 +101,15 @@ if gen_case == 2:
         coin = rng.randint(0,1) # decide se vai ser distribuido em x ou y
 
         if coin == 0: # ao longo de x
-            x = xhip(kx,n)
+            x = hip(kx,m)
             y = (rng.random()*2*pi)
             if n == 0:
                 x+=0.001
         if coin == 1: # ao longo de y
-            y = yhip(ky,m)
+            y = hip(ky,n)
             x = (rng.random()*2*pi)
-        sx.append(x)
-        sy.append(y)
+        sy.append(x)
+        sx.append(y)
         print(x,y)
 
 
@@ -122,8 +124,8 @@ if gen_case == 3:
     y = np.linspace(y0,yf,pts)
     x = np.linspace(x0,xf,pts)
     for i in range(pts):
-        sx.append(x[i])
-        sy.append(y[i])
+        sy.append(x[i])
+        sx.append(y[i])
         print(x[i],y[i])
 
 
@@ -136,9 +138,9 @@ if gen_case == 3:
 drawgrid(ax,3,3)
 ax.set_ylim(-1,7)
 ax.set_xlim(-1,7)
-ax.set_ylabel("$x$")
-ax.set_xlabel("$y$")
-ax.scatter(sy,sx,s = 2,marker='o', c = "firebrick")
+ax.set_ylabel("$y$")
+ax.set_xlabel("$x$")
+ax.scatter(sx,sy,s = 2,marker='o', c = "firebrick",zorder = 5)
 plt.show()
 plt.close()
 

@@ -23,3 +23,12 @@ double dydt2(double t,double x,double y,double *w, double *An, double *kx, doubl
   return  An[0]*kx[0]*sin(ky[0]*y + phasesy[0])*cos(kx[0]*x + phasesx[0]) + An[1]*kx[1]*sin(ky[1]*y + phasesy[1])*cos(kx[1]*(x-(w[1]/kx[1] - w[0]/kx[0])*t)+ phasesx[1]);
 }
 
+
+double dxdt3(double t,double x,double y,double *w, double *An, double *kx, double *ky, double *phasesx, double *phasesy,double U){
+  
+  return An[0]*ky[0]*U + An[0]*ky[0]*sin(ky[0]*y + phasesy[0])*sin(kx[0]*x + phasesx[0]) + An[1]*ky[1]*sin(ky[1]*y + phasesy[1])*sin(kx[1]*(x-(w[1]/kx[1] - w[0]/kx[0])*t)+ phasesx[1]);
+}
+
+double dydt3(double t,double x,double y,double *w, double *An, double *kx, double *ky, double *phasesx, double *phasesy){
+  return  An[0]*kx[0]*cos(ky[0]*y + phasesy[0])*cos(kx[0]*x + phasesx[0]) + An[1]*kx[1]*cos(ky[1]*y + phasesy[1])*cos(kx[1]*(x-(w[1]/kx[1] - w[0]/kx[0])*t)+ phasesx[1]);
+}
