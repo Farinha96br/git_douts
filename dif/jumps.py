@@ -7,7 +7,7 @@ import scipy.signal as scipy
 # Coisas d plotagem
 plt.rcParams["mathtext.fontset"] = "cm" # Fonte matemática pro latex
 plt.rc('font', family='serif') # fonte tipo serif, p fica paredico com latex msm
-plt.rc('text', usetex=True) # esse vc deixa True e for salvar em pdf e False se for p salvar png
+plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se for p salvar png
 
 
 
@@ -34,7 +34,7 @@ cellx2 = 3.14159265359/(kx2*a)
 print("cellx:",cellx)
 
 # Quantas vezes maior que uma celula o salto tem que ser
-fac = 3
+fac = 2
 
 # arrays vazios onde os saltos entram
 jumps_x = np.array([]) # todos saltos todos em x
@@ -81,7 +81,7 @@ for filename in sorted(os.listdir(data_folder)):
             plt.tight_layout()
             fig.set_size_inches(10*0.393, 5*0.393)
             #ax.set_title(filename)
-            ax.set_xlim(0,150)
+            ax.set_xlim(0,100)
             ax.set_xlabel(r"$t$")
 
             NCELL = 10
@@ -90,11 +90,11 @@ for filename in sorted(os.listdir(data_folder)):
             #ax.axhline(1, linewidth = 0.5, linestyle = "--", color = "#555555",zorder = 0)
 
             ax.set_ylim(-cellx*NCELL,cellx*NCELL)
-            ax.set_ylabel(r"$x$")
+            ax.set_ylabel(r"$y$")
             ticksy = np.arange(-cellx*NCELL,cellx*NCELL,2*cellx)
             ax.set_yticks(ticksy)
             ax.set_yticklabels(np.arange(-NCELL,NCELL,2))
-            ax.set_ylabel(r"$\frac{N\pi}{k_{x0}}$")
+            ax.set_ylabel(r"$\frac{N\pi}{k_{y}}$")
             ax.plot(t,x,linewidth = 0.5, color = "royalblue",zorder = 1)
             ax.plot(t[extrema],x[extrema],ls = " ", marker = ",",markersize = 0.5, color = "firebrick",zorder = 2)
             ax.plot(t[jumps_index],x[jumps_index],ls = " ",markersize = 1, marker = "s", color = "forestgreen",zorder = 3)

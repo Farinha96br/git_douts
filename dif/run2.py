@@ -1,11 +1,21 @@
 import numpy as np
 import os
 import time
-  
+import random as rng
+
+def randstart(N):
+    s = np.zeros((N,2))
+    for i in range(0,N):
+        x = rng.random()*2*np.pi
+        y = rng.random()*2*np.pi
+        s[i,0] = x
+        s[i,1] = y
+    return s
+
 # compilação
 t_all = time.time()
-programscript = "arrumado3.cpp"
-program =  "program3.out" # nome do programa
+programscript = "integrado_while.cpp"
+program =  "program.out" # nome do programa
 os.system("g++ " + programscript + " -lm -lgsl -o " + program)
  # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
@@ -13,10 +23,11 @@ os.system("g++ " + programscript + " -lm -lgsl -o " + program)
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
 iterations = 10000 # Número de pontos no arquivo final
-vars = [0.0]
+vars = [0.2,0.21]
+print(vars)
 lenvar = len(vars)
-startfiles = ["map_3_3.dat"] # arquivo de cond. iniciais
-rootname = "data-map_U" # Nome principal da rodada de experimentos, sem hifen no final
+startfiles = ["starts.dat"] # arquivo de cond. iniciais
+rootname = "data-traj_A2" # Nome principal da rodada de experimentos, sem hifen no final
 ############################
 batch_bool = 0  # Basicamente separar os resultados
 mesoBool = False
@@ -30,20 +41,20 @@ if mesoBool: ## Caso para script do mesocentre
     os.makedirs(mesofolder, exist_ok = True)
     mesoall = open(mesofolder + "/meso_all.sh","w")
     mesoall.write("#!/bin/sh \n")
-    mesoall.write("g++ " + programscript + " -lm -o " + program + "\n \n") # sem o lgsl
+    mesoall.write("g++ " + programscript + " -lm -std=c++11 -o " + program + "\n \n") # sem o lgsl
 else:
     print("Certeza que é pra rodar?")
     time.sleep(5)
-
+start = randstart(200)
 
 for rn in range(0,len(vars)): # loop pelos parametros var
     
     var = vars[rn]
     varstring = "{:06.4f}".format(var)
-    startfile = startfiles[0] # arquivo com as cond. inicias
-
-    start = np.loadtxt(startfile) # carrega oarquivo
-
+    #startfile = startfiles[0] # arquivo com as cond. inicias
+    #start = np.loadtxt(startfile) # carrega oarquivo
+    
+    #print(start)
     ## Algumas maracutais pro processamento paralelo funcionar direito
     Nsim = len(start[:,0])  # numero de simulaçoes
     Nfull = int(Nsim/Nrun) # Numero de rodadas cheias
@@ -64,10 +75,10 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     
     if mesoBool: ## Caso para script do mesocentre
-        if rn == 0:
-            mesoall.write("jid" + str(rn) + "=$(sbatch --parsable meso_" + out_folder + ".sh) \n")
-        else:
-            mesoall.write("jid" + str(rn) + "=$(sbatch --parsable --dependency=afterany:$jid" + str(rn-1) + " meso_" + out_folder + ".sh) \n")
+        #if rn == 0:
+        mesoall.write("jid" + str(rn) + "=$(sbatch --parsable meso_" + out_folder + ".sh) \n")
+        #else:
+        #    mesoall.write("jid" + str(rn) + "=$(sbatch --parsable --dependency=afterany:$jid" + str(rn-1) + " meso_" + out_folder + ".sh) \n")
         mesoall.write("echo " + "jid" + str(rn) + "\n")
         mesorun = open(mesofolder + "/meso_" + out_folder + ".sh","w")
         mesorun.write("#!/bin/sh \n")
@@ -75,7 +86,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 #SBATCH -p skylake \n\
 #SBATCH --ntasks=" + str(Nrun) + "\n\
 #SBATCH --cpus-per-task=1  ## the number of threads allocated to each task \n\
-#SBATCH --mem-per-cpu=100M   # memory per CPU core\n\
+#SBATCH --mem-per-cpu=200M   # memory per CPU core\n\
 #SBATCH -A b336 \n\
 #SBATCH -t " + str(mesoH).zfill(2) + ":" + str(mesomin).zfill(2) + ":00 \n\
 #SBATCH --mail-type=END \n\
@@ -146,21 +157,22 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     if mesoBool == False:
         print("copiando arquivo inicial p pasta de dados")
-        os.system("cp " + startfile + " " + out_folder)
+        #os.system("cp " + startfile + " " + out_folder)
         
 
         #print("fazendo trajetórias individuais")
-        Nplots = 50
+        Nplots = 200
         os.system("python3 plot_each.py " + out_folder + " " + str(Nplots))
-        # fazendo plot de recorrencia
+        #fazendo plot de recorrencia
         #os.system("python3 plot_rec.py " + out_folder + " 0.02 " + str(Nplots))
         # plot das celulas
         #os.system("python3 cell_index.py " + out_folder + " " + str(Nplots))
 
         #print("Fazendo um arquivo unico p plotar o mapa")
         #print("plotando o mapa")
-        #os.system("cat " + out_folder + "/traj/*.dat > " + out_folder +  "/all_traj.dat")
-        #os.system("python3 plot_mapa.py " + out_folder + " " + startfile + " " + varstring)
+        ##os.system("python3 plot_mapa.py " + out_folder + " " + varstring)
+        #os.system("python3 plot_mapa2.py " + out_folder) # mapa ca celula 2x2
+
 
         #print("Fazendo anlálise dos saltos")
         #os.system("python3 jumps.py " + out_folder + " " + str(Nplots))
@@ -173,18 +185,19 @@ for rn in range(0,len(vars)): # loop pelos parametros var
         time.sleep(1)
 
         #os.system("rm -r " + out_folder + "/traj")
+            
+        if mesoBool:
+            mesorun.close()
         
-    if mesoBool:
-        mesorun.close()
-    
 
-if mesoBool == False:
-    os.system("python3 plot_var.py ./") 
+        if mesoBool == False:
+            os.system("python3 plot_var.py ./") 
 
 
-    #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
-    #playsound('final.mp3')
-    #os.system("shutdown")
+            #os.system("python3 tweet_wanda.py " + str((time.time()-t_all)/60) + " min")
+        #playsound('final.mp3')
 
 if mesoBool: ## Caso para script do mesocentre
     mesoall.close()
+
+#os.system("shutdown")

@@ -23,8 +23,8 @@ data = []
 data_folder = sys.argv[1] + "/traj/"
 for filename in sorted(os.listdir(data_folder)):
     if filename.endswith(".dat"):
-        print(filename)
-        print(data_folder + filename)
+        #print(filename)
+        #print(data_folder + filename)
         data.append(np.loadtxt(data_folder + filename))
 data = np.array(data)
 print(data.shape)   #data[partícula,linha,coluna de dados]
@@ -44,15 +44,16 @@ f = open(dif_file, "w")
 for t in range(1,data.shape[1]):
     x0s = data[:,0,1] # all starting condition position o x
     xfs = data[:,t,1] # all x positions at time t
-    # This part does the diffusion stuff
-    squares = (xfs-x0s)**2 
-    C = np.sum(squares)/N # deslocamento quadratico medio
-    D = C/(2*data[0,t,0]) # Difusao em si
 
-    f.write(str(data[0,t,0]) + "\t" + str(D) + "\t" + str(C) + "\n")
+    # This part does the diffusion stuff
+    squaresx = (xfs-x0s)**2
+    Cx = np.sum(squaresx)/N # deslocamento quadratico medio
+    Dx = Cx/(2*data[0,t,0]) # Difusao em si
+
+    f.write(str(data[0,t,0]) + "\t" + str(Dx) + "\t" + str(Cx) + "\n" )
 
 f.close()
-print("DIF DONE")
+print(data_folder)
 
 
 

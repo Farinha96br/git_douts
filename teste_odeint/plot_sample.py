@@ -23,33 +23,21 @@ plt.rc('font', family='serif') # fonte tipo serif, p fica paredico com latex msm
 plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se for p salvar png
 ######
 fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-
-file = "teste.dat"
-data = np.loadtxt(file)
-k = 3
-x = data[:,1]%(2*np.pi/k)
-y = data[:,2]%(2*np.pi/k)
-
-##  Título do plot
-#ax.set_title(filename)
-k = 3
-cell = np.pi/k
-##  Limites e ticklabels em x e y:
-ax.set_ylim([0,2*cell])
-ax.set_xlim([0,2*cell])
-ax.set_xticks([0,cell,2*cell])
-ax.set_xticklabels([r"0",r"$\frac{\pi}{k}$",r"$2\frac{\pi}{k}$"])
-ax.set_yticks([0,cell,2*cell])
-ax.set_yticklabels([r"0",r"$\frac{\pi}{k}$",r"$2\frac{\pi}{k}$"])
+fig.set_size_inches(14*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
 
 
 
 
 # plot normal
-ax.plot(x,y,ls ="",marker=",",markersize = 10, color = rgb_pallet[2],label = "data1")
-ax.scatter(x[0],y[0],s=0.5,color = "black")
+file = "odeint.dat"
+data = np.loadtxt(file)
+ax.plot(data[:,0],data[:,2],lw=0.5, color = rgb_pallet[2],label = file,alpha = 0.7)
 
+file = "while.dat"
+data = np.loadtxt(file)
+ax.plot(data[:,0],data[:,2],lw=0.5, color = rgb_pallet[0],label = file,alpha = 0.7)
+ax.set_ylabel("y")
+ax.set_xlabel("t")
 # plot com histograma:
 #w = 0.1 # largura dos bins
 #b = np.arange(0, Ncell*cellx + w, w) + w/2 # bins em si
@@ -57,6 +45,6 @@ ax.scatter(x[0],y[0],s=0.5,color = "black")
 
 
 
-
+ax.legend()
 plt.savefig("graph.png",bbox_inches='tight',dpi = 300) # salva em png
 plt.close()

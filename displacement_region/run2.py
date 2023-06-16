@@ -15,21 +15,21 @@ def gridstart(N):
     A = np.array(A)
     return A 
 
-A = gridstart(250)
+A = gridstart(1000)
 
 
 # compilação
 t_all = time.time()
 program =  "program2.out" # nome do programa
-os.system("g++ arrumado2.cpp -lm -lgsl -o " + program)
+os.system("g++ integrador2.cpp -lm -lgsl -o " + program)
 #time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
 Nrun = 8 # numero máximo de programas simultanios
-tmax = 1# Número de pontos no arquivo final
+iterations = 1# Número de pontos no arquivo final
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = np.linspace(0,1,30)
+vars = [0.1,0.2,0.3,0.4,0.5]
 lenvar = len(vars)
 rootname = "data-displacement_A2" # Nome principal da rodada de experimentos
 ############################
@@ -87,8 +87,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             + " " + str(index) \
             + " " + str(A[index,0]) \
             + " " + str(A[index,1]) \
-            + " " + str(tmax) \
-            + " " + str(out_folder) \
+            + " " + str(iterations) \
             + " " + str(var) \
             + " >>" + out_folder + "/" + out_folder + ".dat" \
             + " & "
@@ -109,4 +108,4 @@ for rn in range(0,len(vars)): # loop pelos parametros var
     os.system("python3 plot_disp.py " + out_folder)
 
 
-os.system("shutdown")
+#os.system("shutdown")

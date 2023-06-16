@@ -63,7 +63,7 @@ ax.set_xticklabels(np.arange(0,Ncell,1))
 
 #ax.set_ylim(0,600000)
 
-b= np.arange(0, Ncell*cellx + w, w)
+b = np.arange(0, Ncell*cellx + w, w)
 
 ax.hist(hist_data,bins = b, color = rgb_pallet[2],zorder = 1,histtype='stepfilled',edgecolor=rgb_darker[2], linewidth=0.25)
 ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))

@@ -17,8 +17,8 @@ def elip(k,n):
 
 
 def drawgrid(ax,M,N):
-    # M é o modo em x
-    # N é o modo em y
+    # M é o modo em y
+    # N é o modo em x
     for m in range(0,2*M):
         ax.axhline(m*pi/N, color = '#888888', linestyle = "--", linewidth = 0.7, zorder = 0)
     for n in range(0,2*N+1):
@@ -54,7 +54,7 @@ celly = 3.14159265359/(kx)
 #   1:  Grid very useful to visualize stroboscopi maps
 #   2:  Random poins spread over te separatix
 #   3:  Line of equaly spaced points between (x0,y0) to (xf,yf)
-gen_case = 1
+gen_case = 3
 
 
 # isso aq é p dar uma olhada nos pontos p ver se ta tudo certo
@@ -80,57 +80,32 @@ if gen_case == 0:
         print(x,y)
 
 
-#   1:  Grid very useful to visualize stroboscopic maps
-if  gen_case == 1:
-    for m in range(0,2*M):
-        for n in range(0,2*N):
-            for f in np.linspace(0.001,0.4,5):
-                x = elip(kx,m)
-                y = hip(ky,n)+celly*f
-                print(x,y)
-                sx.append(x)
-                sy.append(y)
-                
-                
+#   2:  Grid in 2x2 cell useful to visualize stroboscopic maps in periodic systems
+if  gen_case == 2:
+    
+    N = 15
+    #print(f1)
+    #print(f2)
+    sx = np.linspace(0,hip(kx,2),40)
+    sy = [elip(ky,0),elip(ky,1)]
 
-#   2:  Random poins spread over te separatix
-if gen_case == 2:
-    for i in range(0,rng_N):
-        n = rng.randint(0,6) # numeros p x
-        m = rng.randint(0,5) # numeros p y
-        coin = rng.randint(0,1) # decide se vai ser distribuido em x ou y
+    for x in sx:
+        for y in sy:
+            print(x,y)
 
-        if coin == 0: # ao longo de x
-            x = hip(kx,m)
-            y = (rng.random()*2*pi)
-            if n == 0:
-                x+=0.001
-        if coin == 1: # ao longo de y
-            y = hip(ky,n)
-            x = (rng.random()*2*pi)
-        sy.append(x)
-        sx.append(y)
-        print(x,y)
+    sx,sy = np.meshgrid(sx,sy)
 
 
-
-if gen_case == 3:
-    pts = 500
-    x0 = np.pi/(2*kx)
-    xf = np.pi/(2*kx)
-    y0 = 0
-    yf = 2*np.pi/(kx)
-    #########
-    y = np.linspace(y0,yf,pts)
-    x = np.linspace(x0,xf,pts)
-    for i in range(pts):
-        sy.append(x[i])
-        sx.append(y[i])
-        print(x[i],y[i])
-
-
-        
-
+if  gen_case == 3:
+    N = 1000
+    x0 = [0,0]
+    xf = [2*np.pi/kx,0]
+    xp = np.linspace(x0,xf,1000)
+    #print(xp.shape)
+    for i in range(0,len(xp[:,0])):
+        print(xp[i,0],xp[i,1])
+    sx = xp[:,0]
+    sy = xp[:,1]
 
 
 
@@ -138,9 +113,9 @@ if gen_case == 3:
 drawgrid(ax,3,3)
 ax.set_ylim(-1,7)
 ax.set_xlim(-1,7)
-ax.set_ylabel("$y$")
-ax.set_xlabel("$x$")
-ax.scatter(sx,sy,s = 2,marker='o', c = "firebrick",zorder = 5)
+ax.set_ylabel("$x$")
+ax.set_xlabel("$y$")
+ax.scatter(sy,sx,s = 2,marker='o', c = "firebrick",zorder = 5)
 plt.show()
 plt.close()
 

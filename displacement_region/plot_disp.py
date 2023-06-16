@@ -16,7 +16,7 @@ cym_light =  ['#82e7ff','#fde974','#ff98ff']
 cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_pallet = ['#007a96','#b39700','#b04bb0']
 
-cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white",rgb_pallet[2]])
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white",rgb_pallet[0]])
 cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"white",rgb_pallet[0]])
 
 folder = sys.argv[1]
@@ -25,18 +25,19 @@ folder = sys.argv[1]
 data = np.loadtxt(folder + "/" + folder + "xyz.dat")
 fig, ax = plt.subplots()
 fig.set_size_inches(10*0.393, 8*0.393) # diminuir na metade p 
-ax.set_ylabel("$x$")
-ax.set_xlabel("$y$")
+ax.set_ylabel("$y$")
+ax.set_xlabel("$x$")
 print(data.shape)
-L = 500
-x = np.reshape(data[:,0],(L,L))
-y = np.reshape(data[:,1],(L,L))
-z = np.reshape(data[:,2],(L,L))
+L = 1000
 
-d = np.abs(z-x) 
+x0 = np.reshape(data[:,0],(L,L))
+y0 = np.reshape(data[:,1],(L,L))
+xf = np.reshape(data[:,2],(L,L))
+yf = np.reshape(data[:,3],(L,L))
 
- 
 
-ax1 = ax.pcolormesh(y, x,d,cmap=cmap)
-fig.colorbar(ax1,label = r"$|\Delta x|$")
-plt.savefig(folder + "/disp_" + folder ".png", bbox_inches='tight', dpi = 300)
+d = np.sqrt(np.abs(xf-x0)**2 + np.abs(yf-y0)**2)
+
+ax1 = ax.pcolormesh(x0, y0,d,cmap=cmap)
+fig.colorbar(ax1)
+plt.savefig(folder + "/disp_" + folder + ".png", bbox_inches='tight', dpi = 300)

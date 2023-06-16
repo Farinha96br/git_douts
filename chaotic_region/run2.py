@@ -2,10 +2,12 @@ import numpy as np
 import os
 import time
 
+k = 3
+
 # Grade de pontos iniciais
-def gridstart(N):
-    X = np.linspace(0,1,N)
-    Y = np.linspace(-3.1415,3.1415,N)
+def gridstart1(N):
+    X = np.linspace(0,2*np.pi/(k),N)
+    Y = np.linspace(0,2*np.pi/(k),N)
     A = []
     for x in X:
         for y in Y:
@@ -13,23 +15,32 @@ def gridstart(N):
     A = np.array(A)
     return A 
 
-A = gridstart(2000)
+def gridstart2(N):
+    X = np.linspace(0,2*np.pi,N)
+    Y = np.linspace(0,2*np.pi,N)
+    A = []
+    for x in X:
+        for y in Y:
+            A.append([x,y])
+    A = np.array(A)
+    return A 
+
+A = gridstart1(250)
 
 
 # compilação
 t_all = time.time()
-program =  "program2.out" # nome do programa
-os.system("g++ arrumado2.cpp -lm -lgsl -o " + program)
-time.sleep(5) # tempo p cancelar caso de probelma na compilaca
+program =  "region.out" # nome do programa
+os.system("g++ chaotic_region.cpp -lm -lgsl -o " + program)
+#time.sleep(5) # tempo p cancelar caso de probelma na compilaca
 #os.system("g++ arrumado.cpp -lm -lgsl -o " + program)
 
  # carrega as cond. inicias num array
-Nrun = 16 # numero máximo de programas simultanios
-tmax = 200# Número de pontos no arquivo final
+Nrun = 100 # numero máximo de programas simultanios
 #vars = np.hstack((np.linspace(-1,-0.25,25),np.linspace(-0.25,0.25,301),np.linspace(0.25,1,25))) # array do parametro a ser variavel
-vars = np.linspace(0,1,11)
+vars = np.linspace(0,1,50)
 lenvar = len(vars)
-rootname = "data-region_A2" # Nome principal da rodada de experimentos
+rootname = "data-cregion_A2" # Nome principal da rodada de experimentos
 ############################
 
 # this flag indicates if we are doing a large batch of simulations and the results should be
@@ -60,7 +71,6 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     # Oraganiza as pastas do experimento, e cria a pasta com as trajetorias
     os.makedirs(out_folder,exist_ok=True)
-    os.makedirs(out_folder + "/traj",exist_ok=True)
 
     # Arquivo com os registros do tempo de simulação (Talvez tirar isso aq)
     timefile = open(out_folder + "/timelog.dat","w")
@@ -83,11 +93,8 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             index = Nrun*i+j
             #print(index,start[index,0],start[index,1],rn)
             run_string += "./"+ program \
-            + " " + str(index) \
             + " " + str(A[index,0]) \
             + " " + str(A[index,1]) \
-            + " " + str(tmax) \
-            + " " + str(out_folder) \
             + " " + str(var) \
             + " >>" + out_folder + "/" + out_folder + ".dat" \
             + " & "
@@ -105,6 +112,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
 
     time.sleep(1)
     os.system("python3 cat.py " + out_folder)
+    os.system("python3 plot_disp.py " + out_folder)
 
 
-#os.system("shutdown")
+os.system("shutdown")
