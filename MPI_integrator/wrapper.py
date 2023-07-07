@@ -7,8 +7,8 @@ import os
 #os.system("rm  x.dat")
 #os.system("rm  y.dat")
 
-program = "mpi7.cpp"                    # Nome de programa
-os.system("mpic++ -lm mpi7.cpp")        # Compila
+program = "integrator_mpi.cpp"                    # Nome de programa
+os.system("mpic++ -lm " + program)        # Compila
 its = 100                              # Numero de iteracoes
 var = 0.16                               # variavel que estou mexendo
 folder = "data-teste2"                        # nome da pasta de saida
