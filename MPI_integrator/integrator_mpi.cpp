@@ -36,15 +36,7 @@ void mysyst( const state_type &x , state_type &dxdt , double t ){
                 U*A[0]*ky[0];
 }
 
-// funcao auxiliar p gerar pontos igualmente espacados
-double *linspace(double x0,double xf,int N){
-    double dx = (xf - x0)/(N-1);
-    double *x = (double*)malloc(N*sizeof(double));
-    for (int i = 0; i < N; i++){
-        x[i] = dx*i;
-    }
-    return x;
-}
+
 
 int main(int argc, char** argv) {
    MPI_Init(&argc, &argv);
@@ -64,8 +56,6 @@ int main(int argc, char** argv) {
    // parte de alocação de memoria
    double *global_x; // array final do resultado
    double *global_y; // array final do resultado
-   double *startx;
-   double *starty;
    
    MPI_Barrier(MPI_COMM_WORLD); // garante q tudo foi alocado e lido certinho    
 
@@ -75,27 +65,15 @@ int main(int argc, char** argv) {
       global_x = (double*)malloc(its*size*sizeof(double)); // apenas o 1o processo ganha um pedaçao
       global_y = (double*)malloc(its*size*sizeof(double)); // apenas o 1o processo ganha um pedaçao
       // faz a lista de pontos iniciais em x e y:
-      int NX = 128;
-      int NY = 128;
-      double *x = linspace(0,2*M_PI/3,NX);
-      double *y = linspace(0,2*M_PI/3,NY);
-      startx = (double*)malloc(NX*NY*sizeof(double));
-      starty = (double*)malloc(NX*NY*sizeof(double));
-
-      for (int i = 0; i < NX; i++){
-         for (int j = 0; j < NY; j++){
-               startx[i*NY+j] = x[i];
-               starty[i*NY+j] = y[j];
-         }    /* code */
-      }
-      // printa as cond iniciais
-      for (int i = 0; i < NX*NY; i++){
-         //printf("%d %lf %lf \n",i,startx[i],starty[i]);
-      }
+      // nesse caso uma malha estilo np.meshgrid
+      int NX = 256; // numero de pontos em X
+      int NY = 256; // numero de pontos em Y
+      double dx = (2.0*M_PI-0.0)/(NX-1.0); // faz o passo usando a ideia do linspace
+      double dy = (2.0*M_PI-0.0)/(NY-1.0); // 
       for (int i = 0; i < size; i++){
-         x0s[i] = startx[i+L0];
-         y0s[i] = starty[i+L0];
-         printf("%d %lf %lf \n",i+L0,startx[i],starty[i]);
+         x0s[i] = ((i+L0)%NX)*dx;
+         y0s[i] = ((i+L0)/NY)*dy;
+         //printf("%d %lf %lf\n",i+L0,x0s[i],y0s[i]);
       }
    }
    else{
@@ -103,8 +81,6 @@ int main(int argc, char** argv) {
       y0s = (double*)malloc(1*sizeof(double)); // resto ganha pocalias apenas
       global_x = (double*)malloc(1*sizeof(double)); // apenas o 1o processo ganha um pedaçao
       global_y = (double*)malloc(1*sizeof(double)); 
-      startx = (double*)malloc(1*sizeof(double));
-      starty = (double*)malloc(1*sizeof(double));
 
    }
 
@@ -141,7 +117,7 @@ int main(int argc, char** argv) {
    strobe = tau; // usado p mapas
    //strobe = 0.01; // Usado pra ver a trajetoria da particula em sí
    double tf = its*strobe; // calcula o tempo final dado as N iteraçoes do estrobo
-	printf("rank %d: %lf %lf\n",rank,x0,y0);
+	//printf("rank %d: %lf %lf\n",rank,x0,y0);
    state_type state = {x0, y0}; // initial conditions
 	runge_kutta4 < state_type > stepper; // formato de stepper/passo/integraçao do integrador
    
@@ -213,8 +189,6 @@ int main(int argc, char** argv) {
    MPI_Finalize();
    free(global_x);
    free(global_y);
-   free(startx);
-   free(starty);
    free(x0s);
    free(y0s);
    free(xts);
