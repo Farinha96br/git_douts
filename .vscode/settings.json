@@ -57,7 +57,8 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "bitset": "cpp"
     },
     "git.ignoreLimitWarning": true
 }

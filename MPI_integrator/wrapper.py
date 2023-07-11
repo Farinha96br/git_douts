@@ -13,7 +13,7 @@ its = 100                              # Numero de iteracoes
 var = 0.16                               # variavel que estou mexendo
 folder = "data-teste"                        # nome da pasta de saida
 Npar = 8                               # Numero de runs paralelas
-Nstarts = 128*128                       # Numero de cond. iniciais (Conferir no programa em sí!!!)
+Nstarts = 256*256                       # Numero de cond. iniciais (Conferir no programa em sí!!!)
 # faz a pasta onde vai ter os roles
 os.makedirs(folder,exist_ok=True)
 

@@ -24,14 +24,13 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 ######
 
 folder = sys.argv[1]
-os.makedirs(folder + "/displacement")
+os.makedirs(folder + "/displacement",exist_ok=True)
 x = np.loadtxt(folder + "/x.dat")
 y = np.loadtxt(folder + "/y.dat")
 
 
-
-
-shape = (128,128)
+L = 10
+shape = (L,L)
 x0 = np.reshape(x[:,0],shape)
 y0 = np.reshape(y[:,0],shape)
 
