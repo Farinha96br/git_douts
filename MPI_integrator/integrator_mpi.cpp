@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
 
       // Pontos iniciais carregados por um arquivo externo
       if (gencase == 2){
-         // entrada do arquivo
+         // entrada do arqui vo
          //char intxy[100];
          //sprintf(intxy,"%s/start.dat",argv[5]);
          FILE *input_file;
