@@ -24,31 +24,32 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 ######
 
 folder = sys.argv[1]
-os.makedirs(folder + "/trajs",exist_ok=True)
 x = np.loadtxt(folder + "/x.dat")
 y = np.loadtxt(folder + "/y.dat")
 
+x0 = x[:,0]
+y0 = y[:,0]
+#x = np.ravel(x)%(2*np.pi/3)
+#y = np.ravel(y)%(2*np.pi/3)
 
-kx = 3
-ky = 3
+k = 3
 
-for i in np.arange(0,len(x[:,0])):
-    print(i)
-    fig, ax = plt.subplots(2,1,sharex=True)
-    fig.set_size_inches(10*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-    for j in range(-10,10):
-        ax[0].axhline(j*np.pi/kx,ls = "--",lw = 0.1,color = "#555555")
-        ax[y].axhline(j*np.pi/ky,ls = "--",lw = 0.1,color = "#555555")
-    ax[0].plot(x[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[2],zorder = 1)
-    ax[0].set_ylabel(r"$x(\tau)$")
-    ax[0].set_ylim(-50,50)
-    ax[1].plot(y[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[1])
-    ax[1].set_ylabel(r"$y(\tau)$")
-    ax[1].set_ylim(-50,50)
-    ax[1].set_xlabel(r"$\tau$")
-    plt.savefig(folder + "/trajs/" + str(i) + ".png",bbox_inches='tight',dpi = 300) # salva em png
-    plt.close()
+fig, ax = plt.subplots()
+fig.set_size_inches(7*0.393, 7*0.393)
+ax.set_xlabel(r"$y$")
+#ax.set_xlim([0,2*np.pi/k])
+ax.set_xticks([0,np.pi/k,2*np.pi/k])
+#ax.set_xticklabels([r"0",r"$\pi$",r"$2\pi$"])
 
+ax.set_ylabel(r"$x$")
+#ax.set_ylim([0,2*np.pi/k])
+ax.set_yticks([0,np.pi/k,2*np.pi/k])
+#ax.set_yticklabels([r"0",r"$\pi$",r"$2\pi$"])
+for i in range(0,len(x[:,0])):
+    ax.plot(y[i,:]%(2*np.pi/3),x[i,:]%(2*np.pi/3),ls="",marker = ",",zorder = 0)
+ax.scatter(y0,x0,marker = "o",s = 0.1, color = rgb_pallet[0],zorder = 1)
+plt.savefig(folder + "/map.png",bbox_inches='tight',dpi = 300) # salva em png
+plt.close()
 
 
 

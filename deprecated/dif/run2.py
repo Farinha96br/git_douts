@@ -136,7 +136,7 @@ for rn in range(0,len(vars)): # loop pelos parametros var
             index = Nrun*i+j
             #print(index,start[index,0],start[index,1],rn)
             if mesoBool: ## Caso para script do mesocentre
-                head = "time srun --ntasks=1 --cpus-per-task=$SLURM_CPUS_PER_TASK "
+                head = "srun --ntasks=1 --cpus-per-task=$SLURM_CPUS_PER_TASK "
                 run_string += head
             
             run_string += "./"+ program \

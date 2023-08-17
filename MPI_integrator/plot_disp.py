@@ -25,23 +25,24 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 
 folder = sys.argv[1]
 os.makedirs(folder + "/displacement",exist_ok=True)
+print("loading x...")
 x = np.loadtxt(folder + "/x.dat")
+print("loading y...")
 y = np.loadtxt(folder + "/y.dat")
 
 
-L = 10
-shape = (L,L)
+shape = (1024,1024)
 x0 = np.reshape(x[:,0],shape)
 y0 = np.reshape(y[:,0],shape)
 
 
 for t in np.arange(0,100,1):
-
+    print("t: ",t)
     fig, ax = plt.subplots()
     fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
     xf = x0 - np.reshape(x[:,t],shape)
     a = ax.pcolormesh(y0,x0,xf,cmap="bwr")
-    fig.colorbar(a,label = r"\Delta x")
+    fig.colorbar(a,label = r"$\Delta x$")
     plt.savefig(folder + "/displacement/" + str(t) + ".png",bbox_inches='tight',dpi = 300) # salva em png
     plt.close()
 

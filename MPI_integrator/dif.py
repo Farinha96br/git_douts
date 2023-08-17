@@ -24,30 +24,30 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 ######
 
 folder = sys.argv[1]
-os.makedirs(folder + "/trajs",exist_ok=True)
+os.makedirs(folder + "/displacement",exist_ok=True)
+print("loading x...")
 x = np.loadtxt(folder + "/x.dat")
-y = np.loadtxt(folder + "/y.dat")
+k = 3
 
+#filtragem das cond. iniciais que trem transporte:
+print("filtering...")
+index = (np.abs(x[:,-1]) > np.pi*2/k)
+N_prefilter = len(x[:,0])
+x = x[index,:]
+N = len(x[:,0]) # quantidade de cond. inicias que tem transporte
+its = len(x[0,:])
+print("Total\tWith transport")
+print(N_prefilter,"\t",N)
+print("Doing math...")
+x = x - np.tile(x[:,0],(its,1)).T
+x = x**2
+msd = np.sum(x,axis=0)/N
 
-kx = 3
-ky = 3
-
-for i in np.arange(0,len(x[:,0])):
-    print(i)
-    fig, ax = plt.subplots(2,1,sharex=True)
-    fig.set_size_inches(10*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-    for j in range(-10,10):
-        ax[0].axhline(j*np.pi/kx,ls = "--",lw = 0.1,color = "#555555")
-        ax[y].axhline(j*np.pi/ky,ls = "--",lw = 0.1,color = "#555555")
-    ax[0].plot(x[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[2],zorder = 1)
-    ax[0].set_ylabel(r"$x(\tau)$")
-    ax[0].set_ylim(-50,50)
-    ax[1].plot(y[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[1])
-    ax[1].set_ylabel(r"$y(\tau)$")
-    ax[1].set_ylim(-50,50)
-    ax[1].set_xlabel(r"$\tau$")
-    plt.savefig(folder + "/trajs/" + str(i) + ".png",bbox_inches='tight',dpi = 300) # salva em png
-    plt.close()
+print("Plotting...")
+fig, ax = plt.subplots()
+fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
+a = ax.plot(msd)
+plt.show()
 
 
 

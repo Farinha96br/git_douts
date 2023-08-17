@@ -1,0 +1,192 @@
+{
+  "main": {
+    "id": "76c729365c1d00c5",
+    "type": "split",
+    "children": [
+      {
+        "id": "3bdb09b84f7e9736",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d918f7c3ef1dfb85",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Notas/General.canvas",
+                "viewState": {
+                  "x": 1598.019640156458,
+                  "y": 2248.0986612347338,
+                  "zoom": -1.3088641869435076
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bf79d5ad572bcdd8",
+    "type": "split",
+    "children": [
+      {
+        "id": "a590be46e50d754e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d4e9e8348302b0ea",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "2db990d13a379374",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "b7c2799f6d65f42e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f386529668455cb0",
+    "type": "split",
+    "children": [
+      {
+        "id": "248523f74f754c48",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a36f84a9ee2ef298",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Notas/General.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "cdb90f4f0e559edb",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Notas/General.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "30e3abc3a4bfb7a8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "b75d430afe8551f8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Notas/General.canvas"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
+    }
+  },
+  "active": "d918f7c3ef1dfb85",
+  "lastOpenFiles": [
+    "MPI_integrator/teste/y.dat",
+    "MPI_integrator/teste/x.dat",
+    "MPI_integrator/teste",
+    "MPI_integrator/start.dat",
+    "MPI_integrator/integrator_mpi2.cpp",
+    "MPI_integrator/integrator_mpi copy.cpp",
+    "Notas/General.canvas",
+    "Notas/General (Cópia em conflito de docttp361-hp-z800 2023-08-17).canvas",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/y.dat",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/x.dat",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_raw.png",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_op.png",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_labeled.png",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_cls.png",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160/map.png",
+    "MPI_integrator/data-results/mm/pi4_A2_0.160",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/y.dat",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/x.dat",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_raw.png",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_op.png",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_labeled.png",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_cls.png",
+    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/map.png",
+    "Notas/map_anom.excalidraw.md",
+    "Notas/map_dif.excalidraw.md",
+    "Notas/Tittle.md",
+    "Notas/Drawing 2023-07-24 16.58.39.excalidraw.md",
+    "Notas/parameters.md",
+    "Notas/MathMorphIdea.excalidraw.md",
+    "Notas/Drawing 2023-07-18 16.47.46.excalidraw.md",
+    "Untitled.md",
+    "README.md",
+    "2023-07-17.md",
+    "Untitled.canvas",
+    "Untitled 1.canvas",
+    "Untitled 2.canvas"
+  ]
+}
