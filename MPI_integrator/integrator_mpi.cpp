@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <mpi.h>
 #include <boost/numeric/odeint.hpp>
+#include<gsl/gsl_rng.h> 
 
 using namespace boost::numeric::odeint;
 using namespace std;
@@ -40,12 +41,14 @@ void mysyst( const state_type &x , state_type &dxdt , double t ){
 
 int main(int argc, char** argv) {
    MPI_Init(&argc, &argv);
-   int L0 = atoi(argv[1]); // linha dos dados que começa a ler
-   int its = atoi(argv[2]);
-   double var = atof(argv[3]);
-   // argv[4] é a pasta de saida
+   int gencase = atoi(argv[1]); // 0 = grid de pontos, 1 = pontos aleatorios
+   int L0 = atoi(argv[2]); // linha dos dados que começa a ler
+   int its = atoi(argv[3]);
+   double var = atof(argv[4]);
+   // argv[5] é o arquivo de entrada
+   // argv[6] é a pasta de saida
+
    int rank, size;
-   
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
    MPI_Comm_size(MPI_COMM_WORLD, &size);
    //printf("argv no rank %d: %d \n",rank,L0);
@@ -66,15 +69,55 @@ int main(int argc, char** argv) {
       global_y = (double*)malloc(its*size*sizeof(double)); // apenas o 1o processo ganha um pedaçao
       // faz a lista de pontos iniciais em x e y:
       // nesse caso uma malha estilo np.meshgrid
-      int NX = 256; // numero de pontos em X
-      int NY = 256; // numero de pontos em Y
-      double dx = (2.0*M_PI-0.0)/(NX-1.0); // faz o passo usando a ideia do linspace
-      double dy = (2.0*M_PI-0.0)/(NY-1.0); // 
-      for (int i = 0; i < size; i++){
-         x0s[i] = ((i+L0)%NX)*dx;
-         y0s[i] = ((i+L0)/NY)*dy;
-         //printf("%d %lf %lf\n",i+L0,x0s[i],y0s[i]);
+      if (gencase == 0){
+         int NX = 8; // numero de pontos em X
+         int NY = 8; // numero de pontos em Y
+         double p0x = (M_PI/3)-0.05;
+         double pfx = (M_PI/3)+0.05;
+         double p0y = (M_PI/3)-0.05;
+         double pfy = (M_PI/3)+0.05;
+         double dx = (pfx - p0x)/(NX-1.0); // faz o passo usando a ideia do linspace
+         double dy = (pfy - p0y)/(NY-1.0); // 
+         for (int i = 0; i < size; i++){
+            x0s[i] = ((i+L0)%NX)*dx + p0x;
+            y0s[i] = ((i+L0)/NY)*dy + p0y;
+               //printf("%d %lf %lf\n",i+L0,x0s[i],y0s[i]);
+         }
       }
+      // pontos iniciais aleatorios, usando L0 como seed
+      if (gencase == 1){
+         gsl_rng_default_seed = L0; 
+         gsl_rng *w = gsl_rng_alloc(gsl_rng_taus); 
+         for (int i = 0; i < size; i++){
+            x0s[i] = gsl_rng_uniform(w)*2.0*M_PI/3;
+            y0s[i] = gsl_rng_uniform(w)*2.0*M_PI/3;
+         }
+         gsl_rng_free(w);
+      }
+
+      // Pontos iniciais carregados por um arquivo externo
+      if (gencase == 2){
+         // entrada do arquivo
+         //char intxy[100];
+         //sprintf(intxy,"%s/start.dat",argv[5]);
+         FILE *input_file;
+         input_file = fopen(argv[5],"r");
+         //
+         int line = 0;
+         int index_load = 0;
+         double tempx, tempy;
+         while (fscanf(input_file, "%lf %lf", &tempx, &tempy) == 2) {
+            if ((line == L0 + index_load) && (index_load < size)){
+               printf("%d %d %lf %lf \n",line,index_load,tempx,tempy);
+               x0s[index_load] = tempx;
+               y0s[index_load] = tempy;
+               index_load++;
+            }
+            line++;
+         }
+         
+      }
+
    }
    else{
       x0s = (double*)malloc(1*sizeof(double)); // resto ganha pocalias apenas
@@ -103,14 +146,14 @@ int main(int argc, char** argv) {
 
    // parametros do sistema
     // Constantes do sistema
-   A = {1,var};
-   kx = {3,3};
-   ky = {3,3};
-   v = 1;
-   phasex = {0,M_PI/4};
+   A = {1.0,var};
+   kx = {3.0,3.0};
+   ky = {3.0,3.0};
+   v = 1.0;
+   phasex = {0,M_PI/4.0};
    U = 0;
    double tau = abs(2.0*M_PI/(v*ky[1])); // usado p mapas
-	step = tau/100; // passo eh um milesimo do periodo da perturbação;
+	step = tau/500.0; // passo eh um milesimo do periodo da perturbação;
    
 
    // define o estrobo
@@ -121,7 +164,7 @@ int main(int argc, char** argv) {
    state_type state = {x0, y0}; // initial conditions
 	runge_kutta4 < state_type > stepper; // formato de stepper/passo/integraçao do integrador
    
-   //printf("rank:%d x y: %lf %lf : \n",rank,x[0],x[1]);
+   //printf("rank:%d x y: %lf %lf : \n",rank,state[0],state[1]);
 
 	// parte de integracao
 	int c = 0;
@@ -134,7 +177,7 @@ int main(int argc, char** argv) {
       }
       stepper.do_step(mysyst, state, t, step);  
       t += step;
-    }
+   }
 
 
 
@@ -161,12 +204,12 @@ int main(int argc, char** argv) {
       printf("WRITING... \n");
       FILE *filex;
       char outx[100];
-      sprintf(outx,"%s/x.dat",argv[4]);
+      sprintf(outx,"%s/x.dat",argv[6]);
       filex = fopen(outx,"a");
 
       FILE *filey;
       char outy[100];
-      sprintf(outy,"%s/y.dat",argv[4]);
+      sprintf(outy,"%s/y.dat",argv[6]);
       filey = fopen(outy,"a");
 
 
