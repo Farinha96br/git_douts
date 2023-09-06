@@ -68,8 +68,8 @@ ypx = (all/Ny).astype("int32")
 print("No duplicates:",xpx.shape)
 
 
-img = np.zeros(Nx*Ny)+1
-img[all] = 0
+img = np.zeros(Nx*Ny)
+img[all] = 1
 img = np.reshape(img,(Nx,Ny)).astype("uint8") ## IMAGEM DO MAPA
 print(img)
 
@@ -77,22 +77,84 @@ aa, bb = np.meshgrid(np.arange(Nx),np.arange(Ny))
 
 #ax.imshow(img.astype("uint8"),cmap = "Greys")
 ax.pcolormesh(bb, aa, img, cmap = "Greys_r")
-plt.savefig(folder + "/mm_raw.png",bbox_inches='tight',dpi = 300) # salva em png
+ax.set_title("Raw")
+plt.savefig(folder + "/mm_0.png",bbox_inches='tight',dpi = 300) # salva em png
 
 # Tratamento morfologico
-radius = 2
+radius = 1
 SE = mm.disk(radius)
-SEconnec = mm.diamond(3) # 4-conectividade na reconstrucao
 
 print(SE)
 
-op = mm.binary_opening(img,SE)
-ax.pcolormesh(bb, aa, op, cmap = "Greys_r")
-plt.savefig(folder + "/mm_op.png",bbox_inches='tight',dpi = 300) # salva em png
-
-cls = mm.binary_closing(op,SE)
+cls = mm.binary_closing(img,SE)
 ax.pcolormesh(bb, aa, cls, cmap = "Greys_r")
-plt.savefig(folder + "/mm_cls.png",bbox_inches='tight',dpi = 300) # salva em png
+ax.set_title("Closing")
+plt.savefig(folder + "/mm_1.png",bbox_inches='tight',dpi = 300) # salva em png
+
+op = mm.binary_opening(cls,SE)
+ax.pcolormesh(bb, aa, op, cmap = "Greys_r")
+ax.set_title("Opening")
+plt.savefig(folder + "/mm_2.png",bbox_inches='tight',dpi = 300) # salva em png
+
+
+radius = 1
+SE = mm.disk(radius)
+grad = op.astype("uint8") - mm.erosion(op,SE).astype("uint8")
+ax.pcolormesh(bb, aa, grad, cmap = "Greys_r")
+ax.set_title("Gradient")
+plt.savefig(folder + "/mm_3.png",bbox_inches='tight',dpi = 300) # salva em png
+
+print("grad1",grad)
+
+grad = 1 - grad
+ax.pcolormesh(bb, aa, grad, cmap = "Greys_r")
+ax.set_title("Gradient inverse (opt)")
+plt.savefig(folder + "/mm_4.png",bbox_inches='tight',dpi = 300) # salva em png
+plt.close()
+print("grad2",grad)
+
+fig, ax = plt.subplots()
+fig.set_size_inches(7*0.393, 7*0.393)
+ax.set_xlabel(r"$y$")
+ax.set_ylabel(r"$x$")
+
+label = mm.label(grad,connectivity=1)
+np.save(folder + "/label.npy",label)
+
+cx = []
+cy = []
+
+if np.all(grad == 0) or np.all(grad == 1):
+    cx.append(0)
+    cy.append(0)
+else:
+    for i in range(1,np.max(label)+1):
+        mask = np.zeros(label.shape)
+        mask[label == i] = 1
+        tempmask1 = mask
+        while np.sum(tempmask1 > 0):
+            #print(c)
+            tempmask2 = tempmask1   
+            tempmask1 = mm.binary_erosion(tempmask1, mm.disk(1))
+        #print(i,np.max(tempmask2))
+        tempmask2 = tempmask2.astype("bool")
+        tempmask2[tempmask2] = 1
+        #ax.pcolormesh(bb, aa, tempmask2, cmap = "Greys_r")
+        #ax.set_title("mask" + str(i))
+        #plt.savefig(folder + "/mm_5_" + str(i) + "_.png",bbox_inches='tight',dpi = 300) # salva em png
+        #tempmask2 = tempmask2.astype("uint8")
+        #print(tempmask2)
+        ##props = med.regionprops(tempmask2)
+        ##c_temp = props[0]['centroid']
+        ##cx.append(c_temp[1])
+        ##cy.append(c_temp[0])
+        ycand = np.ravel(bb[tempmask2])
+        xcand = np.ravel(aa[tempmask2])
+        cx.append(np.random.choice(xcand))
+        cy.append(np.random.choice(ycand))
+
+
+
 plt.close()
 
 
@@ -100,36 +162,21 @@ fig, ax = plt.subplots()
 fig.set_size_inches(7*0.393, 7*0.393)
 ax.set_xlabel(r"$y$")
 ax.set_ylabel(r"$x$")
-
-label = med.label(np.flip(np.rot90(cls,3),axis=1))
-
-if np.max(label) >= 1:
-    cx = []
-    cy = []
-    props = med.regionprops(label) # imagem rotulada
-    for i in range(0,len(props)): # pega as centroides
-        cx.append(props[i].centroid[0])
-        cy.append(props[i].centroid[1])
-
-
+label = np.flip(np.rot90(label,3),axis=1)
 color_label = aux.label_hue2(label)
 print(color_label.shape)
+ax.set_title("Labeled")
 ax.imshow(color_label,interpolation='none',origin="lower",zorder = 0)
-ax.scatter(cy,cx,c = "white",marker="x")
 
-plt.savefig(folder + "/mm_labeled.png",bbox_inches='tight',dpi = 300) # salva em png
+
+pointfile = open(folder + "/testpoints.dat","w")
+for i in range(0,len(cx)):
+    ax.text(cy[i],cx[i],str(i),c = "white")
+    pointfile.write(str(cx[i]*Lpxx) + "\t" + str(cy[i]*Lpxy) + "\n")
+plt.savefig(folder + "/mm_6",bbox_inches='tight',dpi = 300) # salva em png
 plt.close()
 
-
-
-
-
-
-
-
-
-#plt.savefig("graph.pdf",bbox_inches='tight') # salva em pdf
-
+pointfile.close()
 
 
 

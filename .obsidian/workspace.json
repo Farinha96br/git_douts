@@ -15,14 +15,60 @@
               "state": {
                 "file": "Notas/General.canvas",
                 "viewState": {
-                  "x": 1598.019640156458,
-                  "y": 2248.0986612347338,
-                  "zoom": -1.3088641869435076
+                  "x": 2138.4087890826127,
+                  "y": 2001.7188165123662,
+                  "zoom": -0.5088641869435075
+                }
+              }
+            }
+          },
+          {
+            "id": "99164900efba2b3e",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Notas/General.canvas",
+                "viewState": {
+                  "x": 4011.166306047251,
+                  "y": 2272.608613689792,
+                  "zoom": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "7c95340c6a434e4f",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Notas/General.canvas",
+                "viewState": {
+                  "x": 1958.91783679509,
+                  "y": 2659.4748424106133,
+                  "zoom": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "daf6e6e5d4c95522",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Notas/General.canvas",
+                "viewState": {
+                  "x": 3839.6979553312885,
+                  "y": -1804.8054729717724,
+                  "zoom": -0.2000000000000004
                 }
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -72,7 +118,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "f386529668455cb0",
@@ -150,36 +196,37 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "d918f7c3ef1dfb85",
+  "active": "daf6e6e5d4c95522",
   "lastOpenFiles": [
-    "MPI_integrator/teste/y.dat",
-    "MPI_integrator/teste/x.dat",
-    "MPI_integrator/teste",
-    "MPI_integrator/start.dat",
-    "MPI_integrator/integrator_mpi2.cpp",
-    "MPI_integrator/integrator_mpi copy.cpp",
+    "MPI_std_map/data-b_label/K_10.0000/recurrence",
+    "MPI_std_map/data-b_label/K_10.0000",
+    "MPI_std_map/data-b_label/K_15.0000",
+    "MPI_std_map/data-b_label/K_6.5000",
+    "MPI_std_map/data-b_label/K_5.0000",
+    "MPI_std_map/data-b_label/K_3.0000",
+    "MPI_std_map/data-b_label/K_0.0000",
+    "MPI_std_map/data-b_label",
+    "MPI_std_map/plot_rec.py",
+    "Notas/Drawing 2023-07-24 16.58.39.excalidraw.md",
+    "Pasted Image 20230829191139_020.png",
     "Notas/General.canvas",
+    "Notas/parameters.md",
+    "Excalidraw/Drawing 2023-08-29 19.10.48.excalidraw.md",
+    "Excalidraw",
+    "MPI_std_map/map_chaos/3.552.png",
+    "MPI_std_map/map_chaos/3.532.png",
+    "MPI_std_map/map_chaos/3.512.png",
+    "MPI_std_map/map_chaos/3.492.png",
+    "MPI_std_map/map_chaos/3.472.png",
+    "MPI_std_map/map_chaos/3.452.png",
+    "MPI_std_map/map_chaos/3.431.png",
+    "MPI_std_map/map_chaos/3.411.png",
+    "MPI_std_map/map_chaos/3.391.png",
+    "MPI_std_map/data-test_disp_1.200/displacement",
     "Notas/General (Cópia em conflito de docttp361-hp-z800 2023-08-17).canvas",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/y.dat",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/x.dat",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_raw.png",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_op.png",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_labeled.png",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/mm_cls.png",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160/map.png",
-    "MPI_integrator/data-results/mm/pi4_A2_0.160",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/y.dat",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/x.dat",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_raw.png",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_op.png",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_labeled.png",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/mm_cls.png",
-    "MPI_integrator/data-results/mm/data-mm_pi4_A2_0.160/map.png",
     "Notas/map_anom.excalidraw.md",
     "Notas/map_dif.excalidraw.md",
     "Notas/Tittle.md",
-    "Notas/Drawing 2023-07-24 16.58.39.excalidraw.md",
-    "Notas/parameters.md",
     "Notas/MathMorphIdea.excalidraw.md",
     "Notas/Drawing 2023-07-18 16.47.46.excalidraw.md",
     "Untitled.md",

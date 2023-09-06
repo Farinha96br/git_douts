@@ -69,13 +69,14 @@ int main(int argc, char** argv) {
       global_y = (double*)malloc(its*size*sizeof(double)); // apenas o 1o processo ganha um pedaçao
       // faz a lista de pontos iniciais em x e y:
       // nesse caso uma malha estilo np.meshgrid
+
       if (gencase == 0){
-         int NX = 8; // numero de pontos em X
-         int NY = 8; // numero de pontos em Y
-         double p0x = (M_PI/3)-0.05;
-         double pfx = (M_PI/3)+0.05;
-         double p0y = (M_PI/3)-0.05;
-         double pfy = (M_PI/3)+0.05;
+         int NX = 7; // numero de pontos em X
+         int NY = 7; // numero de pontos em Y
+         double p0x = (M_PI/3)-0.01;
+         double pfx = (M_PI/3)+0.01;
+         double p0y = (M_PI/3)-0.01;
+         double pfy = (M_PI/3)+0.01;
          double dx = (pfx - p0x)/(NX-1.0); // faz o passo usando a ideia do linspace
          double dy = (pfy - p0y)/(NY-1.0); // 
          for (int i = 0; i < size; i++){
@@ -117,8 +118,8 @@ int main(int argc, char** argv) {
          }
          
       }
-
    }
+
    else{
       x0s = (double*)malloc(1*sizeof(double)); // resto ganha pocalias apenas
       y0s = (double*)malloc(1*sizeof(double)); // resto ganha pocalias apenas

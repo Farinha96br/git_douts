@@ -11,9 +11,15 @@ os.system("mpic++ -O3 " + program + " -lm -lgsl")        # Compila
 rootname = "data-mm_pi4_A2"
 its = 5000                              # Numero de iteracoes
 Npar = 8                               # Numero de runs paralelas
-Nstarts = 8*8                      # Numero de cond. iniciais (Conferir no programa em sí!!!)
-scase = 0 # 1 => pontos aleatorios, 2 => grid definido do programa, 2 => le um arquivo especificado
+
+scase = 0 # 0 => grid definido (configurar no program), 1 => pontos aleatorios, 2 => le um arquivo especificado
 sfile = "start.dat"
+Nstarts = 7*7                      # Numero de cond. iniciais (Conferir no programa em sí!!!)
+
+if scase == 2:
+    Nstarts = len(np.loadtxt(sfile)[:,0])
+    print(Nstarts)
+
 # faz a pasta onde vai ter os roles
 
 
