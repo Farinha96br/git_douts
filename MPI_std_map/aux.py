@@ -1,6 +1,8 @@
 # Arquivo em python com funçoes auxiliares
 import random as rng
 import numpy as np
+from skimage import morphology as mm
+
 
 def label_hue2(labels):
     # recebe uma img rotulada e aplica cores aleatorias nelas
@@ -31,24 +33,30 @@ def perisim(x,lim):
     return (x-lim)%(2*lim)
 
 
-def tiptxt(x):
-    # 0X = Periodico
-    # 1X = Caotico
-    # X0 = Sem transporte
-    # X1 = Transp Horizontal
-    # X2 = Transp vertical
-    # X3 = Tranp geral
-    txt = ["A","B"] # periodico sem transporte
-    if x >= 10:
-        txt[0] = "C"
-    if x < 10:
-        txt[0] = "P"
-    if x%10 == 0:
-        txt[1] = "T"
-    if x%10 == 1:
-        txt[1] = "H"
-    if x%10 == 2:
-        txt[1] = "V"
-    if x%10 == 3:
-        txt[1] = "G"
-    return "".join(txt)
+def mm_filter(img_gr,radius):
+    SE = mm.disk(radius)
+    SEconnec = mm.diamond(1) # 4-conectividade na reconstrucao
+    ero = mm.erosion(img_gr,SE)
+    opening = mm.reconstruction(ero,img_gr,"dilation",SEconnec)
+    dil = mm.dilation(opening,SE)
+    close = mm.reconstruction(dil,opening,"erosion",SEconnec)
+    return close
+
+def isAcc(x):
+    # checa se a particula tem um modo acelerado
+    d = np.diff(x)
+    ret = False
+    if np.all(d > 0) or np.all(d < 0):
+        ret = True
+    return ret
+
+
+def H2d(x,y,xedges,yedges):
+    hist , xedges, yedges = np.histogram2d(x,y,bins = (xedges,yedges))
+    hist = hist[hist != 0]
+    hist = hist/np.sum(hist)
+
+    entropy = -1*np.sum(hist*np.log(hist))
+    return entropy
+
+

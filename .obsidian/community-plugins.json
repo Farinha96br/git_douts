@@ -2,5 +2,7 @@
   "optimize-canvas-connections",
   "obsidian-excalidraw-plugin",
   "obsidian-jupyter",
-  "emoji-shortcodes"
+  "emoji-shortcodes",
+  "obsidian-pretty-bibtex",
+  "obsidian-annotator"
 ]

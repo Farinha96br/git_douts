@@ -4,6 +4,8 @@ import sys
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import aux
+import skimage.feature as ft
+import skimage.morphology as mm
 
 # Algumas paletas de cor p serem usadas (VSCode recomendado pra mostar as cores no editor de texto)
 rgb_light =  ['#ce5825','#2e9a60','#6182e2']
@@ -36,8 +38,8 @@ N = len(x[:,0])
 
 
 
-reclim = 1000
-for i in np.arange(100,len(x[:,0])):
+reclim = 500
+for i in np.arange(0,len(x[:,0])):
     
     fig, ax = plt.subplots()
     fig.set_size_inches(10*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
@@ -53,16 +55,22 @@ for i in np.arange(100,len(x[:,0])):
     #yy = yy**2
 
     M = aux.recmatrix2D(x_t,y_t,0.01*np.sqrt(np.pi**2))
- 
-    count = np.sum(M)/(reclim*reclim)
-    
-    if count < 0.01:
-        title = "chaos"
-    if count > 0.01:
+    #print(np.flip(np.identity(25),axis=1))
+
+    #Cx, Cy = aux.center_mass(M)
+    #Dcenter = np.sqrt((Cx-reclim/2)**2+(Cx-reclim/2)**2)
+
+    #glcm = ft.greycomatrix(M,levels=2,distances=[1],angles = [np.pi/4])
+    print(i,np.sum(M)-reclim)
+    param = np.sum(M)-reclim
+    if param > 2*reclim:
         title = "periodic"
+    if param < 2*reclim:
+        title = "chaos"
     
-        
-    print(i,"/",count, title)
+    #print(i,"/",Cx, Cy,Dcenter, title)   
+
+    
 
     ts = np.arange(0,reclim,1)
     tt1,tt2 = np.meshgrid(ts,ts)
@@ -75,7 +83,7 @@ for i in np.arange(100,len(x[:,0])):
     ax.set_ylabel(r"$x(\tau')$")
     #fig.colorbar(ax1,label=r"$\Delta S$")
 
-    plt.savefig(folder + "/recurrence/" + str(i-100) + ".png",bbox_inches='tight',dpi = 300) # salva em png
+    plt.savefig(folder + "/recurrence/" + str(i) + ".png",bbox_inches='tight',dpi = 300) # salva em png
     plt.close()
     
     

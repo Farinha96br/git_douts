@@ -1,5 +1,4 @@
 import numpy as np
-import os
 import sys
 import matplotlib.pyplot as plt
 import matplotlib.colors
@@ -14,7 +13,7 @@ cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_pallet = ['#007a96','#b39700','#b04bb0']
 
 ## modelo de como criar um colormap linear usando cores predefinidas:
-cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"black",rgb_pallet[0]])
+cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["#9ef27b","#FF6645","#FF59D7","#8FAAFF"])
 
 
 ######
@@ -29,18 +28,28 @@ file = sys.argv[1]
 data = np.loadtxt(file)
 
 ##  Título do plot
+Kc = 0.9716
 
 ax.set_xlim([0,9])
 ax.set_xlabel(r"$K$")
-
-#ax.set_ylim([-0.01,1.05])
-ax.set_ylabel(r"#regions")
-
+ax.set_xticks([0,Kc,2,3,4,5,6,7,8,9])
+ax.set_xticklabels([0,r"$K_c$",2,3,4,5,6,7,8,9])
 
 
+ax.set_ylim([0,1])
+ax.set_ylabel(r"%area")
+
+
+cmap2(0)
 # plot normal
-ax.plot(data[:,0],data[:,3],linewidth = 0.5, color = rgb_pallet[1])
-#ax.plot(data[:,0],data[:,2],linewidth = 0.5, color = rgb_pallet[0],label = "Chaotic")
+a = np.linspace(0,1,4)
+ax.plot(data[:,0],data[:,1],linewidth = 0.5, color = "#4dd315", label = "periodic conf.")
+ax.plot(data[:,0],data[:,2],linewidth = 0.5, color = "#FF6645", label = "periodic acc.")
+ax.plot(data[:,0],data[:,3],linewidth = 0.5, color = "#FF59D7", label = "chaotic conf.")
+ax.plot(data[:,0],data[:,4],linewidth = 0.5, color = "#507AFF", label = "chaotic transp.")
+
+ax.axvline(Kc,ls="--",lw=0.5,c="Grey")
+
 
 ax.legend(frameon=False) # Caixinha d legenda sem borda
 #plt.savefig("graph.pdf",bbox_inches='tight') # salva em pdf
