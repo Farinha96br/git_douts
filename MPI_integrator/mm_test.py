@@ -2,8 +2,7 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt
 import matplotlib.colors
-from skimage import morphology as mm
-from skimage import measure as med
+import matplotlib.patches as mpatches
 import aux
 
 # Algumas paletas de cor p serem usadas (VSCode recomendado pra mostar as cores no editor de texto)
@@ -16,7 +15,7 @@ cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_pallet = ['#007a96','#b39700','#b04bb0']
 
 ## modelo de como criar um colormap linear usando cores predefinidas:
-cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", [rgb_pallet[2],"black",rgb_pallet[0]])
+cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["#ffffff","#4E6CFF","#FF4E6C"])
 
 
 ######
@@ -25,10 +24,7 @@ plt.rc('font', family='serif') # fonte tipo serif, p fica paredico com latex msm
 plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se for p salvar png
 ######
 
-fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-ax.set_xlabel(r"$y$")
-ax.set_ylabel(r"$x$")
+
 
 kx = 3
 ky = 3
@@ -42,44 +38,55 @@ label = np.load(folder + "/label.npy")
 print("loading x...")
 x = np.loadtxt(folder + "/x.dat")
 x = x[Nskip:,:]
-#x = x%(2*np.pi/kx)
+
 print("loading y...")
 y = np.loadtxt(folder + "/y.dat")
 y = y[Nskip:,:]
-#y = y%(2*np.pi/ky)
 
 
 
-tipo = [None]*(np.max(label))
+tipo = [None]*(len(x[:,0]))
 # 0 = confinada
-# 1 = transporte
+# 1 = transporte normal
 # 2 = balistica
-i = 0
-while i < len(x[:,0]):
-    dev = np.std(x[i,:])
 
-    if dev > 500:
-        tipo[i] = 3
+
+for i in range(0,len(x[:,0])):
+    #print(i,":",x[i,0],y[i,0])
+    x_t = x[i,:]
+    t = np.arange(0,len(x_t))
+    txt = ""
+    gamma, erro = aux.getExp(x_t,t)
+
+    if gamma < 0.5:
+        tipo[i] = 0
     
-    if dev < 500:
-        tipo[i] = 2
-
-    if np.all(np.abs(x[i,:]) < 2*np.pi/kx):
+    if gamma >= 0.7 and gamma < 1.7:
         tipo[i] = 1
+
+    if gamma >= 1.7:
+        tipo[i] = 2
     
-    i += 1
+    
+
+
+    tipo[i] = gamma
+
+     
+    print(i,"{:05.4f}".format(gamma),"{:05.4f}".format(erro))
+
 
 # Bota os dados num grid (ainda com elementos repitidos)
 kx = 3
 Lx = 2*np.pi/kx
-Nx = 512
+Nx = 1024
 Lpxx = Lx/Nx
 #xpx = np.trunc(x/Lpxx).astype("int32")
 #xpx = np.ravel(xpx)
 #
 ky = 3 
 Ly = 2*np.pi/ky
-Ny = 512
+Ny = 1024
 Lpxy = Ly/Ny
 #ypx = np.trunc(y/Lpxy).astype("int32")
 #ypx = np.ravel(ypx)
@@ -104,74 +111,73 @@ print(x.shape)
 
 print(x)
 
-px0 = np.array((x[:,0]*Nx/Lx).astype("int"))
-py0 = np.array((y[:,0]*Ny/Ly).astype("int"))
+px0 = x[:,0]
+py0 = y[:,0]
 
 
-
-
-
-
-aa, bb = np.meshgrid(np.arange(Nx),np.arange(Ny))
-
-fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393)
-ax.set_xlabel(r"$y$")
-ax.set_ylabel(r"$x$")
-ax.pcolormesh(bb, aa, label, cmap = "rainbow")
-for i in range(0,len(tipo)):
-    ax.text(py0[i],px0[i],tipo[i],c= "white")
-    print(py0[i],px0[i],tipo[i])
-ax.scatter(py0[i],px0[i],s = 0.5,c= "black")
-
-plt.savefig(folder + "/mm_7_tests",bbox_inches='tight',dpi = 300) # salva em png
-plt.close()
-
+aa, bb = np.meshgrid(np.linspace(0,Lx,Nx),np.linspace(0,Ly,Ny))
 
 label_type = np.zeros(label.shape)
-
 print("#N",np.max(label))
 
 
-for i in range(1,np.max(label)+1):
+for i in range(0,len(tipo)):
+
+    print(i,tipo[i])
     mask_region = np.zeros(label.shape)
     mask_region[label == i] = 1
-    label_type[mask_region == 1] = tipo[i-1]
-    
+    label_type[mask_region == 1] = tipo[i]
+
 
 
 
 fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393)
-ax.set_xlabel(r"$y$")
-ax.set_ylabel(r"$x$")
-ax.pcolormesh(bb, aa, label_type, cmap = "rainbow")
+fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
 
-for i in range(0,len(tipo)):
-    if tipo[i] == 1:
-        ax.text(py0[i],px0[i],"c",c= "white")
-    if tipo[i] == 2:
-        ax.text(py0[i],px0[i],"d",c= "white")
-    if tipo[i] == 3:
-        ax.text(py0[i],px0[i],"b",c= "white")
+ax.set_xlim(0,2*np.pi/3)
+ax.set_xticks([0,2*np.pi/6,2*np.pi/3])
+ax.set_xticklabels([r"$0$",r"$2\pi/2k_y$",r"$2\pi/k_y$"])
+ax.set_ylim(0,2*np.pi/3)
+ax.set_yticks([0,2*np.pi/6,2*np.pi/3])
+ax.set_yticklabels([r"$0$",r"$2\pi/2k_x$",r"$2\pi/k_x$"])
+plotson = ax.pcolormesh(bb, aa, label_type, cmap = cmap2,vmin = 0, vmax = 2)
 
-#ax.scatter(py0[i],px0[i],s = 0.5,c= "black")
-plt.savefig(folder + "/mm_8_tests",bbox_inches='tight',dpi = 300) # salva em png
+# Ajeita os labels
+patch0 = mpatches.Patch(color="#ffffff", label='trapped')
+patch1 = mpatches.Patch(color="#4E6CFF", label='diffusive')
+patch2 = mpatches.Patch(color="#FF4E6C", label='ballistic')
+
+ax.legend(handles=[patch0,patch1,patch2],)
+
+
+
+#ax.scatter(py0,px0,s = 0.5,c = "black")
+#for i in range(0,len(px0)):
+#    ax.text(py0[i],px0[i],str(i),c = "black",size="small")
+
+#plt.colorbar(plotson)
+ax.set_xlim(0,2*np.pi/3)
+ax.set_ylim(0,2*np.pi/3)
+
+plt.savefig(folder + "/mm_type",bbox_inches='tight',dpi = 300) # salva em png
+
 plt.close()
 
 
-var = folder[-5:]
+file = open("areas.dat","a")
 
-file = open("tranp_frac","a")
-#file.write("# var confined difusive balistic\n")
-file.write(var + " ")
+norm = label.shape[0]*label.shape[1]
 
-for i in range(1,4):
-    mask = np.zeros(label.shape)
-    mask = label_type[label_type == i]
-    sum = np.sum(mask)
-    file.write(str(sum) + " ")
-
-file.write(str(sum) + "\n")
+norm = np.sum(norm)
+#file.write("#var    periodic-conf periodic-acc chaos-trapped chaos-transport")
+file.write(folder[-8:] + "\t")
+print(norm,label.shape)
 
 
+for i in range(0,2):
+    mask = label_type == i
+    mask = np.sum(mask)/norm
+    file.write(str(mask) + "\t")
+
+file.write(str(np.max(label)) + "\t")
+file.write("\n")
