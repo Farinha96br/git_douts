@@ -147,21 +147,6 @@ py0 = y[:,0]
 
 aa, bb = np.meshgrid(np.linspace(0,2*np.pi,Nx),np.linspace(-np.pi,np.pi,Ny))
 
-#fig, ax = plt.subplots()
-#fig.set_size_inches(7*0.393, 7*0.393)
-#ax.set_xlabel(r"$\theta$")
-#ax.set_ylabel(r"$p$")
-#ax.set_title("Recheck label")
-#ax.pcolormesh(aa, bb, label, cmap = "rainbow")
-#ax.scatter(px0,py0,s = 0.5,c = "black")
-#for i in range(0,len(x[:,0])):
-#    ax.text(px0[i],py0[i],str(i),c = "black",size="small")
-#
-#plt.savefig(folder + "/mm_7_tests",bbox_inches='tight',dpi = 300) # salva em png
-#plt.close()
-
-
-
 label_type = np.zeros(label.shape)
 print("#N",np.max(label))
 
@@ -184,11 +169,6 @@ ax.set_ylabel(r"$p$")
 plotson = ax.pcolormesh(aa, bb, label_type, cmap = cmap2,vmin=0,vmax=3)
 ax.set_xlim(0,2*np.pi)
 ax.set_ylim(-np.pi,np.pi)
-
-#ax.scatter(px0,py0,s = 0.5,c = "black")
-
-
-#fig.colorbar(plotson)
 
 plt.savefig(folder + "/mm_8_tests",bbox_inches='tight',dpi = 300) # salva em png
 plt.savefig("transp_type/K_" + folder[-6:] +".png",bbox_inches='tight',dpi = 300) # salva em png

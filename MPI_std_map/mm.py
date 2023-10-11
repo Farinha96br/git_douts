@@ -1,10 +1,9 @@
 import numpy as np
 import sys
+import os
 import matplotlib.pyplot as plt
 import matplotlib.colors
 from skimage import morphology as mm
-from skimage import measure as med
-import aux
 
 # Algumas paletas de cor p serem usadas (VSCode recomendado pra mostar as cores no editor de texto)
 rgb_light =  ['#ce5825','#2e9a60','#6182e2']
@@ -46,12 +45,12 @@ folder = sys.argv[1]
 print("loading x...")
 x = np.loadtxt(folder + "/theta.dat")
 x = x%(2*np.pi)
-x = x[:82,:]
+x = x[:81,:]
 
 print("loading y...")
 y = np.loadtxt(folder + "/p.dat")
 y = (y-np.pi)%(2*np.pi)
-y = y[:82,:]
+y = y[:81,:]
 # Bota os dados num grid (ainda com elementos repitidos)
 
 SaveSteps = True

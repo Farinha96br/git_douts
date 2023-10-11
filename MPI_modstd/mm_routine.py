@@ -8,8 +8,8 @@ import time
 
 program = "integrator_mpi.cpp"                    # Nome de programa
 os.system("mpic++ -O3 " + program + " -lm -lgsl")        # Compila
-rootname = "data-mm2/K"
-its = 50000                              # Numero de iteracoes
+rootname = "data-test/K"
+its = 1000                              # Numero de iteracoes
 Npar = 8                               # Numero de runs paralelas
 
 scase = 0 # 0 => grid definido (configurar no program), 1 => pontos aleatorios, 2 => le um arquivo especificado
@@ -25,12 +25,11 @@ Nfull = int(Nstarts/Npar)
 Nleft = Nstarts - Nfull*Npar 
 
 print("Nleft:",Nleft,"Nfull",Nfull)
-#vars = np.arange(0,8.025,0.025)
-vars = np.linspace(0,9,400)
-
+vars = np.linspace(0,0.5,100) # Valor de K
+Nwaves = 10
 for var_i in range(0,len(vars)):
     print(var_i,":",var_i,"/",len(vars))
-    svar = "{:.4f}".format(vars[var_i])
+    svar = "{:08.4f}".format(vars[var_i])
     folder = rootname + "_" + svar
     #os.system("python3 dif.py " + folder)
     os.makedirs(folder,exist_ok=True)
@@ -39,8 +38,8 @@ for var_i in range(0,len(vars)):
         s0 = time.time()
         L0 = i*Npar
         print()
-        runstring = "mpirun -np " + str(Npar)  + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
-        #print(runstring)
+        runstring = "mpirun -np " + str(Npar)  + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(Nwaves) + " " + str(vars[var_i]) + " " + sfile + " " + folder
+        print(runstring)
         os.system(runstring)
         times = np.append(times,time.time() - s0)
         avg = np.sum(times/len(times))
@@ -48,17 +47,14 @@ for var_i in range(0,len(vars)):
 
     if Nstarts%Npar != 0:
         L0 = Nfull*Npar
-        runstring = "mpirun -np " + str(Nleft) + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
+        runstring = "mpirun -np " + str(Nleft) + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(Nwaves) + " " + str(vars[var_i]) + " " + sfile + " " + folder
         #print(runstring)
         os.system(runstring)
 
-    os.system("python3 mm.py " + folder)
+    #os.system("python3 mm.py " + folder)
+    #os.system("python3 plot_each.py " + folder)
+    os.system("python3 plot_map.py " + folder)
 
-
-
-
-#   print(folder)
-#   os.system("python3 plot_map.py " + folder)
 #   os.system("python3 plot_disp.py " + folder)
 
 
@@ -66,39 +62,39 @@ for var_i in range(0,len(vars)):
 #roda p testar os pontos
 
 
-scase = 2
-for var_i in range(0,len(vars)):
-    svar = "{:.4f}".format(vars[var_i])
-    folder = rootname + "_" + svar
-    os.makedirs(folder,exist_ok=True)
-    sfile = folder + "/testpoints.dat"
-    starts = np.loadtxt(sfile)
-    if starts.shape == (2,):
-        Nstarts = 1
-    else:
-        Nstarts = len(starts[:,0])
-  
-    print(folder)
-
-    Nfull = int(Nstarts/Npar)
-    Nleft = Nstarts - Nfull*Npar 
-    print("Nleft:",Nleft,"Nfull",Nfull)
-    for i in range(0,Nfull):
-        s0 = time.time()
-        L0 = i*Npar
-        print()
-        runstring = "mpirun -np " + str(Npar)  + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
-        #print(runstring)
-        os.system(runstring)
-        times = np.append(times,time.time() - s0)
-        avg = np.sum(times/len(times))
-        print(i,"/",Nfull,"expected runtime:" , avg*(Nfull+Nleft)/(60*60)," h")
-
-    if Nstarts%Npar != 0:
-        L0 = Nfull*Npar
-        runstring = "mpirun -np " + str(Nleft) + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
-        #print(runstring)
-        os.system(runstring)
-
-    #os.system("python3 mm_test.py " + folder + " 81")
-    #os.system("python3 plot_map.py " + folder)
+#scase = 2
+#for var_i in range(0,len(vars)):
+#    svar = "{:.4f}".format(vars[var_i])
+#    folder = rootname + "_" + svar
+#    os.makedirs(folder,exist_ok=True)
+#    sfile = folder + "/testpoints.dat"
+#    starts = np.loadtxt(sfile)
+#    if starts.shape == (2,):
+#        Nstarts = 1
+#    else:
+#        Nstarts = len(starts[:,0])
+#  
+#    print(folder)
+#
+#    Nfull = int(Nstarts/Npar)
+#    Nleft = Nstarts - Nfull*Npar 
+#    print("Nleft:",Nleft,"Nfull",Nfull)
+#    for i in range(0,Nfull):
+#        s0 = time.time()
+#        L0 = i*Npar
+#        print()
+#        runstring = "mpirun -np " + str(Npar)  + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
+#        #print(runstring)
+#        os.system(runstring)
+#        times = np.append(times,time.time() - s0)
+#        avg = np.sum(times/len(times))
+#        print(i,"/",Nfull,"expected runtime:" , avg*(Nfull+Nleft)/(60*60)," h")
+#
+#    if Nstarts%Npar != 0:
+#        L0 = Nfull*Npar
+#        runstring = "mpirun -np " + str(Nleft) + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
+#        #print(runstring)
+#        os.system(runstring)
+#
+#    #os.system("python3 mm_test.py " + folder + " 81")
+#    #os.system("python3 plot_map.py " + folder)

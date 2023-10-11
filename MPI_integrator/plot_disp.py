@@ -31,12 +31,12 @@ print("loading y...")
 y = np.loadtxt(folder + "/y.dat")
 
 
-shape = (1024,1024)
+shape = (64,64)
 x0 = np.reshape(x[:,0],shape)
 y0 = np.reshape(y[:,0],shape)
 
 
-for t in np.arange(0,100,1):
+for t in np.arange(0,1001,100):
     print("t: ",t)
     fig, ax = plt.subplots()
     fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm

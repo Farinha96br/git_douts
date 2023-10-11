@@ -10,13 +10,11 @@ using namespace std;
 // Inicializa as variaveis do sisema, amplitudes, frequencias etc...
 //array<double,1> phasex;
 double k;
+double M; // numero de ondas
 double t;
 // função pra printar o role
 double strobe; // estrobo pra quanto tem só duas ondas
 double step; // define o passo temporal
-
-
-
 
 
     
@@ -29,9 +27,11 @@ int main(int argc, char** argv) {
    int gencase = atoi(argv[1]); // 0 = grid de pontos, 1 = pontos aleatorios
    int L0 = atoi(argv[2]); // linha dos dados que começa a ler
    int its = atoi(argv[3]);
-   double var = atof(argv[4]);
-   // argv[5] é o arquivo de entrada
-   // argv[6] é a pasta de saida
+   int M = atoi(argv[4]);
+   double K = atof(argv[5]);
+
+   // argv[6] é o arquivo de entrada
+   // argv[7] é a pasta de saida
 
    int rank, size;
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
          //char intxy[100];
          //sprintf(intxy,"%s/start.dat",argv[5]);
          FILE *input_file;
-         input_file = fopen(argv[5],"r");
+         input_file = fopen(argv[6],"r");
          //
          int line = 0;
          int index_load = 0;
@@ -138,28 +138,57 @@ int main(int argc, char** argv) {
 
    // parametros do sistema
     // Constantes do sistema
-   k = var;
-   step = 1.0;
-   double tf = its;
+   step = 2*M_PI/5000;
+   strobe = 2*M_PI;
 
+
+   double tf = its*strobe;
    printf("x: %lf y %lf \n",x0 ,y0);
   
    double p = y0;
-   double theta = x0;
+   double q = x0;
 
 
 
-	int c = 0;
+	
+   // inicializa as fases aleatorias
+   double tempsum;
+   double phases[2*M+1];
+   
+   gsl_rng_default_seed = 1996; 
+   gsl_rng *w = gsl_rng_alloc(gsl_rng_taus); 
+   for (int i = 0; i < 2*M+1; i++){
+      phases[i] = gsl_rng_uniform(w)*2.0*M_PI;
+      //phases[i] = 0;
+
+      //printf("%d %lf\n",i,phases[i]);
+   }
+   gsl_rng_free(w);
+
+   int c = 0;
+   t = 0;
+
    while (t < tf){    
-      //printf(" rank:%d theta: %lf: p: %lf: \n",rank,theta,p) ;
-      xts[c] = theta;
-      yts[c] = p;
-
-      p += k*sin(theta);
-      theta += p;
-      t += step;
-      c++;
+      if ((t > c*strobe - step/2) && (t < c*strobe + step/2)){
+   		//printf(" rank:%d x[0]: %lf: \n",rank,x[0]) ;
+         xts[c] = q;
+			yts[c] = p;
+			c++;
       }
+      q += step*p;
+      tempsum = 0;
+      
+
+      for (int m = -M; m <= M; m++){
+         tempsum += sin(q-m*t+phases[m+M]);
+      }
+      //tempsum = tempsum/(2*M+1);
+      p += step*tempsum*K/(4*M_PI*M_PI);
+
+      
+        
+      t += step;
+   }
 
 
 
@@ -186,12 +215,12 @@ int main(int argc, char** argv) {
       printf("WRITING... \n");
       FILE *filex;
       char outx[100];
-      sprintf(outx,"%s/theta.dat",argv[6]);
+      sprintf(outx,"%s/q.dat",argv[7]);
       filex = fopen(outx,"a");
 
       FILE *filey;
       char outy[100];
-      sprintf(outy,"%s/p.dat",argv[6]);
+      sprintf(outy,"%s/p.dat",argv[7]);
       filey = fopen(outy,"a");
 
 

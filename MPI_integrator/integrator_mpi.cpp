@@ -71,12 +71,18 @@ int main(int argc, char** argv) {
       // nesse caso uma malha estilo np.meshgrid
 
       if (gencase == 0){
-         int NX = 7; // numero de pontos em X
-         int NY = 7; // numero de pontos em Y
-         double p0x = (M_PI/3)-0.01;
-         double pfx = (M_PI/3)+0.01;
-         double p0y = (M_PI/3)-0.01;
-         double pfy = (M_PI/3)+0.01;
+         int NX = 9; // numero de pontos em X
+         int NY = 9; // numero de pontos em Y
+         double p0x = 0;
+         double pfx = 2*M_PI/3;
+         double p0y = 0;
+         double pfy = 2*M_PI/3;
+         
+         //double p0x = 0.7*2*M_PI/3;
+         //double pfx = 2*M_PI/3;
+         //double p0y = 0.7*2*M_PI/3;
+         //double pfy = 2*M_PI/3;
+         
          double dx = (pfx - p0x)/(NX-1.0); // faz o passo usando a ideia do linspace
          double dy = (pfy - p0y)/(NY-1.0); // 
          for (int i = 0; i < size; i++){
@@ -147,11 +153,11 @@ int main(int argc, char** argv) {
 
    // parametros do sistema
     // Constantes do sistema
-   A = {1.0,var};
+   A = {1.0,0.16};
    kx = {3.0,3.0};
    ky = {3.0,3.0};
    v = 1.0;
-   phasex = {0,M_PI/4.0};
+   phasex = {0,var};
    U = 0;
    double tau = abs(2.0*M_PI/(v*ky[1])); // usado p mapas
 	step = tau/500.0; // passo eh um milesimo do periodo da perturbação;

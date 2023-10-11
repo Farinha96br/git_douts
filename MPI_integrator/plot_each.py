@@ -32,21 +32,21 @@ y = np.loadtxt(folder + "/y.dat")
 kx = 3
 ky = 3
 
-for i in np.arange(0,len(x[:,0])):
-    print(i)
+for i in np.arange(81,len(x[:,0])):
+    print(i,x[i,0],y[i,0])
     fig, ax = plt.subplots(2,1,sharex=True)
     fig.set_size_inches(10*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-    for j in range(-10,10):
-        ax[0].axhline(j*np.pi/kx,ls = "--",lw = 0.1,color = "#555555")
-        ax[y].axhline(j*np.pi/ky,ls = "--",lw = 0.1,color = "#555555")
-    ax[0].plot(x[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[2],zorder = 1)
+    #for j in range(-10,10):
+       #ax[0].axhline(j*np.pi/kx,ls = "--",lw = 0.1,color = "#555555")
+       #ax[1].axhline(j*np.pi/ky,ls = "--",lw = 0.1,color = "#555555")
+    ax[0].plot(x[i,:],ls= "-",lw = 0.2,color = rgb_pallet[2],zorder = 1)
     ax[0].set_ylabel(r"$x(\tau)$")
-    ax[0].set_ylim(-50,50)
-    ax[1].plot(y[i,:],ls= "",marker="o",markersize=0.5,color = rgb_pallet[1])
+    #ax[0].set_ylim(-50,50)
+    ax[1].plot(y[i,:],ls= "-",lw = 0.2,color = rgb_pallet[1],zorder = 1)
     ax[1].set_ylabel(r"$y(\tau)$")
-    ax[1].set_ylim(-50,50)
+    #ax[1].set_ylim(-50,50)
     ax[1].set_xlabel(r"$\tau$")
-    plt.savefig(folder + "/trajs/" + str(i) + ".png",bbox_inches='tight',dpi = 300) # salva em png
+    plt.savefig(folder + "/trajs/" + str(i-81) + ".png",bbox_inches='tight',dpi = 300) # salva em png
     plt.close()
 
 

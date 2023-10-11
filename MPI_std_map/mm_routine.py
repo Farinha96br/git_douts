@@ -30,7 +30,7 @@ vars = np.linspace(0,9,400)
 
 for var_i in range(0,len(vars)):
     print(var_i,":",var_i,"/",len(vars))
-    svar = "{:.4f}".format(vars[var_i])
+    svar = "{:08.4f}".format(vars[var_i])
     folder = rootname + "_" + svar
     #os.system("python3 dif.py " + folder)
     os.makedirs(folder,exist_ok=True)
@@ -50,9 +50,9 @@ for var_i in range(0,len(vars)):
         L0 = Nfull*Npar
         runstring = "mpirun -np " + str(Nleft) + " ./a.out " + str(scase) + " " +  str(L0) + " " + str(its) + " " + str(vars[var_i]) + " " + sfile + " " + folder
         #print(runstring)
-        os.system(runstring)
+        os.system(runstring + "\n")
 
-    os.system("python3 mm.py " + folder)
+    os.system("python3 mm.py " + folder + " \n")
 
 
 

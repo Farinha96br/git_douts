@@ -26,29 +26,28 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 
 folder = sys.argv[1]
 os.makedirs(folder + "/trajs",exist_ok=True)
-x = np.loadtxt(folder + "/theta.dat")%(2*np.pi)
+x = np.loadtxt(folder + "/q.dat")%(2*np.pi)
 y = np.loadtxt(folder + "/p.dat")
 
 tmax = 5000
-for i in np.arange(81,len(x[:,0])):
-    print(i)
-    
-    xbins = np.linspace(0,2*np.pi,1024)
-    ybins = np.linspace(-np.pi,np.pi,1024)
-    H = aux.H2d(x[i,:]%(2*np.pi),aux.perisim(y[i,:],np.pi),xbins,ybins)
-    print(H)
+for i in np.arange(0,len(x[:,0])):
+
+
     t = np.arange(len(x[0,0:tmax]))
     fig, ax = plt.subplots(2,1,sharex=True)
     fig.set_size_inches(10*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-    ax[0].set_title(str(H))
+    M = float(folder[-6:])
+    M = int(M)
+    M = 2*M + 1
+    ax[0].set_title("N = " + str(M))
     ax[0].scatter(t,x[i,:tmax],s=0.75,edgecolors='none', color = rgb_pallet[2],zorder = 1)
-    ax[0].set_ylabel(r"$\theta/2\pi$")
+    ax[0].set_ylabel(r"$q/2\pi$")
     #ax[0].set_ylim(-100,100)
     ax[1].scatter(t,y[i,:tmax],s=0.75,edgecolors='none', color = rgb_pallet[1],zorder = 1)
     ax[1].set_ylabel(r"$p$")
     #ax[1].set_ylim(-100,100)
     ax[1].set_xlabel(r"$t$")
-    plt.savefig(folder + "/trajs/" + str(i-81) + ".png",bbox_inches='tight',dpi = 300) # salva em png
+    plt.savefig(folder + "/trajs/" + str(i) + ".png",bbox_inches='tight',dpi = 300) # salva em png
     plt.close()
 
 

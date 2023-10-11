@@ -31,25 +31,23 @@ print("loading y...")
 y = np.loadtxt(folder + "/p.dat")
 
 
-shape = (512,512)
+shape = (1024,1024)
 x0 = np.reshape(x[:,0],shape)
 y0 = np.reshape(y[:,0],shape)
 
 
-for t in np.arange(0,100,1):
-    print("t: ",t)
 
-    yf = y0 - np.reshape(y[:,t],shape)
-    fig, ax = plt.subplots()
-    fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
-    
-    ax.set_xlabel(r"$\theta$")
-    ax.set_ylabel(r"$p$")
+yf = y0 - np.reshape(y[:,-1],shape)
+fig, ax = plt.subplots()
+fig.set_size_inches(7*0.393, 7*0.393) # o valor multiplicando é o tamanho em cm
 
-    a = ax.pcolormesh(x0,y0,yf,cmap="bwr")
-    fig.colorbar(a,label = r"$\Delta p$")
-    plt.savefig(folder + "/displacement/" + str(t) + ".png",bbox_inches='tight',dpi = 300) # salva em png
-    plt.close()
+ax.set_xlabel(r"$\theta$")
+ax.set_ylabel(r"$p$")
+
+a = ax.pcolormesh(x0,y0,yf,cmap="bwr")
+fig.colorbar(a,label = r"$\Delta p$")
+plt.savefig(folder + "/disp" + ".png",bbox_inches='tight',dpi = 300) # salva em png
+plt.close()
 
 
 

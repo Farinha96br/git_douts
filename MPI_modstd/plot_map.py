@@ -25,10 +25,10 @@ plt.rc('text', usetex=False) # esse vc deixa True e for salvar em pdf e False se
 
 folder = sys.argv[1]
 p = np.loadtxt(folder + "/p.dat")
-theta = np.loadtxt(folder + "/theta.dat")
+q = np.loadtxt(folder + "/q.dat")%(2*np.pi)
 
 p0 = p[:,0]
-theta0 = theta[:,0]
+q0 = q[:,0]
 
 
 
@@ -37,62 +37,31 @@ theta0 = theta[:,0]
 
 fig, ax = plt.subplots()
 fig.set_size_inches(7*0.393, 7*0.393)
-ax.set_xlabel(r"$\theta$")
-ax.set_xlim([-2*np.pi,4*np.pi])
+ax.set_xlabel(r"$q$")
+ax.set_xlim([0,2*np.pi])
 #ax.set_xticks([0,np.pi/k,2*np.pi/k])
 #ax.set_xticklabels([r"0",r"$\pi$",r"$2\pi$"])
 
 ax.set_ylabel(r"$p$")
-ax.set_ylim([-2*np.pi,2*np.pi])
+#ax.set_ylim([-4*np.pi,4*np.pi])
 #ax.set_yticks([0,np.pi/k,2*np.pi/k])
 #ax.set_yticklabels([r"0",r"$\pi$",r"$2\pi$"])
-ax.set_title("K = " + folder[-6:])
+M = float(folder[-8:])
+#M = int(M)
+#M = 2*M +1
+ax.set_title("K = " + str(M))
 for i in range(0,len(p[:,0])):
-    ax.plot(theta[i,:],p[i,:],ls="",marker = ",",zorder = 0)
+    ax.plot(q[i,:],p[i,:],ls="",marker = ",",zorder = 0)
 
 ax.axvline(0,ls="--",color = "Gray", lw = 0.5)
 ax.axvline(2*np.pi,ls="--",color = "Gray", lw = 0.5)
-ax.axhline(-np.pi,ls="--",color = "Gray", lw = 0.5)
-ax.axhline(np.pi,ls="--",color = "Gray", lw = 0.5)
+#ax.axhline(-np.pi,ls="--",color = "Gray", lw = 0.5)
+#ax.axhline(np.pi,ls="--",color = "Gray", lw = 0.5)
 os.makedirs("map_chaos0",exist_ok=True)
 
-ax.scatter(theta0,p0,marker = "o",s = 1, color = "black",zorder = 1)
-plt.savefig(folder + "/map_0_" + folder[-6:] + ".png",bbox_inches='tight',dpi = 300) # salva em png
-plt.savefig("map_chaos0/" + folder[-6:] + "_0.png",bbox_inches='tight',dpi = 300) # salva em png
+ax.scatter(q0,p0,marker = "o",s = 0.5, color = "black",zorder = 1)
+plt.savefig(folder + "/map_0_" + folder[-8:] + ".png",bbox_inches='tight',dpi = 300) # salva em png
+plt.savefig("map_chaos0/" + folder[-8:] + "_0.png",bbox_inches='tight',dpi = 300) # salva em png
 
 plt.close()
 
-
-
-
-# plota periodico
-
-p = (p-np.pi)%(2*np.pi)-np.pi
-theta = theta%(2*np.pi)
-
-
-fig, ax = plt.subplots()
-fig.set_size_inches(7*0.393, 7*0.393)
-ax.set_xlabel(r"$\theta/2\pi)$")
-ax.set_xlim([-0.1,2*np.pi+0.1])
-#ax.set_xticks([0,np.pi/k,2*np.pi/k])
-#ax.set_xticklabels([r"0",r"$\pi$",r"$2\pi$"])
-
-ax.set_ylabel(r"$p/2\pi$")
-ax.set_ylim([-np.pi-0.1,np.pi+0.1])
-#ax.set_yticks([0,np.pi/k,2*np.pi/k])
-#ax.set_yticklabels([r"0",r"$\pi$",r"$2\pi$"])
-ax.set_title("K = " + folder[-6:])
-for i in range(0,len(p[:,0])):
-    ax.plot(theta[i,:],p[i,:],ls="",marker = ",",zorder = 0)
-
-ax.scatter(theta0,p0,marker = "o",s = 0.5, color = "black",zorder = 1)
-os.makedirs("map_chaos1",exist_ok=True)
-plt.savefig(folder + "/map_1_" + folder[-6:] + ".png",bbox_inches='tight',dpi = 300) # salva em png
-plt.savefig("map_chaos1/" + folder[-6:] + "_1.png",bbox_inches='tight',dpi = 300) # salva em png
-
-plt.close()
-
-
-
-#plt.savefig("graph.pdf",bbox_inches='tight') # salva em pdf
