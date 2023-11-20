@@ -56,7 +56,6 @@ ax[1].plot(data[:,0],data[:,1],linewidth = 0.5)
 
 
 
-
 ax[0].legend(frameon=False) # Caixinha d legenda sem borda
 #plt.savefig("graph.pdf",bbox_inches='tight') # salva em pdf
 plt.savefig("double.png",bbox_inches='tight',dpi = 300) # salva em png

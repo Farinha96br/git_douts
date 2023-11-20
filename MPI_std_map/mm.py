@@ -53,7 +53,7 @@ y = (y-np.pi)%(2*np.pi)
 y = y[:81,:]
 # Bota os dados num grid (ainda com elementos repitidos)
 
-SaveSteps = True
+saveSteps = True
 
 Lx = 2*np.pi
 Nx = 1024
@@ -86,58 +86,39 @@ img = np.reshape(img,(Nx,Ny)).astype("uint8") ## IMAGEM DO MAPA
 aa, bb = np.meshgrid(np.linspace(0,2*np.pi,Nx),np.linspace(-np.pi,np.pi,Nx))
 
 step = 0
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[0,0].pcolormesh(aa, bb, img, cmap = "Greys_r")
-    #ax.set_title("Raw")
-step += 1
 
 
 
-
-radius = 3
+radius = 2
 SE = mm.disk(radius)
-ero = mm.erosion(img,SE)
-op = mm.reconstruction(ero,img,"dilation",np.ones((3,3)))
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[0,1].pcolormesh(aa, bb, ero, cmap = "Greys_r")
-    #ax.set_title("Erosion")
-step += 1
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[0,2].pcolormesh(aa, bb, op, cmap = "Greys_r")
-    #ax.set_title("Op. Rec.")
-step += 1
-
-
-radius = 3
-SE = mm.disk(radius)
-dil = mm.dilation(op,SE)
+dil = mm.dilation(img,SE)
 cls = mm.erosion(dil,SE)
 
 
-if SaveSteps:
+radius = 3
+conn = np.array([[0,1,0],[1,1,1],[0,1,0]])
+
+SE = mm.disk(radius)
+ero = mm.erosion(cls,SE)
+op = mm.reconstruction(ero,cls,"dilation",conn)
+
+
+
+
+
+
+if saveSteps:
     #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[1,0].pcolormesh(aa, bb, dil, cmap = "Greys_r")
-    #ax.set_title("Dilation")
-step += 1
+    ax[0,0].pcolormesh(aa, bb, img, cmap = "Greys_r")
+    ax[0,1].pcolormesh(aa, bb, dil, cmap = "Greys_r")
+    ax[0,2].pcolormesh(aa, bb, cls, cmap = "Greys_r")
+    ax[1,0].pcolormesh(aa, bb, ero, cmap = "Greys_r")
+    ax[1,1].pcolormesh(aa, bb, op, cmap = "Greys_r")
+    #ax.set_title("Erosion")
 
 
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[1,1].pcolormesh(aa, bb, cls, cmap = "Greys_r")
-    #ax.set_title("Closing")
-step += 1
+to_label = op
 
-
-
-
-
-
-to_label = cls
 
 
 label1 = mm.label(to_label,connectivity=1)
@@ -148,15 +129,15 @@ label2[label2 != 0] += np.max(label1)
 label = label1 + label2 - 1
 np.save(folder + "/label.npy",label)
 print("#region3",np.max(label)+1)
-
+print("max_lab",np.max(label),"min_lab",np.min(label))
 #print(label)
 
 cx = []
 cy = []
 
 if np.all(label == label[0,0]):
-    cx.append(0.1)
-    cy.append(0.1)
+    cx.append(0.01)
+    cy.append(0.01)
 else:
     for i in range(0,np.max(label)+1):
         mask = np.zeros(label.shape)
@@ -184,13 +165,10 @@ else:
         xcand = np.ravel(aa[tempmask2])
         if len(xcand) != len(ycand):
             print("ERRO CARAIO")
+        a = int(len(xcand)/2)
 
-        cx.append(xcand[0])
-        cy.append(ycand[0])
-
-
-        
-
+        cx.append(xcand[a])
+        cy.append(ycand[a])
 
 
 #label = np.flip(np.rot90(label,3),axis=1)
@@ -200,14 +178,14 @@ else:
 #ax.imshow(color_label,interpolation='none',origin="lower",zorder = 0)
 ax[1,2].pcolormesh(aa,bb,label,cmap="rainbow")
 
-
 pointfile = open(folder + "/testpoints.dat","w")
 for i in range(0,len(cx)):
     #ax.text(cx[i],cy[i],str(i),c = "black",size="small")
     pointfile.write(str(cx[i]) + "\t" + str(cy[i]) + "\n")
-ax[1,2].scatter(cx,cy,s = 0.5,c = "black")
+#ax[1,2].scatter(cx,cy,s = 0.5,c = "black")
 plt.savefig(folder + "/mm_steps",bbox_inches='tight',dpi = 900) # salva em png
-plt.savefig("data-seg_batch/K_" + folder[-6:] +".png",bbox_inches='tight',dpi = 900) # salva em png
+os.makedirs("data-seg_batch",exist_ok=True)
+plt.savefig("data-seg_batch/K_" + folder[-8:] +".png",bbox_inches='tight',dpi = 900) # salva em png
 
 plt.close()
 print("regions:",len(np.ravel(np.unique(label))))

@@ -87,58 +87,35 @@ img = np.reshape(img,(Nx,Ny)).astype("uint8") ## IMAGEM DO MAPA
 aa, bb = np.meshgrid(np.linspace(0,2*np.pi,Nx),np.linspace(-np.pi,np.pi,Nx))
 
 step = 0
+
+
+
+
+radius = 3
+SE = mm.disk(radius)
+dil = mm.dilation(img,SE)
+cls = mm.erosion(dil,SE)
+
+radius = 3
+SE = mm.disk(radius)
+ero = mm.erosion(cls,SE)
+op = mm.reconstruction(ero,cls,"dilation",np.ones((3,3)))
+
+
 if SaveSteps:
     #ax.imshow(img.astype("uint8"),cmap = "Greys")
     ax[0,0].pcolormesh(aa, bb, img, cmap = "Greys_r")
+    ax[0,1].pcolormesh(aa, bb, dil, cmap = "Greys_r")
+    ax[0,2].pcolormesh(aa, bb, cls, cmap = "Greys_r")
+    ax[1,0].pcolormesh(aa, bb, ero, cmap = "Greys_r")
+    ax[1,1].pcolormesh(aa, bb, op, cmap = "Greys_r")
     #ax.set_title("Raw")
-step += 1
-
-
-
-
-radius = 3
-SE = mm.disk(radius)
-ero = mm.erosion(img,SE)
-op = mm.reconstruction(ero,img,"dilation",np.ones((3,3)))
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[0,1].pcolormesh(aa, bb, ero, cmap = "Greys_r")
-    #ax.set_title("Erosion")
-step += 1
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[0,2].pcolormesh(aa, bb, op, cmap = "Greys_r")
-    #ax.set_title("Op. Rec.")
-step += 1
-
-
-radius = 3
-SE = mm.disk(radius)
-dil = mm.dilation(op,SE)
-cls = mm.erosion(dil,SE)
-
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[1,0].pcolormesh(aa, bb, dil, cmap = "Greys_r")
-    #ax.set_title("Dilation")
-step += 1
-
-
-if SaveSteps:
-    #ax.imshow(img.astype("uint8"),cmap = "Greys")
-    ax[1,1].pcolormesh(aa, bb, cls, cmap = "Greys_r")
-    #ax.set_title("Closing")
-step += 1
 
 
 
 
 
-
-to_label = cls
+to_label = op
 
 
 label1 = mm.label(to_label,connectivity=1)

@@ -48,6 +48,11 @@ ax.set_yticks([0,np.pi/k,2*np.pi/k])
 for i in range(0,len(x[:,0])):
     ax.plot(y[i,:]%(2*np.pi/3),x[i,:]%(2*np.pi/3),ls="",marker = ",",zorder = 0)
 ax.scatter(y0,x0,marker = "o",s = 0.1, color = rgb_pallet[0],zorder = 1)
+
+ax.set_xlim(0,2*np.pi/3)
+ax.set_ylim(0,2*np.pi/3)
+
+
 plt.savefig(folder + "/map.png",bbox_inches='tight',dpi = 300) # salva em png
 plt.close()
 

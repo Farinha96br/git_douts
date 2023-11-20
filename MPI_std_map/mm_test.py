@@ -5,6 +5,7 @@ import matplotlib.colors
 from skimage import morphology as mm
 from skimage import measure as med
 import aux
+import os
 
 # Algumas paletas de cor p serem usadas (VSCode recomendado pra mostar as cores no editor de texto)
 rgb_light =  ['#ce5825','#2e9a60','#6182e2']
@@ -16,7 +17,7 @@ cym_pallet = ['#00ceff','#ffd700','#ff6dff']
 cym_darker = ['#007a96','#b39700','#b04bb0']
 
 ## modelo de como criar um colormap linear usando cores predefinidas:
-cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["#9ef27b","#FF6645","#FF59D7","#8FAAFF"])
+cmap2 = matplotlib.colors.LinearSegmentedColormap.from_list("", ["#22b04f","#f514e2","#ffb81f","#512eff"])
 
 
 
@@ -171,7 +172,8 @@ ax.set_xlim(0,2*np.pi)
 ax.set_ylim(-np.pi,np.pi)
 
 plt.savefig(folder + "/mm_8_tests",bbox_inches='tight',dpi = 300) # salva em png
-plt.savefig("transp_type/K_" + folder[-6:] +".png",bbox_inches='tight',dpi = 300) # salva em png
+os.makedirs("transp_type",exist_ok=True)
+plt.savefig("poster/K_" + folder[-8:] +".png",bbox_inches='tight',dpi = 300) # salva em png
 
 plt.close()
 
@@ -182,7 +184,7 @@ norm = label.shape[0]*label.shape[1]
 
 norm = np.sum(norm)
 #file.write("#var    periodic-conf periodic-acc chaos-trapped chaos-transport")
-file.write(folder[-6:] + "\t")
+file.write(folder[-8:] + "\t")
 print(norm,label.shape)
 
 

@@ -73,23 +73,23 @@ theta = theta%(2*np.pi)
 
 fig, ax = plt.subplots()
 fig.set_size_inches(7*0.393, 7*0.393)
-ax.set_xlabel(r"$\theta/2\pi)$")
+ax.set_xlabel(r"$\theta$")
 ax.set_xlim([-0.1,2*np.pi+0.1])
 #ax.set_xticks([0,np.pi/k,2*np.pi/k])
 #ax.set_xticklabels([r"0",r"$\pi$",r"$2\pi$"])
 
-ax.set_ylabel(r"$p/2\pi$")
+ax.set_ylabel(r"$p$")
 ax.set_ylim([-np.pi-0.1,np.pi+0.1])
 #ax.set_yticks([0,np.pi/k,2*np.pi/k])
 #ax.set_yticklabels([r"0",r"$\pi$",r"$2\pi$"])
-ax.set_title("K = " + folder[-6:])
+#ax.set_title("K = " + folder[-6:])
 for i in range(0,len(p[:,0])):
     ax.plot(theta[i,:],p[i,:],ls="",marker = ",",zorder = 0)
 
 ax.scatter(theta0,p0,marker = "o",s = 0.5, color = "black",zorder = 1)
 os.makedirs("map_chaos1",exist_ok=True)
 plt.savefig(folder + "/map_1_" + folder[-6:] + ".png",bbox_inches='tight',dpi = 300) # salva em png
-plt.savefig("map_chaos1/" + folder[-6:] + "_1.png",bbox_inches='tight',dpi = 300) # salva em png
+#plt.savefig("map_chaos1/" + folder[-6:] + "_1.png",bbox_inches='tight',dpi = 300) # salva em png
 
 plt.close()
 

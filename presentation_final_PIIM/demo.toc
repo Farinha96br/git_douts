@@ -1,0 +1,8 @@
+\babel@toc {english}{}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{$E \times B$ drift}{6}{0}{2}
+\beamer@sectionintoc {3}{Two wave hamiltonian}{16}{0}{3}
+\beamer@sectionintoc {4}{Transport}{20}{0}{4}
+\beamer@sectionintoc {5}{Two wave system - Results}{23}{0}{5}
+\beamer@sectionintoc {6}{Conclusions}{40}{0}{6}
+\beamer@sectionintoc {7}{Next steps}{42}{0}{7}

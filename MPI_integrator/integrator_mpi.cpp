@@ -45,8 +45,9 @@ int main(int argc, char** argv) {
    int L0 = atoi(argv[2]); // linha dos dados que começa a ler
    int its = atoi(argv[3]);
    double var = atof(argv[4]);
-   // argv[5] é o arquivo de entrada
-   // argv[6] é a pasta de saida
+   double var2 = atof(argv[5]);
+   // argv[6] é o arquivo de entrada
+   // argv[7] é a pasta de saida
 
    int rank, size;
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -108,7 +109,7 @@ int main(int argc, char** argv) {
          //char intxy[100];
          //sprintf(intxy,"%s/start.dat",argv[5]);
          FILE *input_file;
-         input_file = fopen(argv[5],"r");
+         input_file = fopen(argv[6],"r");
          //
          int line = 0;
          int index_load = 0;
@@ -153,19 +154,19 @@ int main(int argc, char** argv) {
 
    // parametros do sistema
     // Constantes do sistema
-   A = {1.0,0.16};
-   kx = {3.0,3.0};
-   ky = {3.0,3.0};
-   v = 1.0;
-   phasex = {0,var};
+   A = {1.0,var};
+   kx = {3.0,6.0};
+   ky = {3.0,6.0};
+   v = 0.0;
+   phasex = {0,var2};
    U = 0;
    double tau = abs(2.0*M_PI/(v*ky[1])); // usado p mapas
-	step = tau/500.0; // passo eh um milesimo do periodo da perturbação;
+	step = 0.0001; // passo eh um milesimo do periodo da perturbação;
    
 
    // define o estrobo
-   strobe = tau; // usado p mapas
-   //strobe = 0.01; // Usado pra ver a trajetoria da particula em sí
+   //strobe = tau; // usado p mapas
+   strobe = 0.001; // Usado pra ver a trajetoria da particula em sí
    double tf = its*strobe; // calcula o tempo final dado as N iteraçoes do estrobo
 	//printf("rank %d: %lf %lf\n",rank,x0,y0);
    state_type state = {x0, y0}; // initial conditions
@@ -211,12 +212,12 @@ int main(int argc, char** argv) {
       printf("WRITING... \n");
       FILE *filex;
       char outx[100];
-      sprintf(outx,"%s/x.dat",argv[6]);
+      sprintf(outx,"%s/x.dat",argv[7]);
       filex = fopen(outx,"a");
 
       FILE *filey;
       char outy[100];
-      sprintf(outy,"%s/y.dat",argv[6]);
+      sprintf(outy,"%s/y.dat",argv[7]);
       filey = fopen(outy,"a");
 
 

@@ -54,8 +54,8 @@ int main(int argc, char** argv) {
       // nesse caso uma malha estilo np.meshgrid
 
       if (gencase == 0){
-         int NX = 1024; // numero de pontos em X
-         int NY = 1024; // numero de pontos em Y
+         int NX = 9; // numero de pontos em X
+         int NY = 9; // numero de pontos em Y
          double dx;
          double p0x =   0;
          double pfx =   2*3.1415;

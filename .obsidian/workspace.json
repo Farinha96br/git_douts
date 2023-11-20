@@ -15,14 +15,30 @@
               "state": {
                 "file": "Notas/General.canvas",
                 "viewState": {
-                  "x": 473.1136043291036,
-                  "y": 4075.3758509323516,
-                  "zoom": 1
+                  "x": 1791.6832937292108,
+                  "y": 4108.242010369548,
+                  "zoom": -1.7999999999999998
+                }
+              }
+            }
+          },
+          {
+            "id": "0a53f59ad827f9a7",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Notas/General.canvas",
+                "viewState": {
+                  "x": 3115.818792052854,
+                  "y": -2037.0775816963683,
+                  "zoom": -0.19999999999999996
                 }
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -161,29 +177,29 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "52403e1552c20d2f",
+  "active": "0a53f59ad827f9a7",
   "lastOpenFiles": [
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/22.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/21.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/20.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/19.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/18.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/17.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/16.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/15.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/14.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/13.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs/12.png",
-    "MPI_integrator/data-testgamma/phasex_000.7854/trajs",
-    "MPI_integrator/data-testgamma/phasex_000.7854/testpoints.dat",
-    "MPI_integrator/data-testgamma/phasex_000.7854/label.npy",
-    "MPI_integrator/data-testgamma/phasex_000.7854/y.dat",
-    "MPI_integrator/data-testgamma/phasex_000.7854/x.dat",
-    "MPI_integrator/data-testgamma/phasex_000.7854",
-    "MPI_integrator/areas.dat",
-    "MPI_integrator/data-testgamma",
-    "MPI_integrator/data-testgamma/phasex_0.785",
-    "MPI_integrator/data-results/data-simetry/phasex_5.498/y.dat",
+    "presentation_final_PIIM/demo.synctex(busy)",
+    "presentation_final_PIIM/pdflatex55325.fls",
+    "presentation_final_PIIM/pdflatex55311.fls",
+    "presentation_final_PIIM/pdflatex55246.fls",
+    "presentation_final_PIIM/demo.blg",
+    "presentation_final_PIIM/demo.toc",
+    "presentation_final_PIIM/demo.out",
+    "presentation_final_PIIM/demo.log",
+    "presentation_final_PIIM/demo.fls",
+    "presentation_final_PIIM/pdflatex55240.fls",
+    "presentation_final_PIIM/pdflatex55220.fls",
+    "presentation_final_PIIM/graf_2ondas/anom2.png",
+    "presentation_final_PIIM/graf_2ondas/50.png",
+    "presentation_final_PIIM/graf_2ondas/anom1.png",
+    "presentation_final_PIIM/graf_2ondas/75.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/99.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/75.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/50.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/25.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/10.png",
+    "MPI_integrator/data-results/displacement/data-displacement_A2_0.200/displacement/3.png",
     "Notas/Hamiltonian notes.md",
     "Notas/General.canvas",
     "Notas/Modified std map.md",
